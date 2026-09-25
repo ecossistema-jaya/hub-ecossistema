@@ -12,15 +12,14 @@
     "lhci": "lhci autorun",
     "assets": "node scripts/generate-assets.mjs",
     "prebuild": "node scripts/generate-assets.mjs",
-    "art": "node scripts/curate-art.mjs"
+    "art": "node scripts/curate-art.mjs",
+    "check:links": "node scripts/check-links.mjs"
   },
   "engines": {
     "node": ">=22.12.0"
   },
   "dependencies": {
-    "@fontsource-variable/jost": "^5.3.0",
     "@fontsource-variable/open-sans": "^5.3.0",
-    "@fontsource-variable/petrona": "^5.3.0",
     "@fontsource/marcellus": "^5.3.0",
     "astro": "^7.3.5",
     "ogl": "^1.0.11"
