@@ -1,0 +1,73 @@
+{
+  "$comment": "Source of truth for every link on the hub. Derived from inventario-2026-09-16/ativos.csv (2026-09-24). Edit copy/URLs here; UTM params are added automatically.",
+  "person": {
+    "name": "Jaya Roberta",
+    "handle": "Jaya",
+    "role": "Terapeuta Integrativa · Tecnologia e IA",
+    "lede": "Eu conheço a tecnologia por dentro. E as pessoas, pela presença.",
+    "location": "Brasília · DF"
+  },
+  "worlds": [
+    {
+      "id": "shakti",
+      "name": "Shakti Jaya",
+      "kicker": "Relacionamento · Sexualidade · 5 Elementos",
+      "summary": "Terapia integrativa para casais com a Arquitetura Relacional dos 5 Elementos™. Descubra seu padrão relacional e reacenda a conexão com quem você ama.",
+      "primary": {
+        "id": "shakti-quiz",
+        "label": "Descobrir meu elemento",
+        "note": "Quiz gratuito",
+        "url": "https://www.shaktijaya.com.br/quiz1"
+      },
+      "links": [
+        { "id": "shakti-site", "label": "Shakti Jaya", "note": "Terapia de relacionamentos e sexualidade", "url": "https://www.shaktijaya.com.br/" },
+        { "id": "shakti-ayla", "label": "Ayla IA", "note": "Sua terapeuta de bolso, 24h por dia", "url": "https://www.shaktijaya.com.br/ayla-ai" },
+        { "id": "shakti-sessao", "label": "Sessão individual", "note": "Agende pelo WhatsApp", "url": "https://wa.me/5561992634557?text=Ol%C3%A1%20Jaya%2C%20vim%20pela%20plataforma%20e%20quero%20agendar%20uma%20sess%C3%A3o." },
+        { "id": "shakti-fogueira", "label": "Fogueira Junina", "note": "Ritual sazonal", "url": "https://fogueira-junina.shaktijaya.com.br/", "hidden": false }
+      ]
+    },
+    {
+      "id": "jaya-ai",
+      "name": "Jaya AI",
+      "kicker": "Claude · IA · Negócios",
+      "summary": "Inteligência artificial explicada por quem conhece a tecnologia por dentro. Sem jargão, sem precisar fingir que já sabe.",
+      "primary": {
+        "id": "ai-claude-do-zero",
+        "label": "Claude do Zero",
+        "note": "Cinco aulas na ordem, pra fazer junto",
+        "url": "https://jayaroberta.com/claude"
+      },
+      "links": [
+        { "id": "ai-business", "label": "Business Jaya", "note": "Clareza para decidir. Estrutura para crescer.", "url": "https://jayaroberta.com.br/" },
+        { "id": "ai-biblioteca", "label": "Biblioteca Claude by Jaya", "note": "Territórios para explorar o Claude", "url": "https://jayaroberta.com/biblioteca" },
+        { "id": "ai-atlas", "label": "Atlas de Forças", "note": "Descubra suas forças", "url": "https://quiz.jayaroberta.com.br/" },
+        { "id": "ai-eixo", "label": "EIXO", "note": "Plataforma · acesso com login", "url": "https://entrenoeixo.jayaroberta.com.br/", "badge": "login" }
+      ]
+    }
+  ],
+  "elements": {
+    "title": "Um método, cinco elementos",
+    "summary": "Os planners seguem o seu resultado no quiz. Cada elemento é uma lente do mesmo sistema.",
+    "price": "R$57",
+    "items": [
+      { "id": "planner-terra", "name": "Terra", "theme": "Segurança e confiança", "token": "terra", "url": "https://pay.hotmart.com/P104786538J" },
+      { "id": "planner-agua", "name": "Água", "theme": "Conexão emocional", "token": "agua", "url": "https://pay.hotmart.com/N104787105X" },
+      { "id": "planner-ar", "name": "Ar", "theme": "Comunicação e diálogo", "token": "ar", "url": "https://pay.hotmart.com/R104787457S" },
+      { "id": "planner-fogo", "name": "Fogo", "theme": "Paixão e intimidade", "token": "fogo", "url": "https://pay.hotmart.com/K104787593G" },
+      { "id": "planner-eter", "name": "Éter", "theme": "Propósito e transcendência", "token": "eter", "url": "https://pay.hotmart.com/N104787660T" },
+      { "id": "planner-despertar", "name": "Despertar", "theme": "Jornada de 30 dias", "token": "despertar", "url": "https://pay.hotmart.com/P104848984N" },
+      { "id": "planner-harmonia", "name": "Harmonia", "theme": "Jornada de 30 dias", "token": "harmonia", "url": "https://pay.hotmart.com/C104849036I" }
+    ]
+  },
+  "social": [
+    { "id": "social-instagram", "label": "Instagram", "icon": "instagram", "url": "https://www.instagram.com/jayaroberta.shakti/" },
+    { "id": "social-whatsapp", "label": "WhatsApp", "icon": "whatsapp", "url": "https://wa.me/5561992634557" },
+    { "id": "social-youtube", "label": "YouTube", "icon": "youtube", "url": "https://www.youtube.com/@jayaterapeuta" },
+    { "id": "social-tiktok", "label": "TikTok", "icon": "tiktok", "url": "https://www.tiktok.com/@jayaterapeuta" },
+    { "id": "social-linkedin", "label": "LinkedIn", "icon": "linkedin", "url": "https://www.linkedin.com/in/robertajaya/" }
+  ],
+  "restricted": [
+    { "id": "ops-command", "label": "Command Center", "url": "https://app.jayaroberta.com/" },
+    { "id": "ops-finance", "label": "JayaFinance", "url": "https://finance.jayaroberta.com/" }
+  ]
+}

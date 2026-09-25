@@ -1,0 +1,97 @@
+---
+import '../styles/global.css';
+import { hub } from '../lib/links';
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImage = new URL('/og.jpg', Astro.site).toString();
+const onVercel = process.env.VERCEL === '1';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: hub.person.name,
+  url: Astro.site?.toString(),
+  image: ogImage,
+  jobTitle: 'Terapeuta Integrativa',
+  address: { '@type': 'PostalAddress', addressLocality: 'Brasília', addressRegion: 'DF', addressCountry: 'BR' },
+  sameAs: [
+    'https://www.shaktijaya.com.br/',
+    'https://jayaroberta.com/',
+    'https://jayaroberta.com.br/',
+    ...hub.social.filter((s) => s.icon !== 'whatsapp').map((s) => s.url),
+  ],
+};
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#f6efe6" />
+    <meta name="color-scheme" content="light dark" />
+
+    <!-- Theme + device tier before first paint: no flash of the wrong theme. -->
+    <script is:inline>
+      (function () {
+        var d = document.documentElement;
+        d.classList.add('js');
+        var t;
+        try { t = localStorage.getItem('theme'); } catch (e) {}
+        if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        d.setAttribute('data-theme', t);
+        if (t === 'dark') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#1d1310');
+        var n = navigator, c = n.connection || {}, et = c.effectiveType || '4g';
+        var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var lowData = matchMedia('(prefers-reduced-data: reduce)').matches || c.saveData === true;
+        var slow = /(^|-)2g|3g/.test(et);
+        var tier = 1;
+        if (reduced || lowData || slow) tier = 0;
+        else if ((n.deviceMemory || 4) >= 4 && (n.hardwareConcurrency || 4) >= 4) tier = 2;
+        d.setAttribute('data-tier', String(tier));
+      })();
+    </script>
+
+    <link rel="preload" href="/fonts/petrona-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Jaya Roberta" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Jaya Roberta — Shakti Jaya e Jaya AI" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    {onVercel && <script is:inline defer src="/_vercel/insights/script.js"></script>}
+    {onVercel && <script is:inline defer src="/_vercel/speed-insights/script.js"></script>}
+  </head>
+  <body>
+    <a class="skip-link" href="#caminhos">Pular para os caminhos</a>
+    <div class="ambient" aria-hidden="true"></div>
+    <canvas class="sun-canvas" aria-hidden="true"></canvas>
+    <div class="grain" aria-hidden="true"></div>
+    <slot />
+    <script>
+      import '../scripts/interactions';
+    </script>
+  </body>
+</html>

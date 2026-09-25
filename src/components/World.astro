@@ -1,0 +1,241 @@
+---
+import { Picture } from 'astro:assets';
+import { track, visible, type HubLink } from '../lib/links';
+import { photo } from '../lib/photos';
+import CanyonArt from './CanyonArt.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  world: {
+    id: string;
+    name: string;
+    kicker: string;
+    summary: string;
+    primary: HubLink;
+    links: HubLink[];
+  };
+  index: number;
+}
+const { world, index } = Astro.props;
+const cover = photo(world.id);
+const tone = world.id === 'shakti' ? 'shakti' : 'ai';
+---
+
+<article class:list={['world', `world--${tone}`]} data-spotlight data-reveal aria-labelledby={`${world.id}-title`}>
+  <div class="world__cover">
+    {
+      cover ? (
+        <Picture
+          src={cover}
+          width={940}
+          height={705}
+          fit="cover"
+          position="attention"
+          formats={['avif', 'webp']}
+              fallbackFormat="jpg"
+          widths={[360, 560, 760, 940]}
+          sizes="(min-width: 900px) 560px, calc(100vw - 32px)"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <CanyonArt variant={world.id === 'shakti' ? 'shakti' : 'jaya-ai'} />
+      )
+    }
+    <span class="world__num" aria-hidden="true">0{index + 1}</span>
+  </div>
+
+  <div class="world__body">
+    <p class="world__kicker caps">{world.kicker}</p>
+    <h3 id={`${world.id}-title`} class="world__title">{world.name}</h3>
+    <p class="world__summary">{world.summary}</p>
+
+    <a class="world__cta" href={track(world.primary.url, world.primary.id)} data-magnetic>
+      <span class="world__cta-text">
+        <strong>{world.primary.label}</strong>
+        {world.primary.note && <small>{world.primary.note}</small>}
+      </span>
+      <Icon name="arrow" size={22} />
+    </a>
+
+    <ul class="world__links" role="list" data-reveal="stagger">
+      {
+        visible(world.links).map((link, i) => (
+          <li style={`--i:${i}`}>
+            <a class="world__link" href={track(link.url, link.id)}>
+              <span class="world__link-text">
+                <span class="world__link-label">
+                  {link.label}
+                  {link.badge === 'login' && (
+                    <span class="world__badge">
+                      <Icon name="lock" size={12} /> login
+                    </span>
+                  )}
+                </span>
+                {link.note && <span class="world__link-note">{link.note}</span>}
+              </span>
+              <Icon name="arrow" size={18} class="world__arrow" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</article>
+
+<style>
+  .world {
+    --tone: var(--shakti);
+    --tone-soft: var(--shakti-soft);
+    position: relative;
+    display: grid;
+    background: color-mix(in oklch, var(--surface) 88%, transparent);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: border-color 0.4s, box-shadow 0.5s var(--ease-out);
+  }
+  .world--ai {
+    --tone: var(--ai);
+    --tone-soft: var(--ai-soft);
+  }
+  /* Spotlight border: only painted where a fine pointer hovers. */
+  .world::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: radial-gradient(260px circle at var(--mx, -999px) var(--my, -999px), var(--tone), transparent 70%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .world:hover { box-shadow: var(--shadow-hover); }
+    .world:hover::after { opacity: 1; }
+  }
+
+  .world__cover {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--surface-2);
+  }
+  .world__cover :global(img),
+  .world__cover :global(svg) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 18%;
+    transition: transform 1.2s var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .world:hover .world__cover :global(img),
+    .world:hover .world__cover :global(svg) { transform: scale(1.04); }
+  }
+  .world__num {
+    position: absolute;
+    left: 18px;
+    bottom: 12px;
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    line-height: 1;
+    color: oklch(0.99 0.005 75);
+    text-shadow: 0 1px 12px oklch(0 0 0 / 0.35);
+  }
+
+  .world__body { padding: 22px 20px 20px; }
+  .world__kicker { color: var(--tone); letter-spacing: 0.24em; font-size: 0.68rem; }
+  .world__title {
+    margin-top: 10px;
+    font-size: clamp(2.1rem, 8vw, 2.9rem);
+  }
+  .world__summary {
+    margin-top: 12px;
+    color: var(--ink-soft);
+    font-size: 1rem;
+    max-width: 46ch;
+  }
+
+  .world__cta {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 64px;
+    padding: 12px 18px 12px 20px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-radius: var(--radius-md);
+    transition: transform 0.35s var(--ease-out), filter 0.3s;
+  }
+  .world__cta:active { transform: scale(0.98); }
+  .world__cta:hover { filter: brightness(1.06); }
+  .world__cta-text { display: grid; line-height: 1.25; }
+  .world__cta strong { font-weight: 500; font-size: 1.05rem; }
+  .world__cta small { font-size: 0.82rem; opacity: 0.85; }
+  .world__cta :global(svg) { flex: none; transition: transform 0.35s var(--ease-out); }
+  .world__cta:hover :global(svg) { transform: translate(2px, -2px); }
+
+  .world__links {
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 0;
+  }
+  .world__links li + li { border-top: 1px solid var(--line); }
+  .world__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    min-height: 60px;
+    padding: 10px 4px;
+  }
+  .world__link:active { background: var(--tone-soft); }
+  .world__link-text { display: grid; gap: 2px; }
+  .world__link-label {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-image: linear-gradient(var(--tone), var(--tone));
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.45s var(--ease-out);
+    width: fit-content;
+  }
+  .world__link:hover .world__link-label { background-size: 100% 1px; }
+  .world__link-note { font-size: 0.88rem; color: var(--muted); }
+  .world__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-family: var(--font-body);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 1px 7px;
+  }
+  .world__link :global(.world__arrow) {
+    flex: none;
+    color: var(--tone);
+    transition: transform 0.35s var(--ease-out);
+  }
+  .world__link:hover :global(.world__arrow) { transform: translate(2px, -2px); }
+
+  @media (min-width: 900px) {
+    .world__body { padding: 28px 30px 26px; }
+  }
+</style>

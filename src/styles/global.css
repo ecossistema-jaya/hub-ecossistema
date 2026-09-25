@@ -1,0 +1,400 @@
+/* ==========================================================================
+   Hub do Ecossistema Jaya — design system
+   Light = "dia no canyon" · Dark = "noite de brasa"
+   Brand DNA: reconciliacao-jaya-hub-page/DESIGN.md (No-Neon, Petrona + Jost, flat-by-default)
+   ========================================================================== */
+
+/* ---------- Fonts (self-hosted, latin + latin-ext) ---------- */
+@font-face {
+  font-family: 'Petrona';
+  src: url('/fonts/petrona-latin-wght-normal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Petrona';
+  src: url('/fonts/petrona-latin-ext-wght-normal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Petrona';
+  src: url('/fonts/petrona-latin-wght-italic.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122;
+}
+@font-face {
+  font-family: 'Jost';
+  src: url('/fonts/jost-latin-wght-normal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Jost';
+  src: url('/fonts/jost-latin-ext-wght-normal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* Metric-matched fallbacks: keep layout stable while webfonts swap in (CLS). */
+@font-face {
+  font-family: 'Petrona Fallback';
+  src: local('Georgia'), local('Times New Roman');
+  size-adjust: 96%;
+  ascent-override: 98%;
+  descent-override: 26%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Jost Fallback';
+  src: local('Arial'), local('Helvetica'), local('Roboto');
+  size-adjust: 94%;
+  ascent-override: 106%;
+  descent-override: 37%;
+  line-gap-override: 0%;
+}
+
+/* ---------- Tokens ---------- */
+:root {
+  --font-display: 'Petrona', 'Petrona Fallback', Georgia, serif;
+  --font-body: 'Jost', 'Jost Fallback', system-ui, sans-serif;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-arch: 999px 999px 18px 18px;
+
+  --gutter: clamp(16px, 5vw, 40px);
+  --maxw: 1180px;
+
+  /* Element semantic colors (from DESIGN.md) */
+  --terra: oklch(0.571 0.053 72.7);
+  --agua: oklch(0.616 0.076 218.8);
+  --ar: oklch(0.561 0.093 225.8);
+  --fogo: oklch(0.634 0.183 39.4);
+  --eter: oklch(0.577 0.152 315.3);
+  --despertar: oklch(0.667 0.149 48);
+  --harmonia: oklch(0.392 0.157 27.2);
+}
+
+/* Light — "dia no canyon" (default) */
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: oklch(0.968 0.014 74);
+  --bg-deep: oklch(0.935 0.024 68);
+  --surface: oklch(0.985 0.008 75);
+  --surface-2: oklch(0.955 0.016 72);
+  --ink: oklch(0.23 0.022 38);
+  --ink-soft: oklch(0.43 0.03 45);
+  --muted: oklch(0.5 0.026 55);
+  --line: oklch(0.86 0.022 68);
+  --line-strong: oklch(0.76 0.03 60);
+  --accent: oklch(0.47 0.14 34);          /* terracota ação — AA with white */
+  --accent-ink: oklch(0.99 0.005 75);
+  --accent-soft: oklch(0.47 0.14 34 / 0.1);
+  --shakti: oklch(0.4 0.16 26.8);          /* Terracota Profunda */
+  --shakti-soft: oklch(0.4 0.16 26.8 / 0.09);
+  --ai: oklch(0.45 0.085 58);              /* ocre de canyon */
+  --ai-soft: oklch(0.45 0.085 58 / 0.1);
+  --sun-core: oklch(0.8 0.135 58);
+  --sun-halo: oklch(0.86 0.09 55 / 0.6);
+  --haze: oklch(0.82 0.06 40 / 0.35);
+  --grain-opacity: 0.07;
+  --shadow-hover: 0 18px 40px -22px oklch(0.35 0.08 40 / 0.45);
+}
+
+/* Dark — "noite de brasa" */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: oklch(0.165 0.018 30);
+  --bg-deep: oklch(0.13 0.016 28);
+  --surface: oklch(0.205 0.022 30);
+  --surface-2: oklch(0.235 0.026 30);
+  --ink: oklch(0.94 0.014 75);
+  --ink-soft: oklch(0.83 0.022 70);
+  --muted: oklch(0.72 0.026 62);
+  --line: oklch(0.31 0.026 32);
+  --line-strong: oklch(0.42 0.034 35);
+  --accent: oklch(0.76 0.135 52);          /* brasa — AA with dark text */
+  --accent-ink: oklch(0.18 0.02 30);
+  --accent-soft: oklch(0.76 0.135 52 / 0.12);
+  --shakti: oklch(0.74 0.12 30);
+  --shakti-soft: oklch(0.74 0.12 30 / 0.12);
+  --ai: oklch(0.8 0.08 72);
+  --ai-soft: oklch(0.8 0.08 72 / 0.12);
+  --sun-core: oklch(0.62 0.17 38);
+  --sun-halo: oklch(0.45 0.14 30 / 0.5);
+  --haze: oklch(0.35 0.12 350 / 0.35);
+  --grain-opacity: 0.09;
+  --shadow-hover: 0 18px 40px -22px oklch(0 0 0 / 0.7);
+}
+
+/* No-JS fallback: follow the OS when the bootstrap script never ran. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --bg: oklch(0.165 0.018 30);
+    --bg-deep: oklch(0.13 0.016 28);
+    --surface: oklch(0.205 0.022 30);
+    --surface-2: oklch(0.235 0.026 30);
+    --ink: oklch(0.94 0.014 75);
+    --ink-soft: oklch(0.83 0.022 70);
+    --muted: oklch(0.72 0.026 62);
+    --line: oklch(0.31 0.026 32);
+    --line-strong: oklch(0.42 0.034 35);
+    --accent: oklch(0.76 0.135 52);
+    --accent-ink: oklch(0.18 0.02 30);
+    --accent-soft: oklch(0.76 0.135 52 / 0.12);
+    --shakti: oklch(0.74 0.12 30);
+    --shakti-soft: oklch(0.74 0.12 30 / 0.12);
+    --ai: oklch(0.8 0.08 72);
+    --ai-soft: oklch(0.8 0.08 72 / 0.12);
+    --sun-core: oklch(0.62 0.17 38);
+    --sun-halo: oklch(0.45 0.14 30 / 0.5);
+    --haze: oklch(0.35 0.12 350 / 0.35);
+    --grain-opacity: 0.09;
+  }
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  overflow-x: clip; /* propagates to the viewport: decorative bleed never widens the mobile layout */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  background: var(--bg);
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  margin: 0;
+  text-wrap: balance;
+}
+p { margin: 0; text-wrap: pretty; }
+a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+img, svg, canvas { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute; left: 12px; top: -60px; z-index: 50;
+  background: var(--ink); color: var(--bg);
+  padding: 10px 16px; border-radius: var(--radius-sm);
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 12px; }
+
+.caps {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ---------- Ambient background (tier 1+) ----------
+   Static gradient base + a sun disc that moves only with transform/opacity (compositor, no repaint). */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 90% 60% at 10% 100%, var(--haze) 0, transparent 70%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+}
+.ambient::before {
+  content: '';
+  position: absolute;
+  width: 130vmax;
+  aspect-ratio: 1;
+  left: calc(78% - 65vmax);
+  top: calc(12% - 65vmax);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--sun-core) 0, var(--sun-halo) 14%, transparent 48%);
+  opacity: 0.5;
+  will-change: transform;
+}
+html[data-tier='0'] .ambient::before { opacity: 0.3; will-change: auto; }
+html.has-sun .ambient::before { animation: none; will-change: auto; }
+
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-tier='0']) .ambient::before {
+    animation: sun-drift 38s var(--ease-in-out) infinite alternate;
+  }
+}
+@keyframes sun-drift {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.45; }
+  50% { transform: translate(-9vw, 7vh) scale(1.08); opacity: 0.58; }
+  100% { transform: translate(4vw, -3vh) scale(0.96); opacity: 0.5; }
+}
+
+/* WebGL canvas (tier 2) sits over the CSS ambient and fades in when ready. */
+.sun-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.6s var(--ease-out);
+}
+.sun-canvas.is-ready { opacity: 1; }
+
+/* Static paper grain behind content: SVG noise rasterized once as a tile.
+   No blend mode on purpose: a full-screen blended layer re-composites on every scroll frame. */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.3 0 0 0 0 0.2 0 0 0 0 0.12 0 0 0 1.1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* ---------- Motion: page-load reveals ---------- */
+.line { display: block; overflow: clip; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.line > span { display: inline-block; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .intro .line > span {
+    animation: line-up 1.05s var(--ease-out) both;
+    animation-delay: calc(120ms + var(--i, 0) * 110ms);
+  }
+  .intro .fade-in {
+    animation: fade-up 1s var(--ease-out) both;
+    animation-delay: calc(380ms + var(--i, 0) * 90ms);
+  }
+  .intro .photo-reveal {
+    animation: photo-open 1.4s var(--ease-out) both;
+  }
+  .intro .photo-reveal img {
+    animation: photo-settle 2.2s var(--ease-out) both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro .fade-in, .intro .line > span { animation: fade 0.6s ease both; }
+}
+
+@keyframes line-up { from { transform: translateY(105%); } to { transform: none; } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes photo-open {
+  from { clip-path: inset(14% 10% 0 10% round 999px 999px 18px 18px); }
+  to { clip-path: inset(0 0 0 0 round 999px 999px 18px 18px); }
+}
+@keyframes photo-settle { from { transform: scale(1.12); } to { transform: scale(1); } }
+
+/* ---------- Motion: scroll-driven reveals (compositor) + IO fallback ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    [data-reveal] {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+    [data-reveal='stagger'] > * {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+    [data-reveal='stagger'] { animation: none; }
+
+    .draw path {
+      stroke-dasharray: 1;
+      animation: draw linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 55%;
+    }
+    .sun-rise {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+  }
+
+  @supports not (animation-timeline: view()) {
+    html.js [data-reveal]:not(.is-in),
+    html.js [data-reveal='stagger']:not(.is-in) > * {
+      opacity: 0;
+      transform: translateY(26px);
+    }
+    html.js [data-reveal],
+    html.js [data-reveal='stagger'] > * {
+      transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+    }
+    html.js [data-reveal='stagger'].is-in > * { transition-delay: calc(var(--i, 0) * 70ms); }
+    html.js .draw:not(.is-in) path { stroke-dashoffset: 1; }
+    html.js .draw path { stroke-dasharray: 1; transition: stroke-dashoffset 2.4s var(--ease-out); }
+  }
+}
+
+@keyframes reveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+@keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes rise { to { transform: translateY(-18%) scale(1.08); opacity: 0.4; } }
+
+/* ---------- View Transition (theme circular reveal) ---------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}

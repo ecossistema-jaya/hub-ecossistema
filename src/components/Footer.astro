@@ -1,0 +1,197 @@
+---
+import { hub, track } from '../lib/links';
+import Icon from './Icon.astro';
+import Botanical from './Botanical.astro';
+
+const year = new Date().getFullYear();
+---
+
+<section class="quote" aria-label="Citação">
+  <div class="wrap quote__inner">
+    <Botanical class="quote__branch" flip />
+    <figure data-reveal>
+      <blockquote class="quote__text">
+        <p>Disciplina também é uma forma de amor próprio.</p>
+      </blockquote>
+      <figcaption class="caps quote__by">{hub.person.name}</figcaption>
+    </figure>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    {
+      [0, 1].map(() => (
+        <span class="marquee__group">
+          <span>Conhecimento em movimento</span>
+          <span class="marquee__dot">✦</span>
+          <span>Uma vida mais autêntica</span>
+          <span class="marquee__dot">✦</span>
+          <span>Mais humano</span>
+          <span class="marquee__dot">✦</span>
+          <span>Mais possível</span>
+          <span class="marquee__dot">✦</span>
+        </span>
+      ))
+    }
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <nav aria-label="Redes sociais">
+      <ul class="footer__social" role="list">
+        {
+          hub.social.map((s) => (
+            <li>
+              <a href={track(s.url, s.id)} aria-label={s.label}>
+                <Icon name={s.icon} size={22} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <button class="footer__share" type="button" data-share data-status="share-status">
+      <Icon name="share" size={18} />
+      Compartilhar esta página
+    </button>
+    <p id="share-status" class="footer__status" role="status" aria-live="polite"></p>
+
+    <details class="footer__restricted">
+      <summary><Icon name="lock" size={14} /> Área restrita</summary>
+      <ul role="list">
+        {hub.restricted.map((r) => (
+          <li><a href={r.url} rel="nofollow">{r.label}</a></li>
+        ))}
+      </ul>
+    </details>
+
+    <p class="footer__legal">
+      <span class="footer__mark">Jaya</span>
+      © {year} {hub.person.name} · {hub.person.location}
+    </p>
+  </div>
+</footer>
+
+<style>
+  .quote {
+    padding-block: clamp(72px, 12vw, 120px);
+    content-visibility: auto;
+    contain-intrinsic-size: auto 420px;
+  }
+  .quote__inner { position: relative; display: grid; justify-items: center; text-align: center; }
+  :global(.botanical.quote__branch) {
+    position: absolute;
+    right: max(0px, calc(50% - 360px));
+    top: -30px;
+    width: 110px;
+    opacity: 0.9;
+  }
+  .quote__text { margin: 0; }
+  .quote__text p {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.9rem, 7.5vw, 3.2rem);
+    line-height: 1.12;
+    max-width: 16ch;
+    text-wrap: balance;
+  }
+  .quote__text p::before {
+    content: '“';
+    display: block;
+    font-style: normal;
+    font-size: 1.6em;
+    line-height: 0.6;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .quote__by { margin-top: 22px; color: var(--muted); }
+
+  .marquee {
+    overflow: hidden;
+    border-block: 1px solid var(--line);
+    padding-block: 16px;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 60px;
+  }
+  .marquee__track { display: flex; width: max-content; }
+  .marquee__group {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding-right: 28px;
+    font-size: 0.72rem;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .marquee__dot { color: var(--accent); letter-spacing: 0; }
+  @media (prefers-reduced-motion: no-preference) {
+    .marquee__track { animation: marquee 42s linear infinite; }
+  }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  .footer {
+    padding: 48px 0 calc(40px + env(safe-area-inset-bottom, 0px));
+  }
+  .footer__inner { display: grid; justify-items: center; gap: 18px; text-align: center; }
+  .footer__social { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+  .footer__social a {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    transition: color 0.3s, border-color 0.3s, transform 0.35s var(--ease-out);
+  }
+  .footer__social a:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
+  .footer__share {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 18px;
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .footer__share:hover { background: var(--accent-soft); }
+  .footer__status { min-height: 1.2em; font-size: 0.85rem; color: var(--muted); }
+
+  .footer__restricted { font-size: 0.85rem; color: var(--muted); }
+  .footer__restricted summary {
+    cursor: pointer;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    padding-inline: 8px;
+  }
+  .footer__restricted summary::-webkit-details-marker { display: none; }
+  .footer__restricted ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 8px; justify-content: center; }
+  .footer__restricted a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: 12px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .footer__legal { font-size: 0.8rem; color: var(--muted); display: grid; gap: 8px; justify-items: center; }
+  .footer__mark {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+</style>

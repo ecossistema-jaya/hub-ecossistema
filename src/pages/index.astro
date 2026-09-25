@@ -1,0 +1,121 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import World from '../components/World.astro';
+import Elements from '../components/Elements.astro';
+import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
+import { hub } from '../lib/links';
+
+const title = 'Jaya Roberta · Shakti Jaya e Jaya AI';
+const description =
+  'Dois caminhos, uma Jaya: terapia de relacionamentos com o Método dos 5 Elementos e inteligência artificial explicada sem jargão.';
+---
+
+<Base title={title} description={description}>
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="/">
+        <span class="brand__name">Jaya</span>
+        <span class="brand__sub">Atlas do ecossistema</span>
+      </a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Alternar tema escuro">
+        <Icon name="sun" size={20} class="theme-toggle__sun" />
+        <Icon name="moon" size={20} class="theme-toggle__moon" />
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <Hero />
+
+    <section id="caminhos" class="paths" aria-labelledby="paths-title">
+      <div class="wrap">
+        <header class="paths__head" data-reveal>
+          <p class="caps paths__kicker">Dois caminhos</p>
+          <h2 id="paths-title" class="paths__title">Por onde você quer começar?</h2>
+        </header>
+        <div class="paths__grid">
+          {hub.worlds.map((world, i) => <World world={world} index={i} />)}
+        </div>
+      </div>
+    </section>
+
+    <Elements />
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .topbar {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 20;
+    padding-top: env(safe-area-inset-top, 0px);
+    background: color-mix(in oklch, var(--bg) 78%, transparent);
+    -webkit-backdrop-filter: blur(10px) saturate(1.2);
+    backdrop-filter: blur(10px) saturate(1.2);
+    border-bottom: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
+  }
+  html[data-tier='0'] .topbar {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--bg);
+  }
+  .topbar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 60px;
+  }
+  .brand { display: grid; line-height: 1; min-height: 44px; align-content: center; }
+  .brand__name {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+  }
+  .brand__sub {
+    margin-top: 4px;
+    font-size: 0.56rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .theme-toggle {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    background: transparent;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .theme-toggle :global(svg) {
+    grid-area: 1 / 1;
+    transition: transform 0.6s var(--ease-out), opacity 0.4s;
+  }
+  .theme-toggle :global(.theme-toggle__moon) { transform: translateY(140%) rotate(-40deg); opacity: 0; }
+  :global([data-theme='dark']) .theme-toggle :global(.theme-toggle__sun) { transform: translateY(-140%) rotate(40deg); opacity: 0; }
+  :global([data-theme='dark']) .theme-toggle :global(.theme-toggle__moon) { transform: none; opacity: 1; }
+
+  .paths { padding-block: clamp(56px, 10vw, 110px) 0; scroll-margin-top: 60px; }
+  .paths__kicker { color: var(--accent); letter-spacing: 0.24em; font-size: 0.68rem; }
+  .paths__title {
+    margin-top: 12px;
+    font-size: clamp(2.2rem, 8.5vw, 3.6rem);
+    max-width: 15ch;
+  }
+  .paths__grid {
+    margin-top: 32px;
+    display: grid;
+    gap: 20px;
+  }
+  @media (min-width: 900px) {
+    .paths__grid { grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+  }
+</style>

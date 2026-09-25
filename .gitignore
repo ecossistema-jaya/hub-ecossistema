@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+.lighthouseci/
+.env
+.env.*
+
+# Photo library stays local; only the named slots used by the page are versioned.
+src/assets/photos/*
+!src/assets/photos/hero.png
+!src/assets/photos/hero-dark.png
+!src/assets/photos/shakti.png
+!src/assets/photos/jaya-ai.png
