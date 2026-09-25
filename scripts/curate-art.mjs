@@ -16,9 +16,8 @@ const AB = 'arcanos-brutos';
 
 /** slot → source (relative to the photo library) */
 const picks = {
-  'hero-art': `${ZG}/14.png`,
+  'hero-art': '../home/hero.png', // Jaya between the two worlds (chosen 2026-09-25)
   'panorama': `${ZG}/19.png`,
-  'portrait': 'jaya 09.png',
   // Portal covers chosen by Jaya (2026-09-25), kept in src/assets/home (local, git-ignored)
   'world-shakti': '../home/shakti.png',
   'world-ai': '../home/jay.png',
@@ -63,4 +62,15 @@ for (const [name, src] of Object.entries(logos)) {
   await sharp(from).trim().resize({ height: 120, withoutEnlargement: true }).webp({ quality: 90, alphaQuality: 100 }).toFile(join(root, 'public', 'brand', `${name}.webp`));
 }
 
-console.log('[art] curated', Object.keys(picks).length, 'slots');
+// Art-directed mobile crop of the hero: the vertical slice around Jaya (the part a phone actually shows).
+{
+  const from = join(lib, '../home/hero.png');
+  if (existsSync(from)) {
+    const { width, height } = await sharp(from).metadata();
+    const w = Math.round(height * 0.82);
+    const left = Math.min(width - w, Math.max(0, Math.round(width * 0.6 - w / 2)));
+    await sharp(from).extract({ left, top: 0, width: w, height }).jpeg({ quality: 88, mozjpeg: true }).toFile(join(out, 'hero-art-mobile.jpg'));
+  }
+}
+
+console.log('[art] curated', Object.keys(picks).length + 1, 'slots');

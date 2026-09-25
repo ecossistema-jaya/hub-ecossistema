@@ -139,18 +139,24 @@ const mid = (cards.length - 1) / 2;
 
   /* Desktop: a fanned hand of cards */
   @media (min-width: 1000px) {
-    .tarot__inner { grid-template-columns: 0.9fr 1.1fr; gap: 20px; }
+    .tarot__inner { grid-template-columns: minmax(320px, 0.85fr) 1.15fr; gap: 56px; }
+    /* The copy always sits above the fan; the fan stays inside its own column. */
+    .tarot__copy { position: relative; z-index: 2; }
     .tarot__fan {
       margin: 0;
       padding: 40px 0 20px;
       display: flex;
-      justify-content: center;
+      justify-content: flex-end;
+      padding-inline: 96px 0;
+      position: relative;
+      z-index: 1;
       overflow: visible;
       height: 420px;
     }
     .tcard {
-      width: 170px;
-      margin-inline: -34px;
+      flex: none;
+      width: clamp(90px, 7.8vw, 124px);
+      margin-inline: calc(clamp(90px, 7.8vw, 124px) * -0.2);
       transform-origin: 50% 120%;
       transform: rotate(calc(var(--off) * 7deg)) translateY(calc(var(--dist) * 12px));
       transition: transform 0.5s var(--ease-out);

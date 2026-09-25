@@ -36,32 +36,20 @@ const text = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
 <rect width="1200" height="630" fill="${PAPER}"/>
 <text x="72" y="118" font-family="Georgia, serif" font-size="24" letter-spacing="10" fill="${INK}">JAYA ROBERTA</text>
 <line x1="72" y1="140" x2="160" y2="140" stroke="${RUST}" stroke-width="2"/>
-<text x="72" y="280" font-family="Georgia, serif" font-size="80" fill="${INK}">Inteligência</text>
-<text x="72" y="370" font-family="Georgia, serif" font-size="80" fill="${INK}">Relacional<tspan fill="${RUST}">.</tspan></text>
+<text x="72" y="280" font-family="Georgia, serif" font-size="80" fill="${INK}">Jaya,</text>
+<text x="72" y="370" font-family="Georgia, serif" font-size="80" fill="${RUST}">Entre Mundos</text>
 <text x="72" y="470" font-family="Arial, sans-serif" font-size="22" letter-spacing="6" fill="${RUST}">SHAKTI JAYA  ·  TAROT  ·  JAYA AI</text>
-<text x="72" y="540" font-family="Georgia, serif" font-size="18" letter-spacing="8" fill="#6f655c">JAYA, ENTRE MUNDOS</text>
+<text x="72" y="540" font-family="Georgia, serif" font-size="18" letter-spacing="8" fill="#6f655c">INTELIGÊNCIA RELACIONAL</text>
 </svg>`;
 
 const layers = [];
 const heroArt = join(artDir, 'hero-art.jpg');
 if (existsSync(heroArt)) {
-  const art = await sharp(heroArt).resize(700, 630, { fit: 'cover', position: 'centre' }).toBuffer();
+  const art = await sharp(heroArt).resize(700, 630, { fit: 'cover', position: 'centre' }).toBuffer(); // centred on Jaya
   const fade = Buffer.from(
     `<svg width="700" height="630"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.35" stop-color="#fff"/></linearGradient></defs><rect width="700" height="630" fill="url(#g)"/></svg>`,
   );
   layers.push({ input: await sharp(art).composite([{ input: fade, blend: 'dest-in' }]).png().toBuffer(), left: 500, top: 0 });
 }
-const portrait = join(artDir, 'portrait.jpg');
-if (existsSync(portrait)) {
-  const size = 170;
-  const face = await sharp(portrait).resize(size, size, { fit: 'cover', position: 'top' }).toBuffer();
-  const circle = Buffer.from(`<svg width="${size}" height="${size}"><circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" fill="#fff"/></svg>`);
-  const round = await sharp(face).composite([{ input: circle, blend: 'dest-in' }]).png().toBuffer();
-  const ring = Buffer.from(
-    `<svg width="200" height="200"><circle cx="100" cy="100" r="96" fill="${PAPER}" stroke="#9a7a5c" stroke-dasharray="2 3"/><circle cx="100" cy="100" r="99" fill="none" stroke="#d9cebd"/></svg>`,
-  );
-  layers.push({ input: ring, left: 960, top: 400 }, { input: round, left: 975, top: 415 });
-}
-
 await sharp(Buffer.from(text)).composite(layers).jpeg({ quality: 84, mozjpeg: true }).toFile(join(pub, 'og.jpg'));
 console.log('[assets] favicon, apple-touch-icon, og.jpg');
