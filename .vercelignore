@@ -1,0 +1,7 @@
+# Keep uploads small: the local photo library and build/test artefacts never go to Vercel.
+src/assets/photos/
+node_modules/
+dist/
+.astro/
+.lighthouseci/
+.env*
