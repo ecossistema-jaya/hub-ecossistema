@@ -200,7 +200,7 @@ Goal: the hub never sends a visitor into a dead end without Jaya knowing.
 
 | Story | Status |
 |---|---|
-| 2.1 Bio link and launch post | Open: bio change and launch post pending |
+| 2.1 Bio link and launch post | AC1 done: link in 3 bios (@jayaroberta, @jayaroberta.ai, @jayaroberta.shakti), 2026-09-25; post/story copy + image prompts delivered, publication pending |
 | 2.2 Analytics on | AC1 done (Jaya, 2026-09-25); AC3 done: production Lighthouse mobile ×3 (local CLI) 99/97/97 · 100 · 100 · 100, LCP 1.69–1.98 s, CLS 0, TBT ≤ 1 ms; AC2 pending (visits within 24 h) |
 | 2.3 Outbound click tracking | Done: production `POST /_vercel/insights/event` → 200 on click (2 test events `quick-quiz`, 2026-09-25) |
 | 3.1 Copy review | Done (Jaya picked 2026-09-25; item 10 written by Jaya) |
