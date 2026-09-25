@@ -201,8 +201,8 @@ Goal: the hub never sends a visitor into a dead end without Jaya knowing.
 | Story | Status |
 |---|---|
 | 2.1 Bio link and launch post | Open: bio change and launch post pending |
-| 2.2 Analytics on | AC1 done (Jaya enabled both on 2026-09-25); AC2–AC3 pending |
-| 2.3 Outbound click tracking | Implemented (`data-link` + `va('event')` in `src/scripts/interactions.ts`); production check pending |
+| 2.2 Analytics on | AC1 done (Jaya, 2026-09-25); AC3 done: production Lighthouse mobile ×3 (local CLI) 99/97/97 · 100 · 100 · 100, LCP 1.69–1.98 s, CLS 0, TBT ≤ 1 ms; AC2 pending (visits within 24 h) |
+| 2.3 Outbound click tracking | Done: production `POST /_vercel/insights/event` → 200 on click (2 test events `quick-quiz`, 2026-09-25) |
 | 3.1 Copy review | Done (Jaya picked 2026-09-25; item 10 written by Jaya) |
 | 3.2 Seasonal Fogueira Junina | Done (`hidden: true`) |
 | 3.3 Docs and dependency cleanup | Done (Petrona/Jost removed; Story 1.1 notes updated) |
