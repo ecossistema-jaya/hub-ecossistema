@@ -137,3 +137,14 @@ if (root.dataset.tier === '2') {
     ['scroll', 'pointerdown', 'keydown'].forEach((t) => addEventListener(t, start, { once: true, passive: true }));
   }
 }
+
+/* ---------- Outbound click events (Vercel Web Analytics custom events) ---------- */
+type VaFn = (...args: unknown[]) => void;
+const w = window as unknown as { va?: VaFn; vaq?: unknown[][] };
+// Queue calls until the deferred insights script loads; it drains `vaq` on boot.
+w.va ??= (...args: unknown[]) => void (w.vaq ??= []).push(args);
+
+document.addEventListener('click', (e) => {
+  const a = (e.target as Element | null)?.closest<HTMLAnchorElement>('a[data-link]');
+  if (a) w.va?.('event', { name: 'outbound', data: { id: a.dataset.link } });
+});
