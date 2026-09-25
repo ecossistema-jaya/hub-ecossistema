@@ -8,5 +8,6 @@ dist/
 
 # Photo library stays local (hundreds of MB); curated, resized picks live in src/assets/art (npm run art).
 src/assets/photos/
+src/assets/home/
 .vercel
 .env*

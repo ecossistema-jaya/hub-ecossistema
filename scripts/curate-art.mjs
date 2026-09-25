@@ -19,8 +19,9 @@ const picks = {
   'hero-art': `${ZG}/14.png`,
   'panorama': `${ZG}/19.png`,
   'portrait': 'jaya 09.png',
-  'world-shakti': `${AB}/arcano-os-amantes.png`,
-  'world-ai': `${ZG}/11.png`,
+  // Portal covers chosen by Jaya (2026-09-25), kept in src/assets/home (local, git-ignored)
+  'world-shakti': '../home/shakti.png',
+  'world-ai': '../home/jay.png',
   // 5 Elementos + jornadas
   'arcanos/terra': `${AB}/arcano-a-imperatriz.png`,
   'arcanos/agua': `${AB}/arcano-a-estrela.png`,

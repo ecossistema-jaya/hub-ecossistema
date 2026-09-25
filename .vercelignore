@@ -1,5 +1,6 @@
 # Keep uploads small: the local photo library and build/test artefacts never go to Vercel.
 src/assets/photos/
+src/assets/home/
 node_modules/
 dist/
 .astro/
