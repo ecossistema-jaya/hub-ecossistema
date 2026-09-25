@@ -9,7 +9,7 @@ import Icon from './Icon.astro';
       {
         hub.quick.map((q, i) => (
           <li style={`--i:${i}`}>
-            <a class:list={['qcard', `qcard--${q.tone}`]} href={track(q.url, q.id)}>
+            <a target="_blank" rel="noopener" class:list={['qcard', `qcard--${q.tone}`]} href={track(q.url, q.id)}>
               <span class="qcard__icon">
                 <Icon name={q.icon} size={26} />
               </span>

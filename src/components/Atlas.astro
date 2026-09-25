@@ -19,7 +19,7 @@ const groups = [
       <h2 id="atlas-title" class="atlas__title">Um método, <span class="accent">cinco elementos.</span></h2>
       <p class="atlas__summary">
         {elements.summary}{' '}
-        <a class="atlas__quiz" href={track(quiz.url, 'atlas-quiz')}>Ainda não sabe o seu? Faça o quiz.</a>
+        <a target="_blank" rel="noopener" class="atlas__quiz" href={track(quiz.url, 'atlas-quiz')}>Ainda não sabe o seu? Faça o quiz.</a>
       </p>
     </header>
 
@@ -43,7 +43,7 @@ const groups = [
                 const n = String(g === 0 ? i + 1 : i + 6).padStart(2, '0');
                 return (
                   <li class="medal" style={`--el: var(--${item.token}); --i:${i}`}>
-                    <a class="medal__link" href={track(item.url, item.id)}>
+                    <a target="_blank" rel="noopener" class="medal__link" href={track(item.url, item.id)}>
                       <span class="medal__disc">
                         {img && (
                           <Picture

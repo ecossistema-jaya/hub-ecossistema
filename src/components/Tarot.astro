@@ -15,7 +15,7 @@ const mid = (cards.length - 1) / 2;
       <p class="tarot__kicker">{tarot.kicker}</p>
       <h2 id="tarot-title" class="tarot__title">{tarot.title}</h2>
       <p class="tarot__summary">{tarot.summary}</p>
-      <a class="tarot__cta" href={track(tarot.url, 'tarot-cta')}>
+      <a target="_blank" rel="noopener" class="tarot__cta" href={track(tarot.url, 'tarot-cta')}>
         {tarot.cta}
         <Icon name="arrow-right" size={18} />
       </a>
@@ -25,7 +25,7 @@ const mid = (cards.length - 1) / 2;
       {
         cards.map((c, i) => (
           <li class="tcard" style={`--off:${i - mid}; --dist:${Math.abs(i - mid)}; --z:${10 - Math.round(Math.abs(i - mid) * 2)}`}>
-            <a href={track(tarot.url, `tarot-${c.slot}`)} aria-label={`${c.name} — ${tarot.title}`}>
+            <a target="_blank" rel="noopener" href={track(tarot.url, `tarot-${c.slot}`)} aria-label={`${c.name} — ${tarot.title}`}>
               <Picture
                 src={c.img!}
                 width={300}

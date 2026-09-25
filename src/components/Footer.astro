@@ -32,7 +32,7 @@ const year = new Date().getFullYear();
         {
           hub.social.map((s) => (
             <li>
-              <a href={track(s.url, s.id)} aria-label={s.label}>
+              <a target="_blank" rel="noopener" href={track(s.url, s.id)} aria-label={s.label}>
                 <Icon name={s.icon} size={20} />
               </a>
             </li>
@@ -57,7 +57,7 @@ const year = new Date().getFullYear();
       <summary><Icon name="lock" size={13} /> Área restrita</summary>
       <ul role="list">
         {hub.restricted.map((r) => (
-          <li><a href={r.url} rel="nofollow">{r.label}</a></li>
+          <li><a href={r.url} target="_blank" rel="nofollow noopener">{r.label}</a></li>
         ))}
       </ul>
     </details>

@@ -20,7 +20,7 @@ const covers: Record<string, string> = { shakti: 'world-shakti', 'jaya-ai': 'wor
           const cover = art(covers[world.id]);
           return (
             <article class:list={['world', `world--${world.id}`]} data-reveal aria-labelledby={`${world.id}-title`}>
-              <a class="world__cover" href={track(world.primary.url, `${world.primary.id}-cover`)} tabindex="-1" aria-hidden="true">
+              <a target="_blank" rel="noopener" class="world__cover" href={track(world.primary.url, `${world.primary.id}-cover`)} tabindex="-1" aria-hidden="true">
                 {cover && (
                   <Picture
                     class="photo"
@@ -53,7 +53,7 @@ const covers: Record<string, string> = { shakti: 'world-shakti', 'jaya-ai': 'wor
 
                 <ul class="world__links" role="list">
                   <li>
-                    <a class="world__link world__link--primary" href={track(world.primary.url, world.primary.id)}>
+                    <a target="_blank" rel="noopener" class="world__link world__link--primary" href={track(world.primary.url, world.primary.id)}>
                       <span class="world__link-text">
                         <span class="world__link-label">{world.primary.label}</span>
                         <span class="world__link-note">{world.primary.note}</span>
@@ -63,7 +63,7 @@ const covers: Record<string, string> = { shakti: 'world-shakti', 'jaya-ai': 'wor
                   </li>
                   {visible(world.links as HubLink[]).map((link) => (
                     <li>
-                      <a class="world__link" href={track(link.url, link.id)}>
+                      <a target="_blank" rel="noopener" class="world__link" href={track(link.url, link.id)}>
                         <span class="world__link-text">
                           <span class="world__link-label">
                             {link.label}
