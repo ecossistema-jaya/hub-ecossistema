@@ -13,6 +13,7 @@
 | Deploy | automático a cada push na `main` (Git conectado em 25/09) |
 | DNS | Hostinger (`dns-parking.com`): `CNAME plataforma → cname.vercel-dns.com` |
 | Story | [stories/1.1.story.md](stories/1.1.story.md) |
+| PRD fase 2 | [prd.md](prd.md) · destinos: [destinations.md](destinations.md) |
 | Pesquisa | [research/effects-and-performance-catalog.md](research/effects-and-performance-catalog.md) |
 | Design de referência | `../sanddesignsystem.html` e mockups `../Atlas de Inteligência Jaya AI*.png` |
 
@@ -38,6 +39,7 @@
 - **Links e textos dos cards:** `src/data/links.json` (UTM é automático; `"hidden": true` esconde um link).
 - **Trocar imagem:** coloque o arquivo em `src/assets/home/` ou na biblioteca `src/assets/photos/` (ambas fora do git), ajuste a lista em `scripts/curate-art.mjs` e rode `npm run art`. As versões otimizadas vão para `src/assets/art/` (versionada).
 - **Rodar local:** `npm run build && npx astro preview --port 4321` → http://127.0.0.1:4321
+- **Testar links:** `npm run check:links` (sai com erro se algum destino falhar; LinkedIn aparece como BLOCKED, é normal).
 - **Checar:** `npx astro check`; screenshots: `node scripts/shots.cjs <pasta>` e `node scripts/scroll-shots.cjs <pasta> light 390 844`.
 - **Publicar:** commit + `git push origin main` (Jaya autorizou push/deploy para este projeto).
 
