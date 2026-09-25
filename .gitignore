@@ -6,9 +6,5 @@ dist/
 .env
 .env.*
 
-# Photo library stays local; only the named slots used by the page are versioned.
-src/assets/photos/*
-!src/assets/photos/hero.png
-!src/assets/photos/hero-dark.png
-!src/assets/photos/shakti.png
-!src/assets/photos/jaya-ai.png
+# Photo library stays local (hundreds of MB); curated, resized picks live in src/assets/art (npm run art).
+src/assets/photos/

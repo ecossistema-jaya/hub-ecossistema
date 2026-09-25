@@ -1,0 +1,214 @@
+---
+import { Picture } from 'astro:assets';
+import { hub, track, visible, type HubLink } from '../lib/links';
+import { art } from '../lib/art';
+import Icon from './Icon.astro';
+
+const covers: Record<string, string> = { shakti: 'world-shakti', 'jaya-ai': 'world-ai' };
+---
+
+<section id="caminhos" class="worlds" aria-labelledby="worlds-title">
+  <div class="wrap">
+    <header class="worlds__head" data-reveal>
+      <p class="label">Dois territórios</p>
+      <h2 id="worlds-title" class="worlds__title">Por onde você quer <span class="accent">começar?</span></h2>
+    </header>
+
+    <div class="worlds__grid">
+      {
+        hub.worlds.map((world, i) => {
+          const cover = art(covers[world.id]);
+          return (
+            <article class:list={['world', `world--${world.id}`]} data-reveal aria-labelledby={`${world.id}-title`}>
+              <a class="world__cover" href={track(world.primary.url, `${world.primary.id}-cover`)} tabindex="-1" aria-hidden="true">
+                {cover && (
+                  <Picture
+                    class="photo"
+                    src={cover}
+                    width={960}
+                    height={720}
+                    fit="cover"
+                    position="centre"
+                    formats={['avif', 'webp']}
+                    fallbackFormat="jpg"
+                    widths={[400, 560, 720, 960]}
+                    quality={52}
+                    sizes="(min-width: 900px) 560px, calc(100vw - 32px)"
+                    alt=""
+                    loading="lazy"
+                    fetchpriority="low"
+                    decoding="async"
+                  />
+                )}
+                <span class="world__badge">
+                  <span class="world__num">0{i + 1}</span>
+                  <span class="world__badge-name">{world.name}</span>
+                </span>
+              </a>
+
+              <div class="world__body">
+                <p class="world__kicker">{world.kicker}</p>
+                <h3 id={`${world.id}-title`} class="world__title">{world.name}</h3>
+                <p class="world__summary">{world.summary}</p>
+
+                <ul class="world__links" role="list">
+                  <li>
+                    <a class="world__link world__link--primary" href={track(world.primary.url, world.primary.id)}>
+                      <span class="world__link-text">
+                        <span class="world__link-label">{world.primary.label}</span>
+                        <span class="world__link-note">{world.primary.note}</span>
+                      </span>
+                      <span class="round"><Icon name="arrow-right" size={18} /></span>
+                    </a>
+                  </li>
+                  {visible(world.links as HubLink[]).map((link) => (
+                    <li>
+                      <a class="world__link" href={track(link.url, link.id)}>
+                        <span class="world__link-text">
+                          <span class="world__link-label">
+                            {link.label}
+                            {link.badge === 'login' && (
+                              <span class="world__tag">
+                                <Icon name="lock" size={11} /> login
+                              </span>
+                            )}
+                          </span>
+                          {link.note && <span class="world__link-note">{link.note}</span>}
+                        </span>
+                        <span class="round round--ghost"><Icon name="arrow-right" size={16} /></span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .worlds { padding-block: clamp(72px, 11vw, 120px) 0; scroll-margin-top: var(--header-h); }
+  .worlds__title { margin-top: 18px; font-size: clamp(2.1rem, 8vw, 3.4rem); max-width: 16ch; }
+  .worlds__grid { margin-top: 36px; display: grid; gap: 28px; }
+
+  .world {
+    background: var(--card);
+    border: 1px solid var(--line-soft);
+    display: grid;
+  }
+  .world__cover {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--paper-3);
+  }
+  .world__cover :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.9s ease, filter var(--t-base);
+  }
+  @media (hover: hover) {
+    .world:hover .world__cover :global(img) { transform: scale(1.06); }
+  }
+  /* SAND category pill over image */
+  .world__badge {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px 6px 6px;
+    background: rgba(20, 20, 20, 0.55);
+    color: #fff;
+    border-radius: 4px;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+  }
+  .world__num {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    color: #152d38;
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    letter-spacing: 0;
+  }
+
+  .world__body { padding: 24px 20px 12px; }
+  .world__kicker {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--rust);
+  }
+  .world--jaya-ai .world__kicker { color: var(--agua); }
+  :global([data-theme='dark']) .world--jaya-ai .world__kicker { color: var(--gold); }
+  .world__title { margin-top: 10px; font-size: clamp(2rem, 7vw, 2.6rem); }
+  .world__summary { margin-top: 10px; color: var(--text); font-size: 0.98rem; max-width: 48ch; }
+
+  .world__links { list-style: none; margin: 18px 0 0; padding: 0; }
+  .world__links li + li { border-top: 1px solid var(--line-soft); }
+  .world__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    min-height: 66px;
+    padding: 10px 0;
+  }
+  .world__link--primary {
+    margin-bottom: 6px;
+    padding: 14px 14px 14px 18px;
+    background: var(--paper);
+    border-left: 2px solid var(--rust);
+  }
+  .world__link-text { display: grid; gap: 1px; }
+  .world__link-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-display);
+    font-size: 1.14rem;
+    line-height: 1.25;
+    color: var(--ink);
+    transition: color var(--t-fast);
+  }
+  .world__link--primary .world__link-label { font-size: 1.28rem; }
+  .world__link-note { font-size: 0.85rem; line-height: 1.45; color: var(--muted); }
+  .world__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 1px 7px;
+    border-radius: 5px;
+    background: var(--paper-3);
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+  @media (hover: hover) {
+    .world__link:hover .world__link-label { color: var(--rust); }
+  }
+
+  @media (min-width: 900px) {
+    .worlds__grid { grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+    .world__body { padding: 30px 32px 18px; }
+  }
+</style>

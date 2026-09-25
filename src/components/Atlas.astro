@@ -1,0 +1,233 @@
+---
+import { Picture } from 'astro:assets';
+import { hub, track } from '../lib/links';
+import { art } from '../lib/art';
+import Compass from './Compass.astro';
+
+const { elements } = hub;
+const quiz = hub.worlds.find((w) => w.id === 'shakti')!.primary;
+const groups = [
+  { title: 'Os cinco elementos', note: 'Uma lente para cada dimensão da relação.', items: elements.items.slice(0, 5) },
+  { title: 'Jornadas de 30 dias', note: 'Para atravessar uma fase, dia após dia.', items: elements.items.slice(5) },
+];
+---
+
+<section class="atlas" aria-labelledby="atlas-title">
+  <div class="wrap">
+    <header class="atlas__head" data-reveal>
+      <p class="label">Método dos 5 Elementos</p>
+      <h2 id="atlas-title" class="atlas__title">Um método, <span class="accent">cinco elementos.</span></h2>
+      <p class="atlas__summary">
+        {elements.summary}{' '}
+        <a class="atlas__quiz" href={track(quiz.url, 'atlas-quiz')}>Ainda não sabe o seu? Faça o quiz.</a>
+      </p>
+    </header>
+
+    <div class="atlas__map">
+      <svg class="atlas__orbit unveil" viewBox="0 0 1100 300" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M20 190 C 140 60, 260 60, 330 150 S 520 250, 600 130 S 800 20, 880 150 S 1040 250, 1080 120" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 7" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+        <path d="M20 220 C 200 120, 380 280, 560 180 S 900 60, 1080 170" fill="none" stroke="currentColor" stroke-width="0.8" stroke-dasharray="1 9" stroke-linecap="round" vector-effect="non-scaling-stroke" opacity="0.6"></path>
+      </svg>
+      <Compass class="atlas__compass" size={150} />
+
+      {
+        groups.map((group, g) => (
+          <div class:list={['atlas__group', `atlas__group--${g}`]}>
+            <p class="atlas__group-title">
+              <span>{group.title}</span>
+              <small>{group.note}</small>
+            </p>
+            <ol class="atlas__list" role="list" data-reveal="pop" start={g === 0 ? 1 : 6}>
+              {group.items.map((item, i) => {
+                const img = art(`arcanos/${item.token}`);
+                const n = String(g === 0 ? i + 1 : i + 6).padStart(2, '0');
+                return (
+                  <li class="medal" style={`--el: var(--${item.token}); --i:${i}`}>
+                    <a class="medal__link" href={track(item.url, item.id)}>
+                      <span class="medal__disc">
+                        {img && (
+                          <Picture
+                            src={img}
+                            width={240}
+                            height={240}
+                            fit="cover"
+                            position="top"
+                            formats={['avif', 'webp']}
+                            fallbackFormat="jpg"
+                            widths={[120, 180, 240]}
+                            quality={55}
+                            sizes="120px"
+                            alt=""
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        )}
+                      </span>
+                      <span class="medal__text">
+                        <span class="medal__num">{n}</span>
+                        <span class="medal__name">{item.name}</span>
+                        <span class="medal__theme">{item.theme}</span>
+                        <span class="medal__meta">Arcano {item.arcano} · {elements.price}</span>
+                      </span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        ))
+      }
+    </div>
+    <p class="tracked atlas__caption" aria-hidden="true">Atlas de inteligência</p>
+  </div>
+</section>
+
+<style>
+  .atlas {
+    padding-block: clamp(72px, 11vw, 120px) 20px;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1100px;
+  }
+  .atlas__title { margin-top: 18px; font-size: clamp(2.1rem, 8vw, 3.4rem); max-width: 15ch; }
+  .atlas__summary { margin-top: 14px; max-width: 54ch; }
+  .atlas__quiz {
+    display: inline-block;
+    color: var(--rust);
+    border-bottom: 1px solid currentColor;
+    line-height: 1.4;
+    padding-block: 8px;
+    margin-block: -8px;
+    transition: color var(--t-fast);
+  }
+  @media (hover: hover) { .atlas__quiz:hover { color: var(--ink); } }
+
+  .atlas__map { position: relative; margin-top: 44px; }
+  .atlas__orbit { display: none; }
+  :global(.compass.atlas__compass) {
+    position: absolute;
+    right: -30px;
+    top: -60px;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  .atlas__group + .atlas__group { margin-top: 40px; }
+  .atlas__group-title {
+    display: grid;
+    gap: 2px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .atlas__group-title span {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--ink);
+  }
+  .atlas__group-title small {
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .atlas__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+    position: relative;
+  }
+  /* mobile: dotted thread connecting the medallions */
+  .atlas__list::before {
+    content: '';
+    position: absolute;
+    left: 43px;
+    top: 30px;
+    bottom: 30px;
+    border-left: 1.5px dotted var(--sepia-3);
+  }
+
+  .medal__link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 6px 0;
+  }
+  .medal__disc {
+    position: relative;
+    flex: none;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    padding: 4px;
+    background: var(--el);
+    box-shadow: 0 0 0 1px var(--paper), 0 0 0 5px color-mix(in srgb, var(--el) 22%, transparent);
+    transition: transform 0.45s var(--ease-out), box-shadow var(--t-base);
+  }
+  .medal__disc::after {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    border: 1px dotted color-mix(in srgb, var(--el) 70%, transparent);
+    transition: transform 1.2s var(--ease-out);
+  }
+  .medal__disc :global(picture),
+  .medal__disc :global(img) {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: sepia(0.1) saturate(0.95);
+    transition: filter var(--t-base);
+  }
+  .medal__text { display: grid; gap: 0; }
+  .medal__num { font-family: var(--font-display); font-size: 0.95rem; color: color-mix(in srgb, var(--el) 62%, #1a1410); line-height: 1.2; }
+  :global([data-theme='dark']) .medal__num { color: var(--gold); }
+  .medal__name { font-family: var(--font-display); font-size: 1.45rem; line-height: 1.15; color: var(--ink); }
+  .medal__theme { font-size: 0.9rem; color: var(--text); line-height: 1.45; }
+  .medal__meta {
+    margin-top: 2px;
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  @media (hover: hover) {
+    .medal__link:hover .medal__disc { transform: scale(1.05); }
+    .medal__link:hover .medal__disc::after { transform: rotate(90deg); }
+    .medal__link:hover .medal__name { color: var(--rust); }
+  }
+  .medal__link:active .medal__disc { transform: scale(0.97); }
+
+  .atlas__caption { margin-top: 40px; text-align: center; font-size: 0.66rem; }
+
+  /* Desktop: the map. Medallions float along a dotted orbit, alternating heights. */
+  @media (min-width: 1000px) {
+    .atlas__map { margin-top: 56px; }
+    .atlas__orbit {
+      display: block;
+      position: absolute;
+      inset: 90px 0 auto 0;
+      width: 100%;
+      height: 300px;
+      color: var(--sepia-3);
+      pointer-events: none;
+    }
+    :global(.compass.atlas__compass) { right: auto; left: 50%; top: 150px; transform: translateX(-50%); opacity: 0.22; }
+    .atlas__map { display: grid; grid-template-columns: 5fr 2fr; gap: 40px; }
+    .atlas__group + .atlas__group { margin-top: 0; }
+    .atlas__list { grid-auto-flow: column; grid-auto-columns: 1fr; gap: 12px; }
+    .atlas__list::before { display: none; }
+    .medal:nth-child(even) { margin-top: 110px; }
+    .medal__link { flex-direction: column; text-align: center; gap: 14px; }
+    .medal__disc { width: 118px; height: 118px; }
+    .medal__text { justify-items: center; }
+    .medal__name { font-size: 1.5rem; }
+  }
+</style>

@@ -1,192 +1,226 @@
 ---
 import { Picture } from 'astro:assets';
 import { hub } from '../lib/links';
-import { photo } from '../lib/photos';
-import CanyonArt from './CanyonArt.astro';
+import { art } from '../lib/art';
 import Botanical from './Botanical.astro';
+import Compass from './Compass.astro';
 import Icon from './Icon.astro';
 
-const hero = photo('hero');
-const heroDark = photo('hero-dark');
-const sizes = '(min-width: 960px) 440px, 78vw';
-const widths = [360, 540, 720, 940];
+const heroArt = art('hero-art');
+const portrait = art('portrait');
 ---
 
 <section class="hero intro" aria-labelledby="hero-title">
-  <div class="hero__inner wrap">
+  <div class="hero__art" aria-hidden="true">
+    {
+      heroArt && (
+        <Picture
+          class="hero__art-img"
+          src={heroArt}
+          formats={['avif', 'webp']}
+          fallbackFormat="jpg"
+          widths={[480, 720, 960, 1280, 1600]}
+          sizes="(min-width: 900px) 64vw, 100vw"
+          quality={48}
+          alt=""
+          loading="eager"
+          fetchpriority="high"
+        />
+      )
+    }
+  </div>
+
+  <Botanical class="hero__branch" />
+
+  <div class="wrap hero__inner">
     <div class="hero__copy">
-      <p class="hero__hello fade-in" style="--i:0">Olá,</p>
+      <p class="tracked fade-in" style="--i:0">Atlas de inteligência · Jaya Roberta</p>
       <h1 id="hero-title" class="hero__title">
-        <span class="line"><span style="--i:0">Que bom</span></span>
-        <span class="line"><span style="--i:1">ver você aqui.</span></span>
+        <span class="line"><span style="--i:0">Olá, que bom</span></span>
+        <span class="line"><span style="--i:1">ver você <span class="accent">aqui.</span></span></span>
       </h1>
       <p class="hero__lede fade-in" style="--i:1">{hub.person.lede}</p>
-      <p class="hero__role caps fade-in" style="--i:2">{hub.person.role}</p>
+      <p class="hero__role fade-in" style="--i:2">{hub.person.role}</p>
       <a class="hero__cue fade-in" style="--i:3" href="#caminhos">
         <span>Escolha seu caminho</span>
-        <Icon name="arrow-down" size={18} />
+        <span class="round round--ghost"><Icon name="arrow-down" size={18} /></span>
       </a>
     </div>
 
-    <div class="hero__visual">
-      <div class="hero__sun sun-rise" aria-hidden="true"></div>
-      <figure class="hero__photo photo-reveal">
-        {
-          hero ? (
-            <Picture
-              class:list={['hero__img', { 'hero__img--light': heroDark }]}
-              src={hero}
-              width={940}
-              height={1175}
-              fit="cover"
-              position="top"
-              formats={['avif', 'webp']}
-              fallbackFormat="jpg"
-              widths={widths}
-              sizes={sizes}
-              alt={`Retrato de ${hub.person.name}`}
-              loading="eager"
-              fetchpriority="high"
-            />
-          ) : (
-            <CanyonArt variant="hero" class="hero__img" />
-          )
-        }
-        {
-          heroDark && (
-            <Picture
-              class="hero__img hero__img--dark"
-              src={heroDark}
-              width={940}
-              height={1175}
-              fit="cover"
-              position="top"
-              formats={['avif', 'webp']}
-              fallbackFormat="jpg"
-              widths={widths}
-              sizes={sizes}
-              alt=""
-              loading="lazy"
-            />
-          )
-        }
-      </figure>
-      <p class="hero__vertical caps" aria-hidden="true">Mais humano. Mais possível.</p>
-      <Botanical class="hero__branch" />
-    </div>
+    <figure class="hero__portrait rise-in">
+      {
+        portrait && (
+          <Picture
+            class="photo"
+            src={portrait}
+            width={420}
+            height={420}
+            fit="cover"
+            position="top"
+            formats={['avif', 'webp']}
+            fallbackFormat="jpg"
+            widths={[200, 320, 420]}
+            sizes="(min-width: 900px) 200px, 150px"
+            alt={`Retrato de ${hub.person.name}`}
+            loading="eager"
+            fetchpriority="low"
+          />
+        )
+      }
+    </figure>
   </div>
+
+  <p class="hero__vertical tracked" aria-hidden="true">Mais humano. Mais possível.</p>
+  <Compass class="hero__compass" size={110} />
 </section>
 
 <style>
   .hero {
-    min-height: min(100svh, 980px);
+    position: relative;
+    min-height: min(100svh, 920px);
     display: grid;
-    align-items: center;
-    padding-top: calc(76px + env(safe-area-inset-top, 0px));
-    padding-bottom: 48px;
+    align-items: end;
+    padding-top: calc(var(--header-h) + env(safe-area-inset-top, 0px));
+    padding-bottom: clamp(40px, 7vw, 80px);
+    isolation: isolate;
   }
-  .hero__inner {
-    display: grid;
-    gap: 36px;
-    align-items: center;
-  }
-  .hero__hello {
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    color: var(--ink-soft);
-    margin-bottom: 6px;
-  }
-  .hero__title {
-    font-size: clamp(2.9rem, 12.5vw, 5.6rem);
-    line-height: 0.98;
-    letter-spacing: -0.025em;
-  }
-  .hero__lede {
-    margin-top: 22px;
-    max-width: 30ch;
-    font-family: var(--font-display);
-    font-weight: 300;
-    font-size: clamp(1.15rem, 4.4vw, 1.45rem);
-    line-height: 1.35;
-    color: var(--ink-soft);
-  }
-  .hero__role {
-    margin-top: 18px;
-    color: var(--muted);
-    letter-spacing: 0.22em;
-  }
-  .hero__cue {
-    margin-top: 30px;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    min-height: 44px;
-    padding: 0 20px;
-    border: 1px solid var(--line-strong);
-    border-radius: 999px;
-    font-size: 0.95rem;
-    transition: background-color 0.3s, border-color 0.3s;
-  }
-  .hero__cue:hover { background: var(--accent-soft); border-color: var(--accent); }
-  .hero__cue :global(svg) { transition: transform 0.3s var(--ease-out); }
-  .hero__cue:hover :global(svg) { transform: translateY(3px); }
 
-  .hero__visual {
-    position: relative;
-    justify-self: center;
-    width: min(78vw, 440px);
-    isolation: isolate;
+  /* Artwork: top on mobile, right on desktop, dissolving into the paper */
+  .hero__art {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 62svh;
+    z-index: -1;
   }
-  .hero__photo {
-    position: relative;
-    margin: 0;
-    aspect-ratio: 4 / 5;
-    border-radius: var(--radius-arch);
-    overflow: hidden;
-    background: var(--surface-2);
-    isolation: isolate;
+  /* Dissolve into the paper with an overlay (cheaper to composite than mask-image). */
+  .hero__art::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 50%, var(--paper) 99%);
+    pointer-events: none;
   }
-  .hero__photo :global(.hero__img),
-  .hero__photo :global(.hero__img img) {
+  .hero__art :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 50% 40%;
   }
-  .hero__photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
-  .hero__photo :global(.hero__img--dark) { display: none; }
-  :global([data-theme='dark']) .hero__photo :global(.hero__img--dark) { display: block; }
-  :global([data-theme='dark']) .hero__photo :global(.hero__img--light) { display: none; }
+  :global([data-theme='dark']) .hero__art { opacity: 0.55; }
 
-  .hero__sun {
-    position: absolute;
-    width: 78%;
-    aspect-ratio: 1;
-    right: -26%;
-    top: -12%;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--sun-core) 0 34%, color-mix(in oklch, var(--sun-core) 45%, transparent) 50%, transparent 70%);
-    z-index: -1;
+  .hero__inner {
+    position: relative;
+    display: grid;
+    gap: 28px;
+    padding-top: 50svh;
   }
-  .hero__vertical {
-    position: absolute;
-    right: -34px;
-    top: 10%;
-    writing-mode: vertical-rl;
-    font-size: 0.64rem;
+  .hero__copy { position: relative; max-width: 560px; }
+  .hero__title {
+    margin-top: 10px;
+    font-size: clamp(2.6rem, 11vw, 4.9rem);
+    line-height: 1.04;
+    letter-spacing: -0.005em;
+  }
+  .hero__lede {
+    margin-top: 20px;
+    max-width: 34ch;
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 4.4vw, 1.35rem);
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .hero__role {
+    margin-top: 14px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
     color: var(--muted);
+  }
+  .hero__cue {
+    margin-top: 26px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 48px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  @media (hover: hover) {
+    .hero__cue:hover :global(.round svg) { transform: translateY(3px); }
+  }
+
+  /* SAND presenter block: portrait in a circle with a double ring (solid + dotted) */
+  .hero__portrait {
+    position: absolute;
+    right: var(--gutter);
+    top: calc(50svh - 190px);
+    margin: 0;
+    width: 132px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    padding: 6px;
+    border: 1px dotted var(--sepia-3);
+    outline: 1px solid var(--line);
+    outline-offset: 7px;
+    background: var(--paper);
+  }
+  .hero__portrait :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .hero__vertical {
     display: none;
+    position: absolute;
+    right: 18px;
+    top: 26%;
+    writing-mode: vertical-rl;
+    font-size: 0.66rem;
+    color: var(--ink);
+  }
+  :global(.compass.hero__compass) {
+    position: absolute;
+    left: -34px;
+    bottom: -40px;
+    opacity: 0.55;
   }
   :global(.botanical.hero__branch) {
     position: absolute;
-    left: -18%;
-    bottom: -10%;
-    width: 34%;
-    max-width: 150px;
+    left: -24px;
+    top: calc(var(--header-h) + 8px);
+    width: 90px;
+    opacity: 0.75;
+    z-index: 1;
   }
 
   @media (min-width: 900px) {
-    .hero__inner { grid-template-columns: 1.1fr 0.9fr; gap: 64px; }
-    .hero__visual { justify-self: end; }
+    .hero { align-items: center; }
+    .hero__art {
+      inset: 0 0 0 auto;
+      width: 66%;
+      height: 100%;
+    }
+    .hero__art::after {
+      background:
+        linear-gradient(90deg, var(--paper) 0%, transparent 36%),
+        linear-gradient(0deg, var(--paper) 0%, transparent 14%);
+    }
+    .hero__inner { padding-top: 0; }
+    .hero__portrait {
+      top: auto;
+      bottom: -30px;
+      right: auto;
+      left: min(50%, 560px);
+      width: 190px;
+    }
     .hero__vertical { display: block; }
+    :global(.compass.hero__compass) { left: auto; right: 36%; bottom: 36px; }
+    :global(.botanical.hero__branch) { width: 130px; left: -10px; }
   }
 </style>

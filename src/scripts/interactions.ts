@@ -14,7 +14,7 @@ function applyTheme(theme: 'light' | 'dark') {
   } catch {
     /* private mode */
   }
-  themeColor?.setAttribute('content', theme === 'dark' ? '#1d1310' : '#f6efe6');
+  themeColor?.setAttribute('content', theme === 'dark' ? '#0c2329' : '#f4eee4');
   document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((b) => {
     b.setAttribute('aria-pressed', String(theme === 'dark'));
   });
@@ -109,10 +109,12 @@ document.querySelectorAll<HTMLButtonElement>('[data-share]').forEach((btn) => {
   });
 });
 
-/* ---------- Tier 2: WebGL sun, loaded after the page is idle ---------- */
+/* ---------- Tier 2: WebGL sun, booted on first engagement ----------
+   Even the WebGL2 capability probe is deferred: creating a GL context costs 100ms+ on weak GPUs,
+   so nothing GL-related may run during page load. */
 if (root.dataset.tier === '2') {
   const canvas = document.querySelector<HTMLCanvasElement>('.sun-canvas');
-  const hasGL = (() => {
+  const hasGL = () => {
     try {
       const gl = document.createElement('canvas').getContext('webgl2');
       gl?.getExtension('WEBGL_lose_context')?.loseContext(); // free the probe context
@@ -120,15 +122,18 @@ if (root.dataset.tier === '2') {
     } catch {
       return false;
     }
-  })();
-  if (canvas && hasGL) {
-    const boot = () =>
+  };
+  if (canvas) {
+    const boot = () => {
+      if (!hasGL()) return;
       import('./sun')
         .then((m) => m.startSun(canvas))
         .catch(() => {});
-    const idle = () =>
-      'requestIdleCallback' in window ? requestIdleCallback(boot, { timeout: 3000 }) : setTimeout(boot, 1500);
-    if (document.readyState === 'complete') setTimeout(idle, 1200);
-    else addEventListener('load', () => setTimeout(idle, 1200), { once: true });
+    };
+    const start = () => {
+      ['scroll', 'pointerdown', 'keydown'].forEach((t) => removeEventListener(t, start));
+      'requestIdleCallback' in window ? requestIdleCallback(boot, { timeout: 2000 }) : setTimeout(boot, 300);
+    };
+    ['scroll', 'pointerdown', 'keydown'].forEach((t) => addEventListener(t, start, { once: true, passive: true }));
   }
 }

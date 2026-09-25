@@ -20,10 +20,31 @@
         "url": "https://www.shaktijaya.com.br/quiz1"
       },
       "links": [
-        { "id": "shakti-site", "label": "Shakti Jaya", "note": "Terapia de relacionamentos e sexualidade", "url": "https://www.shaktijaya.com.br/" },
-        { "id": "shakti-ayla", "label": "Ayla IA", "note": "Sua terapeuta de bolso, 24h por dia", "url": "https://www.shaktijaya.com.br/ayla-ai" },
-        { "id": "shakti-sessao", "label": "Sessão individual", "note": "Agende pelo WhatsApp", "url": "https://wa.me/5561992634557?text=Ol%C3%A1%20Jaya%2C%20vim%20pela%20plataforma%20e%20quero%20agendar%20uma%20sess%C3%A3o." },
-        { "id": "shakti-fogueira", "label": "Fogueira Junina", "note": "Ritual sazonal", "url": "https://fogueira-junina.shaktijaya.com.br/", "hidden": false }
+        {
+          "id": "shakti-site",
+          "label": "Shakti Jaya",
+          "note": "Terapia de relacionamentos e sexualidade",
+          "url": "https://www.shaktijaya.com.br/"
+        },
+        {
+          "id": "shakti-tarot",
+          "label": "Tarot da Jaya",
+          "note": "Os 22 Arcanos Maiores, na leitura Thoth",
+          "url": "https://www.shaktijaya.com.br/tarot"
+        },
+        {
+          "id": "shakti-ayla",
+          "label": "Ayla IA",
+          "note": "Sua terapeuta de bolso, 24h por dia",
+          "url": "https://www.shaktijaya.com.br/ayla-ai"
+        },
+        {
+          "id": "shakti-fogueira",
+          "label": "Fogueira Junina",
+          "note": "Ritual sazonal",
+          "url": "https://fogueira-junina.shaktijaya.com.br/",
+          "hidden": false
+        }
       ]
     },
     {
@@ -38,10 +59,31 @@
         "url": "https://jayaroberta.com/claude"
       },
       "links": [
-        { "id": "ai-business", "label": "Business Jaya", "note": "Clareza para decidir. Estrutura para crescer.", "url": "https://jayaroberta.com.br/" },
-        { "id": "ai-biblioteca", "label": "Biblioteca Claude by Jaya", "note": "Territórios para explorar o Claude", "url": "https://jayaroberta.com/biblioteca" },
-        { "id": "ai-atlas", "label": "Atlas de Forças", "note": "Descubra suas forças", "url": "https://quiz.jayaroberta.com.br/" },
-        { "id": "ai-eixo", "label": "EIXO", "note": "Plataforma · acesso com login", "url": "https://entrenoeixo.jayaroberta.com.br/", "badge": "login" }
+        {
+          "id": "ai-business",
+          "label": "Business Jaya",
+          "note": "Clareza para decidir. Estrutura para crescer.",
+          "url": "https://jayaroberta.com.br/"
+        },
+        {
+          "id": "ai-biblioteca",
+          "label": "Biblioteca Claude by Jaya",
+          "note": "Territórios para explorar o Claude",
+          "url": "https://jayaroberta.com/biblioteca"
+        },
+        {
+          "id": "ai-atlas",
+          "label": "Atlas de Forças",
+          "note": "Descubra suas forças",
+          "url": "https://quiz.jayaroberta.com.br/"
+        },
+        {
+          "id": "ai-eixo",
+          "label": "EIXO",
+          "note": "Plataforma · acesso com login",
+          "url": "https://entrenoeixo.jayaroberta.com.br/",
+          "badge": "login"
+        }
       ]
     }
   ],
@@ -50,24 +92,166 @@
     "summary": "Os planners seguem o seu resultado no quiz. Cada elemento é uma lente do mesmo sistema.",
     "price": "R$57",
     "items": [
-      { "id": "planner-terra", "name": "Terra", "theme": "Segurança e confiança", "token": "terra", "url": "https://pay.hotmart.com/P104786538J" },
-      { "id": "planner-agua", "name": "Água", "theme": "Conexão emocional", "token": "agua", "url": "https://pay.hotmart.com/N104787105X" },
-      { "id": "planner-ar", "name": "Ar", "theme": "Comunicação e diálogo", "token": "ar", "url": "https://pay.hotmart.com/R104787457S" },
-      { "id": "planner-fogo", "name": "Fogo", "theme": "Paixão e intimidade", "token": "fogo", "url": "https://pay.hotmart.com/K104787593G" },
-      { "id": "planner-eter", "name": "Éter", "theme": "Propósito e transcendência", "token": "eter", "url": "https://pay.hotmart.com/N104787660T" },
-      { "id": "planner-despertar", "name": "Despertar", "theme": "Jornada de 30 dias", "token": "despertar", "url": "https://pay.hotmart.com/P104848984N" },
-      { "id": "planner-harmonia", "name": "Harmonia", "theme": "Jornada de 30 dias", "token": "harmonia", "url": "https://pay.hotmart.com/C104849036I" }
+      {
+        "id": "planner-terra",
+        "name": "Terra",
+        "theme": "Segurança e confiança",
+        "token": "terra",
+        "url": "https://pay.hotmart.com/P104786538J",
+        "arcano": "Imperatriz"
+      },
+      {
+        "id": "planner-agua",
+        "name": "Água",
+        "theme": "Conexão emocional",
+        "token": "agua",
+        "url": "https://pay.hotmart.com/N104787105X",
+        "arcano": "Estrela"
+      },
+      {
+        "id": "planner-ar",
+        "name": "Ar",
+        "theme": "Comunicação e diálogo",
+        "token": "ar",
+        "url": "https://pay.hotmart.com/R104787457S",
+        "arcano": "Louco"
+      },
+      {
+        "id": "planner-fogo",
+        "name": "Fogo",
+        "theme": "Paixão e intimidade",
+        "token": "fogo",
+        "url": "https://pay.hotmart.com/K104787593G",
+        "arcano": "Força"
+      },
+      {
+        "id": "planner-eter",
+        "name": "Éter",
+        "theme": "Propósito e transcendência",
+        "token": "eter",
+        "url": "https://pay.hotmart.com/N104787660T",
+        "arcano": "Universo"
+      },
+      {
+        "id": "planner-despertar",
+        "name": "Despertar",
+        "theme": "Jornada de 30 dias",
+        "token": "despertar",
+        "url": "https://pay.hotmart.com/P104848984N",
+        "arcano": "Sol"
+      },
+      {
+        "id": "planner-harmonia",
+        "name": "Harmonia",
+        "theme": "Jornada de 30 dias",
+        "token": "harmonia",
+        "url": "https://pay.hotmart.com/C104849036I",
+        "arcano": "Arte"
+      }
     ]
   },
   "social": [
-    { "id": "social-instagram", "label": "Instagram", "icon": "instagram", "url": "https://www.instagram.com/jayaroberta.shakti/" },
-    { "id": "social-whatsapp", "label": "WhatsApp", "icon": "whatsapp", "url": "https://wa.me/5561992634557" },
-    { "id": "social-youtube", "label": "YouTube", "icon": "youtube", "url": "https://www.youtube.com/@jayaterapeuta" },
-    { "id": "social-tiktok", "label": "TikTok", "icon": "tiktok", "url": "https://www.tiktok.com/@jayaterapeuta" },
-    { "id": "social-linkedin", "label": "LinkedIn", "icon": "linkedin", "url": "https://www.linkedin.com/in/robertajaya/" }
+    {
+      "id": "social-instagram",
+      "label": "Instagram",
+      "icon": "instagram",
+      "url": "https://www.instagram.com/jayaroberta.shakti/"
+    },
+    {
+      "id": "social-whatsapp",
+      "label": "WhatsApp",
+      "icon": "whatsapp",
+      "url": "https://wa.me/5561992634557"
+    },
+    {
+      "id": "social-youtube",
+      "label": "YouTube",
+      "icon": "youtube",
+      "url": "https://www.youtube.com/@jayaterapeuta"
+    },
+    {
+      "id": "social-tiktok",
+      "label": "TikTok",
+      "icon": "tiktok",
+      "url": "https://www.tiktok.com/@jayaterapeuta"
+    },
+    {
+      "id": "social-linkedin",
+      "label": "LinkedIn",
+      "icon": "linkedin",
+      "url": "https://www.linkedin.com/in/robertajaya/"
+    }
   ],
   "restricted": [
-    { "id": "ops-command", "label": "Command Center", "url": "https://app.jayaroberta.com/" },
-    { "id": "ops-finance", "label": "JayaFinance", "url": "https://finance.jayaroberta.com/" }
+    {
+      "id": "ops-command",
+      "label": "Command Center",
+      "url": "https://app.jayaroberta.com/"
+    },
+    {
+      "id": "ops-finance",
+      "label": "JayaFinance",
+      "url": "https://finance.jayaroberta.com/"
+    }
+  ],
+  "tarot": {
+    "id": "tarot",
+    "kicker": "Deck autoral · Leitura Thoth",
+    "title": "Tarot da Jaya",
+    "summary": "Os 22 Arcanos Maiores do deck autoral de Jaya Roberta, lidos pela lente do Tarot de Thoth: símbolo explicado em língua de gente e o sentido prático de cada carta.",
+    "cta": "Conhecer os 22 arcanos",
+    "url": "https://www.shaktijaya.com.br/tarot",
+    "cards": [
+      {
+        "slot": "sacerdotisa",
+        "name": "A Sacerdotisa"
+      },
+      {
+        "slot": "mago",
+        "name": "O Mago"
+      },
+      {
+        "slot": "lua",
+        "name": "A Lua"
+      },
+      {
+        "slot": "eremita",
+        "name": "O Eremita"
+      },
+      {
+        "slot": "fortuna",
+        "name": "A Fortuna"
+      },
+      {
+        "slot": "hierofante",
+        "name": "O Hierofante"
+      }
+    ]
+  },
+  "quick": [
+    {
+      "id": "quick-quiz",
+      "tone": "teal",
+      "label": "Descobrir meu elemento",
+      "note": "Quiz gratuito dos 5 Elementos",
+      "icon": "compass",
+      "url": "https://www.shaktijaya.com.br/quiz1"
+    },
+    {
+      "id": "quick-claude",
+      "tone": "card",
+      "label": "Claude do Zero",
+      "note": "Cinco aulas na ordem, pra fazer junto",
+      "icon": "book",
+      "url": "https://jayaroberta.com/claude"
+    },
+    {
+      "id": "quick-whatsapp",
+      "tone": "card",
+      "label": "Falar com a Jaya",
+      "note": "Sessão individual pelo WhatsApp",
+      "icon": "whatsapp",
+      "url": "https://wa.me/5561992634557?text=Ol%C3%A1%20Jaya%2C%20vim%20pela%20plataforma."
+    }
   ]
 }

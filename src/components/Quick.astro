@@ -1,0 +1,88 @@
+---
+import { hub, track } from '../lib/links';
+import Icon from './Icon.astro';
+---
+
+<section class="quick" aria-label="Acesso rápido">
+  <div class="wrap">
+    <ul class="quick__grid" role="list" data-reveal="stagger">
+      {
+        hub.quick.map((q, i) => (
+          <li style={`--i:${i}`}>
+            <a class:list={['qcard', `qcard--${q.tone}`]} href={track(q.url, q.id)}>
+              <span class="qcard__icon">
+                <Icon name={q.icon} size={26} />
+              </span>
+              <span class="qcard__text">
+                <span class="qcard__label">{q.label}</span>
+                <span class="qcard__note">{q.note}</span>
+              </span>
+              <span class="round">
+                <Icon name="arrow-right" size={18} />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .quick { padding-top: 8px; }
+  .quick__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+  .qcard {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 88px;
+    padding: 16px 18px;
+    background: var(--card);
+    border: 1px solid var(--line-soft);
+    transition: background-color var(--t-base), border-color var(--t-base);
+  }
+  .qcard--teal {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: var(--on-teal);
+  }
+  .qcard__icon {
+    flex: none;
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    color: var(--rust);
+  }
+  .qcard--teal .qcard__icon {
+    color: var(--gold-light);
+    border-color: color-mix(in srgb, var(--on-teal) 30%, transparent);
+    outline: 1px dotted color-mix(in srgb, var(--on-teal) 35%, transparent);
+    outline-offset: 4px;
+  }
+  .qcard__text { flex: 1; display: grid; gap: 2px; }
+  .qcard__label { font-family: var(--font-display); font-size: 1.22rem; line-height: 1.2; color: var(--ink); }
+  .qcard--teal .qcard__label { color: var(--on-teal); }
+  .qcard__note { font-size: 0.86rem; line-height: 1.45; color: var(--muted); }
+  .qcard--teal .qcard__note { color: var(--on-teal-muted); }
+  .qcard--teal :global(.round) { background: var(--gold-light); color: var(--teal); }
+  @media (hover: hover) {
+    .qcard:not(.qcard--teal):hover { border-color: var(--sepia-2); background: var(--paper); }
+    .qcard--teal:hover :global(.round) { background: var(--rust); color: var(--on-rust); }
+  }
+  .qcard:active { transform: scale(0.99); }
+
+  @media (min-width: 900px) {
+    .quick { margin-top: -10px; }
+    .quick__grid { grid-template-columns: 1.15fr 1fr 1fr; gap: 16px; }
+    .qcard { min-height: 110px; padding: 22px 24px; }
+  }
+</style>

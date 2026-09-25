@@ -2,6 +2,7 @@
 import { hub, track } from '../lib/links';
 import Icon from './Icon.astro';
 import Botanical from './Botanical.astro';
+import Compass from './Compass.astro';
 
 const year = new Date().getFullYear();
 ---
@@ -10,42 +11,29 @@ const year = new Date().getFullYear();
   <div class="wrap quote__inner">
     <Botanical class="quote__branch" flip />
     <figure data-reveal>
+      <span class="quote__mark" aria-hidden="true">“</span>
       <blockquote class="quote__text">
         <p>Disciplina também é uma forma de amor próprio.</p>
       </blockquote>
-      <figcaption class="caps quote__by">{hub.person.name}</figcaption>
+      <figcaption class="tracked quote__by">{hub.person.name}</figcaption>
     </figure>
   </div>
 </section>
 
-<div class="marquee" aria-hidden="true">
-  <div class="marquee__track">
-    {
-      [0, 1].map(() => (
-        <span class="marquee__group">
-          <span>Conhecimento em movimento</span>
-          <span class="marquee__dot">✦</span>
-          <span>Uma vida mais autêntica</span>
-          <span class="marquee__dot">✦</span>
-          <span>Mais humano</span>
-          <span class="marquee__dot">✦</span>
-          <span>Mais possível</span>
-          <span class="marquee__dot">✦</span>
-        </span>
-      ))
-    }
-  </div>
-</div>
-
 <footer class="footer">
+  <Compass class="footer__compass" size={260} />
   <div class="wrap footer__inner">
+    <span class="footer__logo" role="img" aria-label="Jaya"></span>
+    <p class="footer__wordmark" aria-hidden="true">Jaya Roberta</p>
+    <p class="footer__tag">Um atlas para pensar, criar e viver com mais inteligência.</p>
+
     <nav aria-label="Redes sociais">
       <ul class="footer__social" role="list">
         {
           hub.social.map((s) => (
             <li>
               <a href={track(s.url, s.id)} aria-label={s.label}>
-                <Icon name={s.icon} size={22} />
+                <Icon name={s.icon} size={20} />
               </a>
             </li>
           ))
@@ -53,14 +41,20 @@ const year = new Date().getFullYear();
       </ul>
     </nav>
 
-    <button class="footer__share" type="button" data-share data-status="share-status">
-      <Icon name="share" size={18} />
-      Compartilhar esta página
-    </button>
+    <div class="footer__actions">
+      <button class="footer__btn" type="button" data-share data-status="share-status">
+        <Icon name="share" size={16} />
+        Compartilhar
+      </button>
+      <button class="footer__btn" type="button" data-theme-toggle aria-label="Alternar tema escuro">
+        <Icon name="moon" size={16} />
+        Tema
+      </button>
+    </div>
     <p id="share-status" class="footer__status" role="status" aria-live="polite"></p>
 
     <details class="footer__restricted">
-      <summary><Icon name="lock" size={14} /> Área restrita</summary>
+      <summary><Icon name="lock" size={13} /> Área restrita</summary>
       <ul role="list">
         {hub.restricted.map((r) => (
           <li><a href={r.url} rel="nofollow">{r.label}</a></li>
@@ -69,103 +63,124 @@ const year = new Date().getFullYear();
     </details>
 
     <p class="footer__legal">
-      <span class="footer__mark">Jaya</span>
-      © {year} {hub.person.name} · {hub.person.location}
+      <span>Conhecimento em movimento</span>
+      <span aria-hidden="true">—</span>
+      <span>© {year} {hub.person.name} · {hub.person.location}</span>
     </p>
   </div>
 </footer>
 
 <style>
   .quote {
-    padding-block: clamp(72px, 12vw, 120px);
+    padding-block: clamp(80px, 12vw, 130px);
     content-visibility: auto;
-    contain-intrinsic-size: auto 420px;
+    contain-intrinsic-size: auto 460px;
   }
   .quote__inner { position: relative; display: grid; justify-items: center; text-align: center; }
   :global(.botanical.quote__branch) {
     position: absolute;
-    right: max(0px, calc(50% - 360px));
-    top: -30px;
+    right: max(0px, calc(50% - 380px));
+    top: -40px;
     width: 110px;
-    opacity: 0.9;
   }
-  .quote__text { margin: 0; }
+  .quote__mark {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 4rem;
+    line-height: 0.6;
+    color: var(--rust);
+  }
+  .quote__text { margin: 14px 0 0; }
   .quote__text p {
     font-family: var(--font-display);
-    font-style: italic;
-    font-size: clamp(1.9rem, 7.5vw, 3.2rem);
-    line-height: 1.12;
-    max-width: 16ch;
-    text-wrap: balance;
+    font-size: clamp(1.9rem, 7vw, 3rem);
+    line-height: 1.2;
+    max-width: 17ch;
+    color: var(--ink);
   }
-  .quote__text p::before {
-    content: '“';
-    display: block;
-    font-style: normal;
-    font-size: 1.6em;
-    line-height: 0.6;
-    color: var(--accent);
-    margin-bottom: 8px;
-  }
-  .quote__by { margin-top: 22px; color: var(--muted); }
+  .quote__by { margin-top: 22px; }
 
-  .marquee {
-    overflow: hidden;
-    border-block: 1px solid var(--line);
-    padding-block: 16px;
-    content-visibility: auto;
-    contain-intrinsic-size: auto 60px;
-  }
-  .marquee__track { display: flex; width: max-content; }
-  .marquee__group {
-    display: flex;
-    align-items: center;
-    gap: 28px;
-    padding-right: 28px;
-    font-size: 0.72rem;
-    letter-spacing: 0.38em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    white-space: nowrap;
-  }
-  .marquee__dot { color: var(--accent); letter-spacing: 0; }
-  @media (prefers-reduced-motion: no-preference) {
-    .marquee__track { animation: marquee 42s linear infinite; }
-  }
-  @keyframes marquee { to { transform: translateX(-50%); } }
-
+  /* SAND footer: teal-deep panel, constellation texture, giant tracked wordmark */
   .footer {
-    padding: 48px 0 calc(40px + env(safe-area-inset-bottom, 0px));
+    --f-bg: #0f2e3a;
+    --f-ink: #f6f5f0;
+    --f-muted: #9fb3ba;
+    --f-gold: #f4cf85;
+    position: relative;
+    overflow: hidden;
+    padding: 72px 0 calc(40px + env(safe-area-inset-bottom, 0px));
+    background:
+      radial-gradient(circle at 20% 30%, rgba(244, 207, 133, 0.5) 0 1px, transparent 1.5px) 0 0 / 90px 90px,
+      radial-gradient(circle at 70% 60%, rgba(244, 207, 133, 0.35) 0 1px, transparent 1.5px) 0 0 / 130px 130px,
+      var(--f-bg);
+    color: var(--f-ink);
+    content-visibility: auto;
+    contain-intrinsic-size: auto 620px;
   }
-  .footer__inner { display: grid; justify-items: center; gap: 18px; text-align: center; }
-  .footer__social { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+  :global([data-theme='dark']) .footer { --f-bg: #061519; }
+  :global(.compass.footer__compass) {
+    position: absolute;
+    right: -70px;
+    top: -60px;
+    color: var(--f-gold);
+    opacity: 0.18;
+  }
+  .footer__inner { position: relative; display: grid; justify-items: center; gap: 18px; text-align: center; }
+  .footer__logo {
+    width: 84px;
+    height: 84px;
+    background: var(--f-gold);
+    -webkit-mask: url('/brand/logo-symbol.webp') center / contain no-repeat;
+    mask: url('/brand/logo-symbol.webp') center / contain no-repeat;
+  }
+  .footer__wordmark {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 6vw, 2.6rem);
+    letter-spacing: 0.5em;
+    text-indent: 0.5em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .footer__tag { max-width: 36ch; color: var(--f-muted); font-size: 0.95rem; }
+
+  .footer__social { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
   .footer__social a {
     width: 48px;
     height: 48px;
     display: grid;
     place-items: center;
     border-radius: 50%;
-    border: 1px solid var(--line);
-    color: var(--ink-soft);
-    transition: color 0.3s, border-color 0.3s, transform 0.35s var(--ease-out);
+    border: 1px solid rgba(246, 245, 240, 0.28);
+    color: var(--f-ink);
+    transition: background-color var(--t-fast), color var(--t-fast), border-color var(--t-fast);
   }
-  .footer__social a:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
-  .footer__share {
+  @media (hover: hover) {
+    .footer__social a:hover { background: var(--f-gold); color: var(--f-bg); border-color: var(--f-gold); }
+  }
+
+  .footer__actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .footer__btn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     min-height: 44px;
     padding: 0 18px;
     background: transparent;
-    border: 1px solid var(--line-strong);
-    border-radius: 999px;
+    border: 1px solid rgba(246, 245, 240, 0.35);
+    color: var(--f-ink);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color var(--t-fast), color var(--t-fast);
   }
-  .footer__share:hover { background: var(--accent-soft); }
-  .footer__status { min-height: 1.2em; font-size: 0.85rem; color: var(--muted); }
+  @media (hover: hover) {
+    .footer__btn:hover { background: #fcb655; color: #0a2229; border-color: #fcb655; }
+  }
+  .footer__status { min-height: 1.2em; font-size: 0.85rem; color: var(--f-muted); }
 
-  .footer__restricted { font-size: 0.85rem; color: var(--muted); }
+  .footer__restricted { font-size: 0.85rem; color: var(--f-muted); }
   .footer__restricted summary {
     cursor: pointer;
     list-style: none;
@@ -182,16 +197,20 @@ const year = new Date().getFullYear();
     align-items: center;
     min-height: 44px;
     padding-inline: 12px;
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    color: var(--f-ink);
+    border-bottom: 1px solid rgba(246, 245, 240, 0.3);
   }
 
-  .footer__legal { font-size: 0.8rem; color: var(--muted); display: grid; gap: 8px; justify-items: center; }
-  .footer__mark {
-    font-family: var(--font-display);
-    font-size: 1.6rem;
-    letter-spacing: 0.3em;
+  .footer__legal {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 12px;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--ink);
+    color: var(--f-muted);
   }
 </style>

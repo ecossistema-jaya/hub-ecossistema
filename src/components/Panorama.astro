@@ -1,0 +1,67 @@
+---
+import { Picture } from 'astro:assets';
+import { art } from '../lib/art';
+
+const pano = art('panorama');
+---
+
+<section class="pano" aria-label="Conhecimento em movimento">
+  <div class="pano__frame">
+    {
+      pano && (
+        <Picture
+          class="pano__img parallax-slow"
+          src={pano}
+          formats={['avif', 'webp']}
+          fallbackFormat="jpg"
+          widths={[480, 800, 1200, 1600]}
+          quality={50}
+          sizes="100vw"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+      )
+    }
+  </div>
+  <div class="wrap pano__text" data-reveal>
+    <p class="pano__line">Conhecimento em movimento</p>
+    <p class="tracked pano__sub">Uma vida mais autêntica</p>
+  </div>
+</section>
+
+<style>
+  .pano {
+    position: relative;
+    margin-top: clamp(64px, 10vw, 110px);
+    content-visibility: auto;
+    contain-intrinsic-size: auto 560px;
+  }
+  .pano__frame {
+    position: relative;
+    height: clamp(300px, 56vw, 560px);
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 16%, #000 80%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0, #000 16%, #000 80%, transparent 100%);
+  }
+  .pano__frame :global(img) {
+    width: 100%;
+    height: 116%;
+    object-fit: cover;
+    object-position: 50% 45%;
+  }
+  :global([data-theme='dark']) .pano__frame { opacity: 0.6; }
+  .pano__text {
+    position: relative;
+    margin-top: -28px;
+    text-align: center;
+  }
+  .pano__line {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 5.5vw, 2.4rem);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .pano__sub { margin-top: 6px; }
+</style>

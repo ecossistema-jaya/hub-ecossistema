@@ -1,0 +1,168 @@
+---
+import { Picture } from 'astro:assets';
+import { hub, track } from '../lib/links';
+import { art } from '../lib/art';
+import Icon from './Icon.astro';
+
+const { tarot } = hub;
+const cards = tarot.cards.map((c) => ({ ...c, img: art(`arcanos/${c.slot}`) })).filter((c) => c.img);
+const mid = (cards.length - 1) / 2;
+---
+
+<section class="tarot" aria-labelledby="tarot-title">
+  <div class="wrap tarot__inner">
+    <div class="tarot__copy" data-reveal>
+      <p class="tarot__kicker">{tarot.kicker}</p>
+      <h2 id="tarot-title" class="tarot__title">{tarot.title}</h2>
+      <p class="tarot__summary">{tarot.summary}</p>
+      <a class="tarot__cta" href={track(tarot.url, 'tarot-cta')}>
+        {tarot.cta}
+        <Icon name="arrow-right" size={18} />
+      </a>
+    </div>
+
+    <ul class="tarot__fan" role="list" aria-label="Alguns arcanos do deck">
+      {
+        cards.map((c, i) => (
+          <li class="tcard" style={`--off:${i - mid}; --dist:${Math.abs(i - mid)}; --z:${10 - Math.round(Math.abs(i - mid) * 2)}`}>
+            <a href={track(tarot.url, `tarot-${c.slot}`)} aria-label={`${c.name} — ${tarot.title}`}>
+              <Picture
+                src={c.img!}
+                width={300}
+                height={480}
+                fit="cover"
+                formats={['avif', 'webp']}
+                fallbackFormat="jpg"
+                widths={[180, 300]}
+                quality={55}
+                sizes="(min-width: 1000px) 180px, 150px"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="tcard__name">{c.name}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .tarot {
+    --panel: #0f2e3a;
+    --panel-ink: #f6f5f0;
+    --panel-muted: #b9c8c9;
+    --gold-a: #f4cf85;
+    --amber: #fcb655;
+    margin-top: clamp(56px, 9vw, 100px);
+    padding-block: clamp(56px, 9vw, 96px);
+    background:
+      radial-gradient(circle at 85% 20%, rgba(244, 207, 133, 0.12), transparent 45%),
+      var(--panel);
+    color: var(--panel-ink);
+    overflow: hidden;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 820px;
+  }
+  :global([data-theme='dark']) .tarot { --panel: #061519; }
+
+  .tarot__inner { display: grid; gap: 40px; align-items: center; }
+  .tarot__kicker {
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--gold-a);
+  }
+  .tarot__title { margin-top: 14px; font-size: clamp(2.3rem, 9vw, 3.8rem); color: var(--panel-ink); }
+  .tarot__summary { margin-top: 16px; max-width: 46ch; color: var(--panel-muted); }
+
+  /* SAND amber button: square, caps, tracked; hover inverts */
+  .tarot__cta {
+    margin-top: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 52px;
+    padding: 0 28px;
+    background: var(--amber);
+    color: #0a2229;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: background-color var(--t-fast), color var(--t-fast), box-shadow var(--t-fast);
+  }
+  @media (hover: hover) {
+    .tarot__cta:hover { background: transparent; color: var(--amber); box-shadow: inset 0 0 0 1px var(--amber); }
+  }
+
+  /* Mobile: swipeable strip of cards */
+  .tarot__fan {
+    list-style: none;
+    margin: 0 calc(var(--gutter) * -1);
+    padding: 10px var(--gutter) 24px;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 150px;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .tarot__fan::-webkit-scrollbar { display: none; }
+  .tcard { scroll-snap-align: start; }
+  .tcard a { display: block; }
+  .tcard :global(img) {
+    width: 100%;
+    aspect-ratio: 5 / 8;
+    height: auto;
+    object-fit: cover;
+    border: 1px solid rgba(244, 207, 133, 0.45);
+    outline: 1px solid rgba(244, 207, 133, 0.2);
+    outline-offset: 4px;
+  }
+  .tcard__name {
+    display: block;
+    margin-top: 12px;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--gold-a);
+  }
+
+  /* Desktop: a fanned hand of cards */
+  @media (min-width: 1000px) {
+    .tarot__inner { grid-template-columns: 0.9fr 1.1fr; gap: 20px; }
+    .tarot__fan {
+      margin: 0;
+      padding: 40px 0 20px;
+      display: flex;
+      justify-content: center;
+      overflow: visible;
+      height: 420px;
+    }
+    .tcard {
+      width: 170px;
+      margin-inline: -34px;
+      transform-origin: 50% 120%;
+      transform: rotate(calc(var(--off) * 7deg)) translateY(calc(var(--dist) * 12px));
+      transition: transform 0.5s var(--ease-out);
+      z-index: var(--z);
+    }
+    .tcard__name { opacity: 0; transition: opacity var(--t-base); }
+    @media (hover: hover) {
+      .tcard:hover {
+        transform: rotate(calc(var(--off) * 7deg)) translateY(-36px);
+        z-index: 20;
+      }
+      .tcard:hover .tcard__name { opacity: 1; }
+    }
+  }
+</style>

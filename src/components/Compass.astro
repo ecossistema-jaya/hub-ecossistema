@@ -1,0 +1,30 @@
+---
+/** Fine-line compass rose (mockup motif). The inner rose turns in 8 ratcheted steps (SAND ritual). */
+interface Props {
+  class?: string;
+  size?: number;
+}
+const { class: className, size = 120 } = Astro.props;
+const ticks = Array.from({ length: 32 }, (_, i) => i * 11.25);
+---
+
+<svg class:list={['compass', className]} width={size} height={size} viewBox="0 0 120 120" aria-hidden="true">
+  <g fill="none" stroke="currentColor" stroke-width="0.6">
+    <circle cx="60" cy="60" r="56" stroke-dasharray="1 3"></circle>
+    <circle cx="60" cy="60" r="48"></circle>
+    <circle cx="60" cy="60" r="30" stroke-dasharray="0.5 2"></circle>
+    {ticks.map((a) => <line x1="60" y1="6" x2="60" y2={a % 45 === 0 ? 14 : 10} transform={`rotate(${a} 60 60)`} />)}
+  </g>
+  <g class="spin-steps" style="transform-origin: 60px 60px">
+    <path d="M60 8 66 54 60 60 54 54Z M60 112 54 66 60 60 66 66Z M8 60 54 54 60 60 54 66Z M112 60 66 66 60 60 66 54Z" fill="currentColor" opacity="0.85"></path>
+    <path d="M60 26 63 57 60 60 57 57Z M60 94 57 63 60 60 63 63Z M26 60 57 57 60 60 57 63Z M94 60 63 63 60 60 63 57Z" fill="currentColor" opacity="0.45" transform="rotate(45 60 60)"></path>
+  </g>
+  <circle cx="60" cy="60" r="2.4" fill="currentColor"></circle>
+</svg>
+
+<style>
+  .compass {
+    color: var(--gold);
+    overflow: visible;
+  }
+</style>
