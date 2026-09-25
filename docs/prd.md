@@ -203,7 +203,7 @@ Goal: the hub never sends a visitor into a dead end without Jaya knowing.
 | 2.1 Bio link and launch post | Open: bio change and launch post pending |
 | 2.2 Analytics on | AC1 done (Jaya enabled both on 2026-09-25); AC2–AC3 pending |
 | 2.3 Outbound click tracking | Implemented (`data-link` + `va('event')` in `src/scripts/interactions.ts`); production check pending |
-| 3.1 Copy review | Alternatives delivered to Jaya; awaiting picks |
+| 3.1 Copy review | Done (Jaya picked 2026-09-25; item 10 written by Jaya) |
 | 3.2 Seasonal Fogueira Junina | Done (`hidden: true`) |
 | 3.3 Docs and dependency cleanup | Done (Petrona/Jost removed; Story 1.1 notes updated) |
 | 4.1 Link checker script | Done (`npm run check:links`: 28 unique URLs, 0 failed, LinkedIn bot-walled) |

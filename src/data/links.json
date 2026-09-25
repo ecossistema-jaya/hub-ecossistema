@@ -51,7 +51,7 @@
       "id": "jaya-ai",
       "name": "Jaya AI",
       "kicker": "AI · Negócios · Consultoria",
-      "summary": "Inteligência artificial explicada por quem conhece a tecnologia por dentro. Sem jargão, sem precisar fingir que já sabe.",
+      "summary": "IA para o seu negócio, explicada por quem trabalha com tecnologia há 20 anos. Sem jargão, sem pose.",
       "primary": {
         "id": "ai-claude-do-zero",
         "label": "Claude do Zero",
@@ -68,13 +68,13 @@
         {
           "id": "ai-biblioteca",
           "label": "Biblioteca Claude by Jaya",
-          "note": "Territórios para explorar o Claude",
+          "note": "Tudo o que eu uso no Claude, organizado",
           "url": "https://jayaroberta.com/biblioteca"
         },
         {
           "id": "ai-atlas",
           "label": "Atlas de Forças",
-          "note": "Descubra suas forças",
+          "note": "O mapa das suas forças naturais",
           "url": "https://quiz.jayaroberta.com.br/"
         },
         {
@@ -89,7 +89,7 @@
   ],
   "elements": {
     "title": "Um método, cinco elementos",
-    "summary": "Os planners seguem o seu resultado no quiz. Cada elemento é uma lente do mesmo sistema.",
+    "summary": "Cada planner trabalha um elemento do Método dos 5 Elementos. Comece pelo que o quiz indicou.",
     "price": "R$57",
     "items": [
       {
@@ -233,7 +233,7 @@
       "id": "quick-quiz",
       "tone": "teal",
       "label": "Descobrir meu elemento",
-      "note": "Quiz gratuito dos 5 Elementos",
+      "note": "Grátis, direto no celular",
       "icon": "compass",
       "url": "https://www.shaktijaya.com.br/quiz1"
     },
@@ -241,7 +241,7 @@
       "id": "quick-claude",
       "tone": "card",
       "label": "Claude do Zero",
-      "note": "Cinco aulas na ordem, pra fazer junto",
+      "note": "Cinco aulas, sem precisar saber nada antes",
       "icon": "book",
       "url": "https://jayaroberta.com/claude"
     },
@@ -249,7 +249,7 @@
       "id": "quick-whatsapp",
       "tone": "card",
       "label": "Falar com a Jaya",
-      "note": "Sessão individual pelo WhatsApp",
+      "note": "Me chama e a gente conversa",
       "icon": "whatsapp",
       "url": "https://wa.me/5561992634557?text=Ol%C3%A1%20Jaya%2C%20vim%20pela%20plataforma."
     }
