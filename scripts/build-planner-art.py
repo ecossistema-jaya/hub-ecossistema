@@ -23,22 +23,29 @@ ROOT = Path(__file__).resolve().parent.parent
 SRC = Path(os.environ.get("PLANNER_SRC", ROOT.parent / "Jaya_Hub_Page"))
 OUT = ROOT / "src" / "assets" / "planners"
 
-# slug -> cover file, PDF file, {output name: (page number, crop box in 0..1 or None)}
+# slug -> cover file, PDF file, extra photos, {output name: (page number, crop box in 0..1 or None)}
+# The "Novo" PDFs (June 2026) are image-only: pages are rendered, never text-extracted.
 PLANNERS = {
     "agua": {
         "cover": "capa-planners/agua_novo.png",
-        "pdf": "planners/Planner-Agua-Conexao-Emocional.pdf.pdf",
+        "pdf": "planners/Planner Agua Novo.pdf",
+        "photos": {
+            "hero-photo": "capa-planners/aguas.png",
+            "offer-cover": "capa-planners/agua.png",
+        },
         "pages": {
-            # "Como usar este planner": the list half of page 2 is clean.
-            "como-usar": (2, (0.0, 0.32, 1.0, 0.78)),
-            # Day 30, closing page with the photo.
-            "dia-30": (32, None),
+            "como-usar": (3, (0.0, 0.0, 1.0, 0.64)),
+            "jornada": (4, None),
+            "semana-1": (5, None),
+            "dia-1": (6, None),
+            "parabens": (38, None),
         },
     },
 }
 
 COVER_WIDTH = 1100
 PAGE_WIDTH = 1000
+PHOTO_WIDTH = 1800
 
 
 def save_jpg(img: Image.Image, path: Path, width: int) -> None:
@@ -71,6 +78,8 @@ def build(slug: str) -> None:
     save_jpg(cover, OUT / slug / "cover.jpg", COVER_WIDTH)
     # Share images are served as-is (not through astro:assets), so they live in public/.
     share_image(cover, ROOT / "public" / "planners" / f"{slug}-og.jpg")
+    for name, file in spec.get("photos", {}).items():
+        save_jpg(Image.open(SRC / file), OUT / slug / f"{name}.jpg", PHOTO_WIDTH)
 
     doc = pymupdf.open(SRC / spec["pdf"])
     for name, (number, crop) in spec["pages"].items():

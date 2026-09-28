@@ -3,7 +3,7 @@
    lives in src/data/planners.ts and the images in src/assets/planners/<slug>/.
    The checkout stays on Hotmart. */
 import type { ImageMetadata } from 'astro';
-import { Picture } from 'astro:assets';
+import { Picture, getImage } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Footer from '../../components/Footer.astro';
 import Icon from '../../components/Icon.astro';
@@ -23,6 +23,12 @@ const quiz = hub.worlds.find((w) => w.id === 'shakti')!.primary;
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/planners/**/*.jpg', { eager: true });
 const img = (file: string) => images[`/src/assets/planners/${planner.slug}/${file}.jpg`]!.default;
 const cover = img('cover');
+// The water photo is a desktop-only CSS background: on phones it would compete
+// with the cover for the first paint (LCP), and there it was barely visible anyway.
+const heroPhoto = planner.photos.hero
+  ? await getImage({ src: img(planner.photos.hero), format: 'webp', width: 888, quality: 45 })
+  : null;
+const offerCover = planner.photos.offer ? img(planner.photos.offer) : null;
 const portrait = art('autora');
 
 const checkout = item.url;
@@ -34,7 +40,9 @@ const others = hub.elements.items
   });
 
 const title = `Planner ${item.name} · ${item.theme} · Jaya Roberta`;
-const description = `${planner.promise}. 30 dias de exercícios a dois do elemento ${item.name}, na Arquitetura Relacional dos 5 Elementos™. ${price}, acesso imediato.`;
+const description = `${planner.promise}. ${planner.kicker}. ${price}, acesso imediato, 7 dias de garantia.`;
+const days = planner.weeks.flatMap((w) => w.exercises);
+const lastDay = days[days.length - 1].day;
 const productLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
@@ -67,11 +75,22 @@ const featuredDays = new Set(planner.featured.map((ex) => ex.day));
   {
     planner.pixelId && (
       <script is:inline slot="head" define:vars={{ id: planner.pixelId, name: `Planner ${item.name}`, value: pixelValue }}>
-        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        /* The pixel waits for the page to finish loading: run earlier, fbevents.js
+           competes with the first paint and cost ~1 s of LCP on a mid phone. The
+           queue stub is created at once, so a CTA click before that is still kept. */
+        !function(f){if(f.fbq)return;var n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[]}(window);
         fbq('init', id);
         fbq('track', 'PageView');
         fbq('track', 'ViewContent', { content_name: name, value: value, currency: 'BRL' });
         window.__plannerPixel = { name: name, value: value };
+        window.addEventListener('load', function () {
+          setTimeout(function () {
+            var t = document.createElement('script');
+            t.async = true;
+            t.src = 'https://connect.facebook.net/en_US/fbevents.js';
+            document.head.appendChild(t);
+          }, 1500);
+        });
       </script>
     )
   }
@@ -88,10 +107,10 @@ const featuredDays = new Set(planner.featured.map((ex) => ex.day));
 
   <main id="conteudo" style={`--el: var(--${item.token})`}>
     <!-- Night band: the planner's own world, navy and gold like its cover. -->
-    <section class="night" aria-labelledby="planner-title">
+    <section class="night" aria-labelledby="planner-title" style={heroPhoto ? `--hero-photo: url('${heroPhoto.src}')` : undefined}>
       <div class="wrap night__inner">
         <div class="night__copy">
-          <p class="night__kicker">Elemento {item.name} · 30 dias a dois</p>
+          <p class="night__kicker">{planner.kicker}</p>
           <h1 id="planner-title" class="night__title">
             {item.name}
             <span>{item.theme}</span>
@@ -100,7 +119,7 @@ const featuredDays = new Set(planner.featured.map((ex) => ex.day));
           <p class="night__element">{planner.element}</p>
           <div class="night__buy">
             <a class="cta" href={checkout} data-checkout>
-              Quero começar os 30 dias <Icon name="arrow-right" size={18} />
+              Quero começar os {lastDay} dias <Icon name="arrow-right" size={18} />
             </a>
             <p class="night__price"><strong>{price}</strong> em até 6x · acesso imediato · 7 dias de garantia</p>
           </div>
@@ -123,8 +142,8 @@ const featuredDays = new Set(planner.featured.map((ex) => ex.day));
 
     <section class="block signs" aria-labelledby="signs-title">
       <div class="wrap signs__inner">
-        <p class="label">Quando a {item.name} está desalinhada</p>
-        <h2 id="signs-title" class="block__title">O relacionamento <span class="accent">seca.</span></h2>
+        <p class="label">{planner.signsLabel}</p>
+        <h2 id="signs-title" class="block__title">{planner.signsHeadline[0]} <span class="accent">{planner.signsHeadline[1]}</span></h2>
         <ul class="signs__list" role="list">
           {planner.signs.map((sign) => <li>{sign}</li>)}
         </ul>
@@ -139,23 +158,27 @@ const featuredDays = new Set(planner.featured.map((ex) => ex.day));
       <div class="wrap how__inner">
         <div>
           <p class="label">Como funciona</p>
-          <h2 id="how-title" class="block__title">Um exercício por dia. <span class="accent">A dois.</span></h2>
+          <h2 id="how-title" class="block__title">{planner.howHeadline[0]} <span class="accent">{planner.howHeadline[1]}</span></h2>
           <ol class="how__list" role="list">
-            {planner.howTo.map((step) => <li>{step}</li>)}
+            {planner.howTo.map((step) => (
+              <li>
+                <span><strong>{step.title}.</strong> {step.text}</span>
+              </li>
+            ))}
           </ol>
         </div>
         <figure class="page-shot">
           <Picture
-            src={img(planner.previews[0].file)}
-            widths={[480, 720, 1000]}
+            src={img(planner.previews.how.file)}
+            widths={[360, 540, 760]}
             sizes="(min-width: 900px) 520px, 92vw"
             formats={['avif', 'webp']}
             fallbackFormat="jpg"
-            quality={72}
-            alt={planner.previews[0].alt}
+            quality={60}
+            alt={planner.previews.how.alt}
             loading="lazy"
           />
-          <figcaption>Página de abertura do planner</figcaption>
+          <figcaption>{planner.previews.how.caption}</figcaption>
         </figure>
       </div>
     </section>
@@ -163,18 +186,20 @@ const featuredDays = new Set(planner.featured.map((ex) => ex.day));
     <section class="block weeks" aria-labelledby="weeks-title">
       <div class="wrap">
         <p class="label">O que tem dentro</p>
-        <h2 id="weeks-title" class="block__title">Quatro semanas, <span class="accent">trinta exercícios.</span></h2>
+        <h2 id="weeks-title" class="block__title">{planner.weeksHeadline[0]} <span class="accent">{planner.weeksHeadline[1]}</span></h2>
+        <p class="weeks__lead">{planner.weeksLead}</p>
         <p class="weeks__legend"><span aria-hidden="true"></span> Em destaque: exercícios que você lê por inteiro logo abaixo.</p>
         <ol class="weeks__grid" role="list">
           {
             planner.weeks.map((week, w) => (
               <li class="week">
                 <p class="week__num">Semana {w + 1}</p>
-                <p class="week__question">{week.question}</p>
+                <p class="week__name">{week.name}</p>
+                <p class="week__summary">{week.summary}</p>
                 <ol class="week__days" role="list">
                   {week.exercises.map((ex) => (
-                    <li class:list={{ 'is-featured': featuredDays.has(ex.day), 'is-review': ex.title === 'Reflexão da semana' }}>
-                      <span>Dia {ex.day}</span> {ex.title}
+                    <li class:list={{ 'is-featured': featuredDays.has(ex.day), 'is-review': ex.review }}>
+                      <span>Dia {ex.label ?? ex.day}</span> {ex.title}
                     </li>
                   ))}
                 </ol>
@@ -198,6 +223,7 @@ const featuredDays = new Set(planner.featured.map((ex) => ex.day));
                 <blockquote>
                   <p>{ex.text}</p>
                 </blockquote>
+                <figcaption class="exercise__reflection"><span>Reflexão</span> {ex.reflection}</figcaption>
               </figure>
             ))
           }
@@ -205,24 +231,53 @@ const featuredDays = new Set(planner.featured.map((ex) => ex.day));
       </div>
     </section>
 
+    <section class="block gallery" aria-labelledby="gallery-title">
+      <div class="wrap">
+        <p class="label">Páginas reais</p>
+        <h2 id="gallery-title" class="block__title">Por dentro <span class="accent">do planner.</span></h2>
+        <ul class="gallery__list" role="list">
+          {
+            planner.previews.gallery.map((page) => (
+              <li>
+                <figure class="page-shot">
+                  <Picture
+                    src={img(page.file)}
+                    widths={[300, 450, 600]}
+                    sizes="(min-width: 900px) 340px, 80vw"
+                    formats={['avif', 'webp']}
+                    fallbackFormat="jpg"
+                    quality={68}
+                    alt={page.alt}
+                    loading="lazy"
+                  />
+                  <figcaption>{page.caption}</figcaption>
+                </figure>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
     <section class="block closing" aria-label="Última página do planner">
       <div class="wrap closing__inner">
         <figure class="page-shot page-shot--tall">
           <Picture
-            src={img(planner.previews[1].file)}
+            src={img(planner.previews.closing.file)}
             widths={[360, 540, 760]}
             sizes="(min-width: 900px) 380px, 80vw"
             formats={['avif', 'webp']}
             fallbackFormat="jpg"
             quality={72}
-            alt={planner.previews[1].alt}
+            alt={planner.previews.closing.alt}
             loading="lazy"
           />
-          <figcaption>Dia 30</figcaption>
+          <figcaption>{planner.previews.closing.caption}</figcaption>
         </figure>
         <blockquote class="closing__quote">
-          <p>{planner.closing}</p>
-          <footer>Última página do Planner {item.name}</footer>
+          <p class="closing__title">{planner.closing.title}</p>
+          <p>{planner.closing.text}</p>
+          <footer>Página final do Planner {item.name}</footer>
         </blockquote>
       </div>
     </section>
@@ -259,13 +314,29 @@ const featuredDays = new Set(planner.featured.map((ex) => ex.day));
     </section>
 
     <section class="block offer" aria-labelledby="offer-title">
-      <div class="wrap">
+      <div class="wrap offer__inner">
+        {
+          offerCover && (
+            <figure class="offer__cover">
+              <Picture
+                src={offerCover}
+                widths={[320, 480, 640]}
+                sizes="(min-width: 900px) 360px, 70vw"
+                formats={['avif', 'webp']}
+                fallbackFormat="jpg"
+                quality={66}
+                alt={`Capa clara do Planner ${item.name}, em aquarela azul com detalhes dourados.`}
+                loading="lazy"
+              />
+            </figure>
+          )
+        }
         <div class="offer__card">
-          <p class="label">Planner 30 dias · {item.name}</p>
+          <p class="label">Planner {lastDay} dias · {item.name}</p>
           <h2 id="offer-title" class="block__title">Comece hoje.</h2>
           <ul class="offer__list" role="list">
-            <li>PDF de 32 páginas em tamanho A4, para a tela ou para imprimir</li>
-            <li>30 exercícios em 4 semanas, um por dia</li>
+            <li>PDF de {planner.pages} páginas em tamanho A4, para a tela ou para imprimir</li>
+            <li>{lastDay} dias em {planner.weeks.length} semanas, um exercício por dia</li>
             <li>Espaço de reflexão em cada dia e revisão ao fim de cada semana</li>
             <li>Acesso imediato pela Hotmart</li>
           </ul>
@@ -430,7 +501,20 @@ const featuredDays = new Set(planner.featured.map((ex) => ex.day));
       radial-gradient(1.5px 1.5px at 22% 86%, rgba(230, 194, 122, 0.5), transparent 60%);
     pointer-events: none;
   }
-  .night__inner { position: relative; display: grid; gap: 40px; align-items: center; }
+  /* Jaya's water photograph under the night palette, desktop only: present,
+     never louder than the cover. Mobile never downloads it (media query). */
+  @media (min-width: 900px) {
+    .night::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--hero-photo, none) center / cover no-repeat;
+      opacity: 0.38;
+      pointer-events: none;
+      z-index: 0;
+    }
+  }
+  .night__inner { position: relative; z-index: 1; display: grid; gap: 40px; align-items: center; }
   .night__kicker {
     font-size: 0.7rem;
     font-weight: 600;
@@ -577,7 +661,9 @@ const featuredDays = new Set(planner.featured.map((ex) => ex.day));
     border-top: 3px solid var(--gold-n);
   }
   .week__num { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-n); }
-  .week__question { margin-top: 8px; font-family: var(--font-display); font-size: 1.2rem; line-height: 1.3; color: var(--gold-n); }
+  .week__name { margin-top: 8px; font-family: var(--font-display); font-size: 1.4rem; line-height: 1.25; color: var(--gold-n); }
+  .week__summary { margin-top: 8px; font-size: 0.9rem; line-height: 1.55; color: var(--on-night-muted); }
+  .weeks__lead { margin-top: 12px; max-width: 52ch; color: var(--on-night-muted); }
   .week__days { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 6px; font-size: 0.95rem; color: var(--on-night); }
   .week__days li { padding: 3px 0; }
   .week__days span { display: inline-block; min-width: 3.6em; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; color: var(--on-night-muted); }
@@ -599,12 +685,19 @@ const featuredDays = new Set(planner.featured.map((ex) => ex.day));
   .exercise__day { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text); }
   .exercise__title { margin-top: 6px; font-family: var(--font-display); font-size: 1.35rem; color: var(--ink); }
   .exercise blockquote { margin: 12px 0 0; font-style: italic; }
+  .exercise__reflection { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 0.92rem; color: var(--ink); }
+  .exercise__reflection span { display: block; margin-bottom: 2px; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rust); }
+
+  .gallery__list { list-style: none; margin: 32px 0 0; padding: 0; display: grid; gap: 28px; justify-items: center; }
+  .gallery__list li { width: min(80vw, 340px); }
+  @media (min-width: 900px) { .gallery__list { grid-template-columns: repeat(3, 1fr); } .gallery__list li { width: 100%; } }
   @media (min-width: 800px) { .featured__grid { grid-template-columns: 1fr 1fr; } }
 
   .closing__inner { display: grid; gap: 36px; align-items: center; justify-items: center; }
   .page-shot--tall { width: min(80vw, 380px); }
-  .closing__quote { margin: 0; max-width: 30ch; text-align: center; }
-  .closing__quote p { font-family: var(--font-display); font-size: clamp(1.5rem, 5.6vw, 2.2rem); line-height: 1.3; color: var(--ink); }
+  .closing__quote { margin: 0; max-width: 36ch; text-align: center; }
+  .closing__quote .closing__title { font-size: clamp(2.2rem, 8vw, 3.2rem); color: var(--rust); margin-bottom: 10px; }
+  .closing__quote p { font-family: var(--font-display); font-size: clamp(1.3rem, 4.8vw, 1.8rem); line-height: 1.35; color: var(--ink); }
   @media (min-width: 900px) { .closing__inner { grid-template-columns: auto 1fr; gap: 72px; justify-items: start; } .closing__quote { text-align: left; } }
 
   .author__inner { display: grid; gap: 32px; align-items: center; }
@@ -614,6 +707,10 @@ const featuredDays = new Set(planner.featured.map((ex) => ex.day));
   .author__inner p:last-child { margin-top: 16px; max-width: 58ch; }
   @media (min-width: 900px) { .author__inner { grid-template-columns: 340px 1fr; gap: 64px; } }
 
+  .offer__inner { display: grid; gap: 36px; align-items: center; justify-items: center; }
+  .offer__cover { margin: 0; width: min(64vw, 320px); }
+  .offer__cover :global(img) { width: 100%; height: auto; border-radius: 3px; box-shadow: 0 30px 60px -30px rgba(21, 45, 56, 0.55); transform: rotate(2deg); }
+  @media (min-width: 900px) { .offer__inner { grid-template-columns: auto 1fr; gap: 64px; } .offer__card { margin-inline: 0; } }
   .offer__card {
     max-width: 640px;
     margin-inline: auto;
@@ -671,7 +768,8 @@ const featuredDays = new Set(planner.featured.map((ex) => ex.day));
   @media (hover: hover) { .others__list a:hover .others__disc { transform: scale(1.06); } .others__list a:hover .others__name { color: var(--rust); } }
 
   @media (prefers-reduced-motion: reduce) {
-    .night__cover :global(img) { transform: none; }
+    .night__cover :global(img),
+    .offer__cover :global(img) { transform: none; }
     .cta, .others__disc { transition: none; }
   }
 </style>
