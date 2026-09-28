@@ -3,7 +3,7 @@ import { Picture } from 'astro:assets';
 import { hub, track } from '../lib/links';
 import { art } from '../lib/art';
 import Compass from './Compass.astro';
-import { plannerByHubId } from '../data/planners';
+import { plannerByHubId, CUSTOM_PAGES } from '../data/planners';
 
 const { elements } = hub;
 const quiz = hub.worlds.find((w) => w.id === 'shakti')!.primary;
@@ -42,10 +42,14 @@ const groups = [
               {group.items.map((item, i) => {
                 const img = art(`arcanos/${item.token}`);
                 const n = String(g === 0 ? i + 1 : i + 6).padStart(2, '0');
-                // Planners with a sales page open it here; the rest still go straight to checkout.
+                // Planners with a sales page open it here; the rest still go straight to
+                // checkout. A page can come from the [slug].astro template (has a Planner
+                // entry in planners.ts) or be hand-built (only listed in CUSTOM_PAGES, like
+                // agua.astro and ar.astro) — either way, its token doubles as its slug.
                 const page = plannerByHubId(item.id);
-                const linkAttrs = page
-                  ? { href: `/planners/${page.slug}` }
+                const hasCustomPage = CUSTOM_PAGES.has(item.token);
+                const linkAttrs = page || hasCustomPage
+                  ? { href: `/planners/${page ? page.slug : item.token}` }
                   : { href: track(item.url, item.id), target: '_blank', rel: 'noopener' };
                 return (
                   <li class="medal" style={`--el: var(--${item.token}); --i:${i}`}>

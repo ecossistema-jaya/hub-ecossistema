@@ -41,6 +41,26 @@ PLANNERS = {
             "parabens": (40, None),
         },
     },
+    "ar": {
+        # capa-planners/ar_novo.png is stale: it carries the "Base · Segurança ·
+        # Confiança · Pertencimento" tagline copied from another planner. The PDF's
+        # own page 1 (image-only, no text layer) has the correct, current tagline
+        # ("Escuta · Verdade · Diálogo · Reparo") that matches the rest of the book,
+        # so it wins as the cover source: ("pdf", page_number) renders it instead of
+        # opening a static file.
+        "cover": ("pdf", 1),
+        "pdf": "planners/Planner Ar Novo.pdf",
+        # 42 pages, confirmed 2026-09-28 with pymupdf get_text (same "Novo" edition
+        # pattern as Água: a "Quando parar" safety page after "Como usar" and an
+        # "Antes da Semana 1" Termômetro do Diálogo page before the week 1 divider).
+        "pages": {
+            "como-usar": (3, (0.0, 0.0, 1.0, 0.75)),
+            "jornada": (5, None),
+            "semana-1": (7, None),
+            "dia-1": (8, None),
+            "parabens": (40, None),
+        },
+    },
 }
 
 COVER_WIDTH = 1100
@@ -71,10 +91,21 @@ def share_image(cover: Image.Image, path: Path) -> None:
     print(f"  {path.relative_to(ROOT)}  {w}x{h}")
 
 
+def load_cover(spec: dict) -> Image.Image:
+    """A cover is either a static file (most planners) or ("pdf", page_number),
+    rendered straight from the planner's own PDF (see the "ar" entry above)."""
+    cover_spec = spec["cover"]
+    if isinstance(cover_spec, tuple) and cover_spec[0] == "pdf":
+        doc = pymupdf.open(SRC / spec["pdf"])
+        pix = doc[cover_spec[1] - 1].get_pixmap(dpi=300)
+        return Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
+    return Image.open(SRC / cover_spec)
+
+
 def build(slug: str) -> None:
     spec = PLANNERS[slug]
     print(slug)
-    cover = Image.open(SRC / spec["cover"])
+    cover = load_cover(spec)
     save_jpg(cover, OUT / slug / "cover.jpg", COVER_WIDTH)
     # Share images are served as-is (not through astro:assets), so they live in public/.
     share_image(cover, ROOT / "public" / "planners" / f"{slug}-og.jpg")
