@@ -1,6 +1,6 @@
 # HANDOFF — Jaya, Entre Mundos (hub)
 
-**Atualizado em:** 28/09/2026, sessão 2. **Estado:** no ar e estável. **Retomar em:** "Próximos passos" abaixo.
+**Atualizado em:** 28/09/2026, sessão 2 (fim). **Estado:** no ar e estável. **Retomar em:** "Próximos passos" abaixo.
 
 ## Onde está tudo
 
@@ -55,6 +55,14 @@
 - **Card trocado em Jaya AI:** "Business Jaya" virou "Biblioteca Gratuita da Jaya" → `https://jayaroberta.com.br/biblioteca` (aberta, sem login).
 - **Regra decidida por Jaya:** cada produto tem convite, painel e login próprios; nada herda acesso de outro. Painéis: Biblioteca `jayaroberta.com/biblioteca/admin`, Atlas `quiz.jayaroberta.com.br/admin`; o `/admin` do curso só aponta para eles.
 - **Supabase (Redirect URLs):** todo domínio de produto precisa de `https://<domínio>/**`. Sem isso, o login Google volta para `claude-by-jaya.vercel.app` e pede um segundo login. Já liberados: `jayaroberta.com/**` e `quiz.jayaroberta.com.br/**`.
+
+## Páginas de venda dos planners (Epic 4)
+
+- **No ar:** `/planners/agua` e `/planners/ar`, páginas dedicadas (`src/pages/planners/agua.astro`, `ar.astro`): documento próprio, sem o layout do hub. Água veio do pacote de Jaya (copy aprovada); Ar foi feita no mesmo molde a partir do PDF final. `shaktijaya.com.br/planners/<slug>` redireciona (307) via `Jaya_Hub_Page/vercel.json`.
+- **Fonte de verdade:** os PDFs "Novo" finais em `Projetos/ecosistema-jaya/Jaya_Hub_Page/planners/` (Água e Ar prontos; os outros estão sendo reconstruídos por Jaya). Imagens em `.../capa-planners/` (capas escuras e claras, `<elemento>-semana 01..04.png`, fotos `jaya1..10.jpg`, pasta `Logo/`).
+- **Para um novo planner:** copiar `ar.astro` como base, reescrever a copy só com o que está no PDF, gerar assets em `public/planners/<slug>/`, adicionar o slug em `CUSTOM_PAGES` (`src/data/planners.ts`) e no `build-planner-art.py` (gera o `<slug>-og.jpg`), trocar o medalhão nas outras páginas, e acrescentar o slug ao redirect do `Jaya_Hub_Page/vercel.json` (PR pelo @devops).
+- **Padrões fixos:** Meta Pixel `871203640872617` carregado depois do `load` (no `head` ele empurrava o LCP mobile para 3,5 s); UTMs repassadas ao checkout; um dia em destaque por semana; sem travessão, exclamação ou promessa inventada; capa do PDF vence o PNG se divergirem (`ar_novo.png` tinha a frase de outro planner).
+- **Pendências:** CLS ~0,058 nas páginas (meta 0,05); `crm-shakti-jaya` (Vercel) quebrado no main do Jaya_Hub_Page desde o PR #54 (import `.js` de arquivo `.ts` no `middleware.ts`).
 
 ## Próximos passos
 
