@@ -1,6 +1,6 @@
 # HANDOFF — Jaya, Entre Mundos (hub)
 
-**Atualizado em:** 25/09/2026, fim da sessão 1. **Estado:** no ar e estável. **Retomar em:** "Próximos passos" abaixo.
+**Atualizado em:** 28/09/2026, sessão 2. **Estado:** no ar e estável. **Retomar em:** "Próximos passos" abaixo.
 
 ## Onde está tudo
 
@@ -48,6 +48,13 @@
 - Lighthouse mobile local ×3: **98 · 100 · 100 · 100**, LCP ~2.27 s, TBT 0, CLS 0.
 - Produção: deploy `dpl_9j39NnuMgnTZgLrG92LpVNjLuyo7` (commit `859c03a`) READY, alias `plataforma.jayaroberta.com.br`, sem erro.
 - Produção (fetch pelo servidor, deploy anterior): HTTP 200, sem login; links com UTM; scripts de Analytics/Speed Insights presentes.
+
+## Sessão 2 · 28/09/2026 — acessos por produto
+
+- **Cadeado "login"** (`"badge": "login"` em `links.json`) agora em EIXO, Atlas de Forças e Biblioteca Claude by Jaya.
+- **Card trocado em Jaya AI:** "Business Jaya" virou "Biblioteca Gratuita da Jaya" → `https://jayaroberta.com.br/biblioteca` (aberta, sem login).
+- **Regra decidida por Jaya:** cada produto tem convite, painel e login próprios; nada herda acesso de outro. Painéis: Biblioteca `jayaroberta.com/biblioteca/admin`, Atlas `quiz.jayaroberta.com.br/admin`; o `/admin` do curso só aponta para eles.
+- **Supabase (Redirect URLs):** todo domínio de produto precisa de `https://<domínio>/**`. Sem isso, o login Google volta para `claude-by-jaya.vercel.app` e pede um segundo login. Já liberados: `jayaroberta.com/**` e `quiz.jayaroberta.com.br/**`.
 
 ## Próximos passos
 
