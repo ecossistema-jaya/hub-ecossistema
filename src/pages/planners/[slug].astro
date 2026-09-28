@@ -1,0 +1,640 @@
+---
+/* Planner sales page (Story 4.1). One template for every planner; the content
+   lives in src/data/planners.ts and the images in src/assets/planners/<slug>/.
+   The checkout stays on Hotmart. */
+import type { ImageMetadata } from 'astro';
+import { Picture } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Footer from '../../components/Footer.astro';
+import Icon from '../../components/Icon.astro';
+import { hub, track } from '../../lib/links';
+import { art } from '../../lib/art';
+import { planners, plannerByHubId, type Planner } from '../../data/planners';
+
+export function getStaticPaths() {
+  return planners.map((planner) => ({ params: { slug: planner.slug }, props: { planner } }));
+}
+
+const { planner } = Astro.props as { planner: Planner };
+const item = hub.elements.items.find((i) => i.id === planner.hubId)!;
+const price = hub.elements.price;
+const quiz = hub.worlds.find((w) => w.id === 'shakti')!.primary;
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/planners/**/*.jpg', { eager: true });
+const img = (file: string) => images[`/src/assets/planners/${planner.slug}/${file}.jpg`]!.default;
+const cover = img('cover');
+const portrait = art('autora');
+
+const checkout = item.url;
+const others = hub.elements.items
+  .filter((i) => i.id !== item.id)
+  .map((i) => {
+    const page = plannerByHubId(i.id);
+    return { ...i, href: page ? `/planners/${page.slug}` : track(i.url, `${item.id}-outros`), own: Boolean(page) };
+  });
+
+const title = `Planner ${item.name} · ${item.theme} · Jaya Roberta`;
+const description = `${planner.promise}. 30 dias de exercícios a dois do elemento ${item.name}, na Arquitetura Relacional dos 5 Elementos™. ${price}, acesso imediato.`;
+const productLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: `Planner 30 Dias ${item.name} · ${item.theme}`,
+  description: planner.element,
+  image: new URL(`/planners/${planner.slug}-og.jpg`, Astro.site).toString(),
+  brand: { '@type': 'Brand', name: 'Shakti Jaya' },
+  offers: {
+    '@type': 'Offer',
+    price: price.replace(/[^\d,]/g, '').replace(',', '.'),
+    priceCurrency: 'BRL',
+    availability: 'https://schema.org/InStock',
+    url: checkout,
+  },
+};
+const pixelValue = Number(productLd.offers.price);
+---
+
+<Base
+  title={title}
+  description={description}
+  ogImage={`/planners/${planner.slug}-og.jpg`}
+  ogAlt={`Capa do Planner ${item.name} · ${item.theme}`}
+  skipTo="conteudo"
+  skipLabel="Pular para o conteúdo"
+  jsonLdExtra={productLd}
+>
+  {
+    planner.pixelId && (
+      <script is:inline slot="head" define:vars={{ id: planner.pixelId, name: `Planner ${item.name}`, value: pixelValue }}>
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', id);
+        fbq('track', 'PageView');
+        fbq('track', 'ViewContent', { content_name: name, value: value, currency: 'BRL' });
+        window.__plannerPixel = { name: name, value: value };
+      </script>
+    )
+  }
+
+  <header class="bar">
+    <div class="wrap bar__inner">
+      <a class="bar__brand" href="/" aria-label="Jaya, Entre Mundos: voltar ao início">
+        <span class="bar__logo" aria-hidden="true"></span>
+      </a>
+      <a class="bar__back" href="/#atlas-title">Todos os planners</a>
+      <a class="bar__cta" href={checkout} data-checkout>Quero o planner</a>
+    </div>
+  </header>
+
+  <main id="conteudo" style={`--el: var(--${item.token})`}>
+    <!-- Night band: the planner's own world, navy and gold like its cover. -->
+    <section class="night" aria-labelledby="planner-title">
+      <div class="wrap night__inner">
+        <div class="night__copy">
+          <p class="night__kicker">Elemento {item.name} · 30 dias a dois</p>
+          <h1 id="planner-title" class="night__title">
+            {item.name}
+            <span>{item.theme}</span>
+          </h1>
+          <p class="night__promise">{planner.promise}.</p>
+          <p class="night__element">{planner.element}</p>
+          <div class="night__buy">
+            <a class="cta" href={checkout} data-checkout>
+              Quero começar os 30 dias <Icon name="arrow-right" size={18} />
+            </a>
+            <p class="night__price"><strong>{price}</strong> em até 6x · acesso imediato · 7 dias de garantia</p>
+          </div>
+        </div>
+        <figure class="night__cover">
+          <Picture
+            src={cover}
+            widths={[280, 420, 560]}
+            sizes="(min-width: 900px) 380px, 70vw"
+            formats={['avif', 'webp']}
+            fallbackFormat="jpg"
+            quality={55}
+            alt={`Capa do Planner ${item.name}: ${planner.promise}.`}
+            loading="eager"
+            fetchpriority="high"
+          />
+        </figure>
+      </div>
+    </section>
+
+    <section class="block signs" aria-labelledby="signs-title">
+      <div class="wrap signs__inner">
+        <p class="label">Quando a {item.name} está desalinhada</p>
+        <h2 id="signs-title" class="block__title">O relacionamento <span class="accent">seca.</span></h2>
+        <ul class="signs__list" role="list">
+          {planner.signs.map((sign) => <li>{sign}</li>)}
+        </ul>
+        <p class="signs__thesis">{planner.thesis}</p>
+        <div class="signs__intro">
+          {planner.intro.map((p) => <p>{p}</p>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="block how" aria-labelledby="how-title">
+      <div class="wrap how__inner">
+        <div>
+          <p class="label">Como funciona</p>
+          <h2 id="how-title" class="block__title">Um exercício por dia. <span class="accent">A dois.</span></h2>
+          <ol class="how__list" role="list">
+            {planner.howTo.map((step) => <li>{step}</li>)}
+          </ol>
+        </div>
+        <figure class="page-shot">
+          <Picture
+            src={img(planner.previews[0].file)}
+            widths={[480, 720, 1000]}
+            sizes="(min-width: 900px) 520px, 92vw"
+            formats={['avif', 'webp']}
+            fallbackFormat="jpg"
+            quality={72}
+            alt={planner.previews[0].alt}
+            loading="lazy"
+          />
+          <figcaption>Página de abertura do planner</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block weeks" aria-labelledby="weeks-title">
+      <div class="wrap">
+        <p class="label">O que tem dentro</p>
+        <h2 id="weeks-title" class="block__title">Quatro semanas, <span class="accent">trinta exercícios.</span></h2>
+        <ol class="weeks__grid" role="list">
+          {
+            planner.weeks.map((week, w) => (
+              <li class="week">
+                <p class="week__num">Semana {w + 1}</p>
+                <p class="week__question">{week.question}</p>
+                <ol class="week__days" role="list">
+                  {week.exercises.map((ex) => (
+                    <li>
+                      <span>Dia {ex.day}</span> {ex.title}
+                    </li>
+                  ))}
+                </ol>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <section class="block featured" aria-labelledby="featured-title">
+      <div class="wrap">
+        <p class="label">Alguns dos exercícios</p>
+        <h2 id="featured-title" class="block__title">Do jeito que estão <span class="accent">no planner.</span></h2>
+        <div class="featured__grid">
+          {
+            planner.featured.map((ex) => (
+              <figure class="exercise">
+                <p class="exercise__day">Dia {ex.day}</p>
+                <p class="exercise__title">{ex.title}</p>
+                <blockquote>
+                  <p>{ex.text}</p>
+                </blockquote>
+              </figure>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="block closing" aria-label="Última página do planner">
+      <div class="wrap closing__inner">
+        <figure class="page-shot page-shot--tall">
+          <Picture
+            src={img(planner.previews[1].file)}
+            widths={[360, 540, 760]}
+            sizes="(min-width: 900px) 380px, 80vw"
+            formats={['avif', 'webp']}
+            fallbackFormat="jpg"
+            quality={72}
+            alt={planner.previews[1].alt}
+            loading="lazy"
+          />
+          <figcaption>Dia 30</figcaption>
+        </figure>
+        <blockquote class="closing__quote">
+          <p>{planner.closing}</p>
+          <footer>Última página do Planner {item.name}</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="block author" aria-labelledby="author-title">
+      <div class="wrap author__inner">
+        {
+          portrait && (
+            <figure class="author__photo">
+              <Picture
+                src={portrait}
+                widths={[320, 480, 640]}
+                sizes="(min-width: 900px) 360px, 70vw"
+                formats={['avif', 'webp']}
+                fallbackFormat="jpg"
+                quality={68}
+                alt="Jaya Roberta, sentada, sorrindo."
+                loading="lazy"
+              />
+            </figure>
+          )
+        }
+        <div>
+          <p class="label">Quem criou</p>
+          <h2 id="author-title" class="block__title">Cada dia foi escrito por <span class="accent">uma terapeuta de relacionamentos.</span></h2>
+          <p class="author__role">Jaya Roberta · Terapeuta integrativa em relacionamentos e sexualidade humana</p>
+          <p>
+            Uno tecnologia, terapia tântrica e estudos profundos em sexualidade, espiritualidade e desenvolvimento
+            humano. Os planners são a parte prática da Arquitetura Relacional dos 5 Elementos™, o método que criei
+            para cuidar da relação por partes: segurança, emoção, diálogo, intimidade e propósito.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block offer" aria-labelledby="offer-title">
+      <div class="wrap">
+        <div class="offer__card">
+          <p class="label">Planner 30 dias · {item.name}</p>
+          <h2 id="offer-title" class="block__title">Comece hoje.</h2>
+          <ul class="offer__list" role="list">
+            <li>PDF de 32 páginas em tamanho A4, para a tela ou para imprimir</li>
+            <li>30 exercícios em 4 semanas, um por dia</li>
+            <li>Espaço de reflexão em cada dia e revisão ao fim de cada semana</li>
+            <li>Acesso imediato pela Hotmart</li>
+          </ul>
+          <p class="offer__price"><strong>{price}</strong> <span>em até 6x no cartão</span></p>
+          <a class="cta cta--rust" href={checkout} data-checkout>
+            Quero o Planner {item.name} <Icon name="arrow-right" size={18} />
+          </a>
+          <p class="offer__guarantee">
+            <Icon name="lock" size={14} /> Pagamento seguro na Hotmart · 7 dias de garantia incondicional
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block faq" aria-labelledby="faq-title">
+      <div class="wrap faq__inner">
+        <p class="label">Perguntas</p>
+        <h2 id="faq-title" class="block__title">Antes de <span class="accent">começar.</span></h2>
+        {
+          planner.faq.map((f) => (
+            <details class="faq__item">
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="block others" aria-labelledby="others-title">
+      <div class="wrap">
+        <p class="label">Arquitetura Relacional dos 5 Elementos™</p>
+        <h2 id="others-title" class="block__title">Um planner <span class="accent">para cada elemento.</span></h2>
+        <p class="others__lead">
+          O quiz dos 5 Elementos mostra qual elemento pede atenção na sua relação agora.{' '}
+          <a target="_blank" rel="noopener" href={track(quiz.url, `${item.id}-quiz`)}>Fazer o quiz.</a>
+        </p>
+        <ul class="others__list" role="list">
+          {
+            others.map((o) => {
+              const disc = art(`arcanos/${o.token}`);
+              return (
+                <li style={`--el: var(--${o.token})`}>
+                  <a href={o.href} {...(o.own ? {} : { target: '_blank', rel: 'noopener' })}>
+                    <span class="others__disc">
+                      {disc && (
+                        <Picture src={disc} width={96} height={96} fit="cover" position="top" formats={['avif', 'webp']} fallbackFormat="jpg" quality={55} alt="" loading="lazy" />
+                      )}
+                    </span>
+                    <span class="others__name">{o.name}</span>
+                    <span class="others__theme">{o.theme}</span>
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+
+  <script is:inline define:vars={{ slug: planner.slug }}>
+    /* Forward the visitor's campaign parameters to the Hotmart checkout, so a
+       sale can be traced to the post or ad that brought her. Hub defaults fill
+       the gaps; Hotmart reports utm_* and src. */
+    (function () {
+      var here = new URLSearchParams(location.search);
+      var keep = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'src', 'sck', 'fbclid'];
+      var defaults = { utm_source: 'plataforma', utm_medium: 'pagina-planner', utm_content: slug };
+      document.querySelectorAll('a[data-checkout]').forEach(function (a) {
+        var url = new URL(a.href);
+        Object.keys(defaults).forEach(function (k) { url.searchParams.set(k, defaults[k]); });
+        keep.forEach(function (k) { var v = here.get(k); if (v) url.searchParams.set(k, v); });
+        if (!url.searchParams.get('src')) url.searchParams.set('src', url.searchParams.get('utm_source'));
+        a.href = url.toString();
+        a.addEventListener('click', function () {
+          if (window.fbq && window.__plannerPixel) {
+            fbq('track', 'InitiateCheckout', { content_name: window.__plannerPixel.name, value: window.__plannerPixel.value, currency: 'BRL' });
+          }
+        });
+      });
+    })();
+  </script>
+</Base>
+
+<style>
+  /* ---------- Top bar ---------- */
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    padding-top: env(safe-area-inset-top, 0px);
+    background: color-mix(in srgb, var(--paper) 90%, transparent);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  }
+  .bar__inner { display: flex; align-items: center; gap: 16px; min-height: var(--header-h); }
+  .bar__brand { display: flex; align-items: center; min-height: 48px; }
+  .bar__logo {
+    width: 78px;
+    height: 38px;
+    background: var(--ink);
+    -webkit-mask: url('/brand/logo-horizontal.webp') left center / contain no-repeat;
+    mask: url('/brand/logo-horizontal.webp') left center / contain no-repeat;
+  }
+  .bar__back {
+    display: none;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-block: 14px;
+  }
+  .bar__cta {
+    margin-left: auto;
+    padding: 11px 16px;
+    border: 1px solid var(--rust);
+    color: var(--rust);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: background var(--t-fast), color var(--t-fast);
+  }
+  @media (hover: hover) {
+    .bar__back:hover { color: var(--ink); }
+    .bar__cta:hover { background: var(--rust); color: var(--on-teal); }
+  }
+  @media (min-width: 700px) { .bar__back { display: inline; } }
+
+  /* ---------- Night band (always dark, like the cover) ---------- */
+  .night {
+    --night: #0a1226;
+    --night-2: #111d3a;
+    --gold-n: #e6c27a;
+    --on-night: #f3ecdf;
+    --on-night-muted: #b9c2d4;
+    position: relative;
+    overflow: hidden;
+    color: var(--on-night);
+    background:
+      radial-gradient(ellipse 70% 60% at 78% 40%, color-mix(in srgb, var(--el) 55%, transparent), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 10% 90%, rgba(230, 194, 122, 0.12), transparent 70%),
+      linear-gradient(180deg, var(--night), var(--night-2));
+    padding-block: clamp(48px, 9vw, 96px);
+  }
+  .night::before {
+    /* faint star field */
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 12% 22%, rgba(255, 255, 255, 0.55), transparent 60%),
+      radial-gradient(1px 1px at 34% 68%, rgba(255, 255, 255, 0.4), transparent 60%),
+      radial-gradient(1.5px 1.5px at 58% 16%, rgba(230, 194, 122, 0.7), transparent 60%),
+      radial-gradient(1px 1px at 82% 78%, rgba(255, 255, 255, 0.45), transparent 60%),
+      radial-gradient(1px 1px at 91% 30%, rgba(255, 255, 255, 0.35), transparent 60%),
+      radial-gradient(1.5px 1.5px at 22% 86%, rgba(230, 194, 122, 0.5), transparent 60%);
+    pointer-events: none;
+  }
+  .night__inner { position: relative; display: grid; gap: 40px; align-items: center; }
+  .night__kicker {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--gold-n);
+  }
+  .night__title {
+    margin-top: 14px;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(3.4rem, 15vw, 6.2rem);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    color: var(--on-night);
+  }
+  .night__title span {
+    display: block;
+    margin-top: 12px;
+    font-size: clamp(1.2rem, 4.6vw, 1.7rem);
+    letter-spacing: 0.04em;
+    color: var(--gold-n);
+  }
+  .night__promise { margin-top: 22px; font-family: var(--font-display); font-size: clamp(1.25rem, 4.4vw, 1.6rem); line-height: 1.35; max-width: 26ch; }
+  .night__element { margin-top: 14px; color: var(--on-night-muted); max-width: 46ch; }
+  .night__buy { margin-top: 30px; display: grid; gap: 12px; justify-items: start; }
+  .night__price { font-size: 0.9rem; color: var(--on-night-muted); }
+  .night__price strong { color: var(--on-night); font-weight: 600; font-size: 1.05rem; }
+  .night__cover { justify-self: center; width: min(72vw, 380px); }
+  .night__cover :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(230, 194, 122, 0.25);
+    transform: rotate(-2deg);
+  }
+  @media (min-width: 900px) {
+    .night__inner { grid-template-columns: 1.15fr 0.85fr; gap: 56px; }
+  }
+
+  /* ---------- Buttons ---------- */
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 52px;
+    padding: 14px 24px;
+    background: var(--gold-n, var(--gold));
+    color: #14100a;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: filter var(--t-fast), transform var(--t-fast);
+  }
+  .cta--rust { background: var(--rust); color: #fbf8f2; }
+  :global([data-theme='dark']) .cta--rust { color: #14100a; }
+  @media (hover: hover) { .cta:hover { filter: brightness(1.08); transform: translateY(-1px); } }
+
+  /* ---------- Paper blocks ---------- */
+  .block { padding-block: clamp(56px, 9vw, 96px); }
+  .block + .block { border-top: 1px solid var(--line-soft); }
+  .block__title { margin-top: 14px; font-size: clamp(1.9rem, 7vw, 2.8rem); max-width: 20ch; }
+
+  .signs__inner { max-width: 760px; }
+  .signs__list { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 12px; }
+  .signs__list li {
+    position: relative;
+    padding: 16px 18px 16px 50px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    font-size: 1.02rem;
+    color: var(--ink);
+  }
+  .signs__list li::before {
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    translate: 0 -50%;
+    border-radius: 50% 50% 50% 0;
+    rotate: -45deg;
+    background: var(--el);
+  }
+  .signs__thesis { margin-top: 28px; font-family: var(--font-display); font-size: clamp(1.3rem, 4.6vw, 1.7rem); line-height: 1.3; color: var(--ink); max-width: 28ch; }
+  .signs__intro { margin-top: 18px; display: grid; gap: 14px; max-width: 62ch; }
+
+  .how__inner { display: grid; gap: 40px; align-items: center; }
+  .how__list { margin: 26px 0 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: 14px; }
+  .how__list li { counter-increment: step; display: grid; grid-template-columns: 36px 1fr; gap: 12px; align-items: baseline; }
+  .how__list li::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: var(--font-display);
+    color: var(--el);
+    font-size: 1.1rem;
+  }
+  :global([data-theme='dark']) .how__list li::before { color: var(--gold); }
+  @media (min-width: 900px) { .how__inner { grid-template-columns: 1fr 1fr; gap: 64px; } }
+
+  .page-shot { margin: 0; }
+  .page-shot :global(img) {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    box-shadow: 0 24px 50px -28px rgba(21, 45, 56, 0.45);
+  }
+  .page-shot figcaption,
+  .closing__quote footer {
+    margin-top: 12px;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .weeks__grid { list-style: none; margin: 34px 0 0; padding: 0; display: grid; gap: 16px; }
+  .week { padding: 24px 22px; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--el); }
+  :global([data-theme='dark']) .week { border-top-color: var(--gold); }
+  .week__num { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .week__question { margin-top: 8px; font-family: var(--font-display); font-size: 1.2rem; line-height: 1.3; color: var(--ink); }
+  .week__days { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 6px; font-size: 0.95rem; }
+  .week__days span { display: inline-block; min-width: 3.6em; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); }
+  @media (min-width: 700px) { .weeks__grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1100px) { .weeks__grid { grid-template-columns: repeat(4, 1fr); } }
+
+  .featured__grid { margin-top: 32px; display: grid; gap: 16px; }
+  .exercise { margin: 0; padding: 26px 24px; background: var(--paper-2); border-left: 3px solid var(--el); }
+  :global([data-theme='dark']) .exercise { border-left-color: var(--gold); }
+  .exercise__day { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text); }
+  .exercise__title { margin-top: 6px; font-family: var(--font-display); font-size: 1.35rem; color: var(--ink); }
+  .exercise blockquote { margin: 12px 0 0; font-style: italic; }
+  @media (min-width: 800px) { .featured__grid { grid-template-columns: 1fr 1fr; } }
+
+  .closing__inner { display: grid; gap: 36px; align-items: center; justify-items: center; }
+  .page-shot--tall { width: min(80vw, 380px); }
+  .closing__quote { margin: 0; max-width: 30ch; text-align: center; }
+  .closing__quote p { font-family: var(--font-display); font-size: clamp(1.5rem, 5.6vw, 2.2rem); line-height: 1.3; color: var(--ink); }
+  @media (min-width: 900px) { .closing__inner { grid-template-columns: auto 1fr; gap: 72px; justify-items: start; } .closing__quote { text-align: left; } }
+
+  .author__inner { display: grid; gap: 32px; align-items: center; }
+  .author__photo { margin: 0; justify-self: center; width: min(70vw, 340px); }
+  .author__photo :global(img) { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 25%; border-radius: 50% 50% 4px 4px; }
+  .author__role { margin-top: 8px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rust); }
+  .author__inner p:last-child { margin-top: 16px; max-width: 58ch; }
+  @media (min-width: 900px) { .author__inner { grid-template-columns: 340px 1fr; gap: 64px; } }
+
+  .offer__card {
+    max-width: 640px;
+    margin-inline: auto;
+    padding: clamp(28px, 6vw, 48px);
+    background: var(--card);
+    border: 1px solid var(--line);
+    box-shadow: 0 30px 60px -40px rgba(21, 45, 56, 0.5);
+    text-align: center;
+  }
+  .offer__card .block__title { margin-inline: auto; }
+  .offer__list { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 10px; text-align: left; }
+  .offer__list li { position: relative; padding-left: 26px; }
+  .offer__list li::before { content: ''; position: absolute; left: 4px; top: 0.55em; width: 8px; height: 8px; border-radius: 50%; background: var(--el); }
+  :global([data-theme='dark']) .offer__list li::before { background: var(--gold); }
+  .offer__price { margin: 28px 0 18px; }
+  .offer__price strong { font-family: var(--font-display); font-weight: 400; font-size: 2.6rem; color: var(--ink); }
+  .offer__price span { display: block; font-size: 0.85rem; color: var(--muted); }
+  .offer__guarantee { margin-top: 16px; display: flex; gap: 8px; align-items: center; justify-content: center; font-size: 0.82rem; color: var(--muted); }
+
+  .faq__inner { max-width: 760px; }
+  .faq__item { border-bottom: 1px solid var(--line); }
+  .faq__item:first-of-type { margin-top: 26px; border-top: 1px solid var(--line); }
+  .faq__item summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 18px 36px 18px 0;
+    position: relative;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    color: var(--ink);
+    min-height: 44px;
+  }
+  .faq__item summary::-webkit-details-marker { display: none; }
+  .faq__item summary::after { content: '+'; position: absolute; right: 6px; top: 16px; font-size: 1.4rem; color: var(--rust); transition: rotate var(--t-fast); }
+  .faq__item[open] summary::after { rotate: 45deg; }
+  .faq__item p { padding: 0 0 20px; max-width: 60ch; }
+
+  .others__lead { margin-top: 14px; }
+  .others__lead a { color: var(--rust); border-bottom: 1px solid currentColor; }
+  .others__list { list-style: none; margin: 32px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 20px; }
+  .others__list a { display: grid; justify-items: center; text-align: center; gap: 4px; padding: 8px; }
+  .others__disc {
+    width: 84px;
+    height: 84px;
+    margin-bottom: 8px;
+    border-radius: 50%;
+    padding: 3px;
+    background: var(--el);
+    overflow: hidden;
+    transition: transform 0.45s var(--ease-out);
+  }
+  .others__disc :global(img) { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+  .others__name { font-family: var(--font-display); font-size: 1.2rem; color: var(--ink); }
+  .others__theme { font-size: 0.82rem; color: var(--muted); }
+  @media (hover: hover) { .others__list a:hover .others__disc { transform: scale(1.06); } .others__list a:hover .others__name { color: var(--rust); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .night__cover :global(img) { transform: none; }
+    .cta, .others__disc { transition: none; }
+  }
+</style>

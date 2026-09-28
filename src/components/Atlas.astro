@@ -3,6 +3,7 @@ import { Picture } from 'astro:assets';
 import { hub, track } from '../lib/links';
 import { art } from '../lib/art';
 import Compass from './Compass.astro';
+import { plannerByHubId } from '../data/planners';
 
 const { elements } = hub;
 const quiz = hub.worlds.find((w) => w.id === 'shakti')!.primary;
@@ -41,9 +42,14 @@ const groups = [
               {group.items.map((item, i) => {
                 const img = art(`arcanos/${item.token}`);
                 const n = String(g === 0 ? i + 1 : i + 6).padStart(2, '0');
+                // Planners with a sales page open it here; the rest still go straight to checkout.
+                const page = plannerByHubId(item.id);
+                const linkAttrs = page
+                  ? { href: `/planners/${page.slug}` }
+                  : { href: track(item.url, item.id), target: '_blank', rel: 'noopener' };
                 return (
                   <li class="medal" style={`--el: var(--${item.token}); --i:${i}`}>
-                    <a target="_blank" rel="noopener" class="medal__link" href={track(item.url, item.id)} data-link={item.id}>
+                    <a class="medal__link" {...linkAttrs} data-link={item.id}>
                       <span class="medal__disc">
                         {img && (
                           <Picture

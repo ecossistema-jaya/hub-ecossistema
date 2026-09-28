@@ -5,10 +5,25 @@ import { hub } from '../lib/links';
 interface Props {
   title: string;
   description: string;
+  /** Absolute or site-relative share image (1200×630). Defaults to the hub's. */
+  ogImage?: string;
+  ogAlt?: string;
+  /** Id the skip link jumps to. */
+  skipTo?: string;
+  skipLabel?: string;
+  /** Extra JSON-LD node (e.g. a Product on the planner pages). */
+  jsonLdExtra?: Record<string, unknown>;
 }
-const { title, description } = Astro.props;
+const {
+  title,
+  description,
+  ogAlt = 'Jaya, Entre Mundos — Inteligência Relacional: Shakti Jaya, Tarot e Jaya AI',
+  skipTo = 'caminhos',
+  skipLabel = 'Pular para os caminhos',
+  jsonLdExtra,
+} = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
-const ogImage = new URL('/og.jpg', Astro.site).toString();
+const ogImage = new URL(Astro.props.ogImage ?? '/og.jpg', Astro.site).toString();
 const onVercel = process.env.VERCEL === '1';
 
 const jsonLd = {
@@ -75,19 +90,21 @@ const jsonLd = {
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Jaya, Entre Mundos — Inteligência Relacional: Shakti Jaya, Tarot e Jaya AI" />
+    <meta property="og:image:alt" content={ogAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    {jsonLdExtra && <script type="application/ld+json" set:html={JSON.stringify(jsonLdExtra)} />}
+    <slot name="head" />
 
     {onVercel && <script is:inline defer src="/_vercel/insights/script.js"></script>}
     {onVercel && <script is:inline defer src="/_vercel/speed-insights/script.js"></script>}
   </head>
   <body>
-    <a class="skip-link" href="#caminhos">Pular para os caminhos</a>
+    <a class="skip-link" href={`#${skipTo}`}>{skipLabel}</a>
     <div class="ambient" aria-hidden="true"></div>
     <canvas class="sun-canvas" aria-hidden="true"></canvas>
     <div class="grain" aria-hidden="true"></div>

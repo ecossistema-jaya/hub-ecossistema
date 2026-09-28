@@ -21,6 +21,8 @@ const picks = {
   // Portal covers chosen by Jaya (2026-09-25), kept in src/assets/home (local, git-ignored)
   'world-shakti': '../home/shakti.png',
   'world-ai': '../home/jay.png',
+  // Author portrait for the planner sales pages (Story 4.1)
+  'autora': '_MG_0054.jpg',
   // 5 Elementos + jornadas
   'arcanos/terra': `${AB}/arcano-a-imperatriz.png`,
   'arcanos/agua': `${AB}/arcano-a-estrela.png`,
