@@ -60,10 +60,10 @@
       },
       "links": [
         {
-          "id": "ai-business",
-          "label": "Business Jaya",
-          "note": "Clareza para decidir. Estrutura para crescer.",
-          "url": "https://jayaroberta.com.br/"
+          "id": "ai-biblioteca-gratuita",
+          "label": "Biblioteca Gratuita da Jaya",
+          "note": "Guias técnicos abertos, sem login",
+          "url": "https://jayaroberta.com.br/biblioteca"
         },
         {
           "id": "ai-biblioteca",
