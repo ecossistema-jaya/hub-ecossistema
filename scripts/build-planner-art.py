@@ -61,6 +61,22 @@ PLANNERS = {
             "parabens": (40, None),
         },
     },
+    "terra": {
+        # capa-planners/terra_novo.png matches the PDF's page 1 (same "A base que
+        # seu amor precisa" tagline and "Base · Segurança · Confiança · Pertencimento"),
+        # and is the sharper source.
+        "cover": "capa-planners/terra_novo.png",
+        # 42 pages, confirmed 2026-09-28 with pymupdf get_text; same "Novo" layout
+        # as Água and Ar ("Quando parar" on p4, Termômetro da Segurança on p6).
+        "pdf": "planners/Planner Terra Novo.pdf",
+        "pages": {
+            "como-usar": (3, (0.0, 0.0, 1.0, 0.75)),
+            "jornada": (5, None),
+            "semana-1": (7, None),
+            "dia-1": (8, None),
+            "parabens": (40, None),
+        },
+    },
 }
 
 COVER_WIDTH = 1100
