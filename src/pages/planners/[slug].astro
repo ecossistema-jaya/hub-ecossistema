@@ -9,10 +9,12 @@ import Footer from '../../components/Footer.astro';
 import Icon from '../../components/Icon.astro';
 import { hub, track } from '../../lib/links';
 import { art } from '../../lib/art';
-import { planners, plannerByHubId, type Planner } from '../../data/planners';
+import { planners, plannerByHubId, CUSTOM_PAGES, type Planner } from '../../data/planners';
 
 export function getStaticPaths() {
-  return planners.map((planner) => ({ params: { slug: planner.slug }, props: { planner } }));
+  return planners
+    .filter((planner) => !CUSTOM_PAGES.has(planner.slug))
+    .map((planner) => ({ params: { slug: planner.slug }, props: { planner } }));
 }
 
 const { planner } = Astro.props as { planner: Planner };

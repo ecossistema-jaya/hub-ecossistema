@@ -28,17 +28,17 @@ OUT = ROOT / "src" / "assets" / "planners"
 PLANNERS = {
     "agua": {
         "cover": "capa-planners/agua_novo.png",
-        "pdf": "planners/Planner Agua Novo.pdf",
-        "photos": {
-            "hero-photo": "capa-planners/aguas.png",
-            "offer-cover": "capa-planners/agua.png",
-        },
+        # Final PDF (42 pages, with text layer), confirmed 2026-09-28. Page numbers
+        # below were re-derived from it with pymupdf get_text: a "Quando parar" page
+        # was inserted after "Como usar" and an "Antes da Semana 1" thermometer page
+        # before the week 1 divider, shifting everything from "jornada" on by +1/+2.
+        "pdf": "planners/Planner Água Novo.pdf",
         "pages": {
             "como-usar": (3, (0.0, 0.0, 1.0, 0.64)),
-            "jornada": (4, None),
-            "semana-1": (5, None),
-            "dia-1": (6, None),
-            "parabens": (38, None),
+            "jornada": (5, None),
+            "semana-1": (7, None),
+            "dia-1": (8, None),
+            "parabens": (40, None),
         },
     },
 }

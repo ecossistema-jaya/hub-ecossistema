@@ -76,7 +76,7 @@ export const planners: Planner[] = [
     howHeadline: ['Um encontro por dia.', 'A dois.'],
     weeksHeadline: ['Quatro semanas,', 'quatro movimentos.'],
     weeksLead: 'Cada uma constrói sobre a anterior: da consciência ao compromisso.',
-    pages: 40,
+    pages: 42,
     signs: [
       'Vocês podem estar juntos fisicamente, mas emocionalmente distantes.',
       'Os sentimentos ficam represados, não ditos.',
@@ -222,3 +222,6 @@ export const planners: Planner[] = [
 
 export const plannerBySlug = (slug: string) => planners.find((p) => p.slug === slug);
 export const plannerByHubId = (id: string) => planners.find((p) => p.hubId === id);
+
+// Água has a dedicated hand-built page (src/pages/planners/agua.astro); [slug].astro must not generate it.
+export const CUSTOM_PAGES = new Set(['agua']);
