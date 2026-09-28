@@ -75,7 +75,8 @@
           "id": "ai-atlas",
           "label": "Atlas de Forças",
           "note": "O mapa das suas forças naturais",
-          "url": "https://quiz.jayaroberta.com.br/"
+          "url": "https://quiz.jayaroberta.com.br/",
+          "badge": "login"
         },
         {
           "id": "ai-eixo",
