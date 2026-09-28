@@ -69,7 +69,8 @@
           "id": "ai-biblioteca",
           "label": "Biblioteca Claude by Jaya",
           "note": "Tudo o que eu uso no Claude, organizado",
-          "url": "https://jayaroberta.com/biblioteca"
+          "url": "https://jayaroberta.com/biblioteca",
+          "badge": "login"
         },
         {
           "id": "ai-atlas",
