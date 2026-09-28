@@ -17,6 +17,9 @@ const mid = (cards.length - 1) / 2;
       <p class="tarot__summary">{tarot.summary}</p>
       <a target="_blank" rel="noopener" class="tarot__cta" href={track(tarot.url, 'tarot-cta')} data-link="tarot-cta">
         {tarot.cta}
+        {tarot.badge === 'login' && (
+          <span class="tarot__tag"><Icon name="lock" size={12} /> login</span>
+        )}
         <Icon name="arrow-right" size={18} />
       </a>
     </div>
@@ -94,6 +97,16 @@ const mid = (cards.length - 1) / 2;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     transition: background-color var(--t-fast), color var(--t-fast), box-shadow var(--t-fast);
+  }
+  .tarot__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 7px;
+    border: 1px solid currentColor;
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
   }
   @media (hover: hover) {
     .tarot__cta:hover { background: transparent; color: var(--amber); box-shadow: inset 0 0 0 1px var(--amber); }

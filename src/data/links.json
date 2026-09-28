@@ -30,7 +30,8 @@
           "id": "shakti-tarot",
           "label": "Tarot da Jaya",
           "note": "Os 22 Arcanos Maiores, na leitura Thoth",
-          "url": "https://www.shaktijaya.com.br/tarot"
+          "url": "https://www.shaktijaya.com.br/tarot",
+          "badge": "login"
         },
         {
           "id": "shakti-ayla",
@@ -203,6 +204,7 @@
     "summary": "Os 22 Arcanos Maiores do deck autoral de Jaya Roberta, lidos pela lente do Tarot de Thoth: símbolo explicado em língua de gente e o sentido prático de cada carta.",
     "cta": "Conhecer os 22 arcanos",
     "url": "https://www.shaktijaya.com.br/tarot",
+    "badge": "login",
     "cards": [
       {
         "slot": "sacerdotisa",
