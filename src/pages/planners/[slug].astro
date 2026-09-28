@@ -51,6 +51,8 @@ const productLd = {
   },
 };
 const pixelValue = Number(productLd.offers.price);
+// Days shown in full in the "Do jeito que estão no planner" section get highlighted in the weeks grid.
+const featuredDays = new Set(planner.featured.map((ex) => ex.day));
 ---
 
 <Base
@@ -162,6 +164,7 @@ const pixelValue = Number(productLd.offers.price);
       <div class="wrap">
         <p class="label">O que tem dentro</p>
         <h2 id="weeks-title" class="block__title">Quatro semanas, <span class="accent">trinta exercícios.</span></h2>
+        <p class="weeks__legend"><span aria-hidden="true"></span> Em destaque: exercícios que você lê por inteiro logo abaixo.</p>
         <ol class="weeks__grid" role="list">
           {
             planner.weeks.map((week, w) => (
@@ -170,7 +173,7 @@ const pixelValue = Number(productLd.offers.price);
                 <p class="week__question">{week.question}</p>
                 <ol class="week__days" role="list">
                   {week.exercises.map((ex) => (
-                    <li>
+                    <li class:list={{ 'is-featured': featuredDays.has(ex.day), 'is-review': ex.title === 'Reflexão da semana' }}>
                       <span>Dia {ex.day}</span> {ex.title}
                     </li>
                   ))}
@@ -546,13 +549,47 @@ const pixelValue = Number(productLd.offers.price);
     color: var(--muted);
   }
 
-  .weeks__grid { list-style: none; margin: 34px 0 0; padding: 0; display: grid; gap: 16px; }
-  .week { padding: 24px 22px; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--el); }
-  :global([data-theme='dark']) .week { border-top-color: var(--gold); }
-  .week__num { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
-  .week__question { margin-top: 8px; font-family: var(--font-display); font-size: 1.2rem; line-height: 1.3; color: var(--ink); }
-  .week__days { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 6px; font-size: 0.95rem; }
-  .week__days span { display: inline-block; min-width: 3.6em; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); }
+  /* The weeks sit on the night palette, like the cover: gold weeks, and the
+     featured days lit in the element's own light. */
+  .weeks {
+    --gold-n: #e6c27a;
+    --on-night: #f3ecdf;
+    --on-night-muted: #aeb8cb;
+    --lit: color-mix(in srgb, var(--el) 18%, #9eeeff);
+    color: var(--on-night);
+    background:
+      radial-gradient(ellipse 60% 50% at 85% 0%, color-mix(in srgb, var(--el) 45%, transparent), transparent 70%),
+      linear-gradient(180deg, #0a1226, #101b36);
+    border-top: 0;
+  }
+  .block.weeks + .block { border-top: 0; }
+  .weeks :global(.label) { color: var(--gold-n); }
+  .weeks :global(.label)::after { background: color-mix(in srgb, var(--gold-n) 45%, transparent); }
+  .weeks .block__title { color: var(--on-night); }
+  .weeks .block__title :global(.accent) { color: var(--gold-n); }
+  .weeks__legend { margin-top: 16px; display: flex; align-items: center; gap: 10px; font-size: 0.88rem; color: var(--on-night-muted); }
+  .weeks__legend span { width: 10px; height: 10px; border-radius: 50%; background: var(--lit); box-shadow: 0 0 10px var(--lit); }
+  .weeks__grid { list-style: none; margin: 30px 0 0; padding: 0; display: grid; gap: 16px; }
+  .week {
+    padding: 24px 22px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(230, 194, 122, 0.22);
+    border-top: 3px solid var(--gold-n);
+  }
+  .week__num { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-n); }
+  .week__question { margin-top: 8px; font-family: var(--font-display); font-size: 1.2rem; line-height: 1.3; color: var(--gold-n); }
+  .week__days { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 6px; font-size: 0.95rem; color: var(--on-night); }
+  .week__days li { padding: 3px 0; }
+  .week__days span { display: inline-block; min-width: 3.6em; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; color: var(--on-night-muted); }
+  .week__days .is-featured {
+    margin-inline: -8px;
+    padding: 3px 8px;
+    color: var(--lit);
+    background: color-mix(in srgb, var(--lit) 16%, transparent);
+    border-left: 2px solid var(--lit);
+  }
+  .week__days .is-featured span { color: var(--lit); }
+  .week__days .is-review { color: var(--on-night-muted); font-style: italic; }
   @media (min-width: 700px) { .weeks__grid { grid-template-columns: 1fr 1fr; } }
   @media (min-width: 1100px) { .weeks__grid { grid-template-columns: repeat(4, 1fr); } }
 
