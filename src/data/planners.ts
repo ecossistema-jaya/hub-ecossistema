@@ -11,6 +11,9 @@
 
 export type Exercise = { day: number; title: string };
 
+/** Jaya's Meta Pixel (supplied 2026-09-28). Planners use it unless they set their own. */
+export const DEFAULT_PIXEL_ID = '871203640872617';
+
 export type Planner = {
   slug: string;
   /** links.json elements.items id */
@@ -40,7 +43,7 @@ export const planners: Planner[] = [
     promise: 'A profundidade emocional que seu amor precisa',
     element:
       'O elemento Água representa a fluidez emocional: expressão de sentimentos, empatia, vulnerabilidade e compreensão mútua.',
-    pixelId: null,
+    pixelId: DEFAULT_PIXEL_ID,
     signs: [
       'Vocês estão juntos fisicamente, mas emocionalmente distantes.',
       'Os sentimentos ficam represados, não ditos.',
