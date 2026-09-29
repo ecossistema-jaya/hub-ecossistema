@@ -138,7 +138,7 @@
       {
         "id": "planner-despertar",
         "name": "Despertar",
-        "theme": "Jornada de 30 dias",
+        "theme": "Para a relação morna",
         "token": "despertar",
         "url": "https://pay.hotmart.com/P104848984N",
         "arcano": "Sol"
@@ -146,7 +146,7 @@
       {
         "id": "planner-harmonia",
         "name": "Harmonia",
-        "theme": "Jornada de 30 dias",
+        "theme": "Manter o equilíbrio",
         "token": "harmonia",
         "url": "https://pay.hotmart.com/C104849036I",
         "arcano": "Arte"
