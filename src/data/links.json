@@ -156,9 +156,16 @@
   "social": [
     {
       "id": "social-instagram",
-      "label": "Instagram",
+      "label": "Instagram @jayaroberta.shakti",
       "icon": "instagram",
       "url": "https://www.instagram.com/jayaroberta.shakti/"
+    },
+    {
+      "id": "social-instagram-ai",
+      "label": "Instagram @jayaroberta.ai",
+      "icon": "instagram",
+      "url": "https://www.instagram.com/jayaroberta.ai/",
+      "accent": true
     },
     {
       "id": "social-whatsapp",
