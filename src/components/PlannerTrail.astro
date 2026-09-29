@@ -1,0 +1,187 @@
+---
+/* Suggested journey across the seven planners (Terra → Harmonia), shown on each
+   standalone sales page. Mirrors the hub Atlas map: dotted orbit and alternating
+   heights on desktop, vertical dotted thread on mobile. The current planner stays
+   on the trail, marked "Você está aqui", so the numbering never has gaps. */
+import { hub } from '../lib/links';
+
+interface Props {
+  current: string;
+}
+const { current } = Astro.props;
+
+// Same palette as the hub (global.css); standalone pages don't load it.
+const RING: Record<string, string> = {
+  terra: '#a8773c',
+  agua: '#1f5a64',
+  ar: '#5f7f96',
+  fogo: '#b24f2c',
+  eter: '#6f6e98',
+  despertar: '#b8893a',
+  harmonia: '#7d3a3a',
+};
+
+const items = hub.elements.items;
+const groups = [
+  { title: 'Os cinco elementos', note: 'Cada elemento cuida de uma parte da relação.', items: items.slice(0, 5), start: 1 },
+  { title: 'Jornadas de 30 dias', note: 'Para quem quer constância, um dia de cada vez.', items: items.slice(5), start: 6 },
+];
+---
+
+<div class="trail">
+  <svg class="trail__orbit" viewBox="0 0 1100 300" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M20 190 C 140 60, 260 60, 330 150 S 520 250, 600 130 S 800 20, 880 150 S 1040 250, 1080 120" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 7" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+    <path d="M20 220 C 200 120, 380 280, 560 180 S 900 60, 1080 170" fill="none" stroke="currentColor" stroke-width="0.8" stroke-dasharray="1 9" stroke-linecap="round" vector-effect="non-scaling-stroke" opacity="0.6"></path>
+  </svg>
+  {
+    groups.map((group) => (
+      <div class="trail__group">
+        <p class="trail__group-title">
+          <span>{group.title}</span>
+          <small>{group.note}</small>
+        </p>
+        <ol class="trail__list" role="list" start={group.start}>
+          {group.items.map((item, i) => {
+            const n = String(group.start + i).padStart(2, '0');
+            const here = item.token === current;
+            const inner = (
+              <>
+                <span class="stop__disc">
+                  <img src={`/planners/agua/arcanos/${item.token}.webp`} width="192" height="192" alt="" loading="lazy" decoding="async" />
+                </span>
+                <span class="stop__text">
+                  <span class="stop__num">{n}</span>
+                  <span class="stop__name">{item.name}</span>
+                  <span class="stop__theme">{item.theme}</span>
+                  {here ? <span class="stop__here">Você está aqui</span> : <span class="stop__meta">Arcano {item.arcano}</span>}
+                </span>
+              </>
+            );
+            return (
+              <li class:list={['stop', { 'stop--here': here }]} style={`--ring:${RING[item.token]}`}>
+                {here ? (
+                  <span class="stop__link" aria-current="page">{inner}</span>
+                ) : (
+                  <a class="stop__link" href={`/planners/${item.token}`}>{inner}</a>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .trail { position: relative; margin-top: 46px; text-align: left; }
+  .trail__orbit { display: none; }
+  .trail__group + .trail__group { margin-top: 40px; }
+  .trail__group-title {
+    display: grid;
+    gap: 2px;
+    margin: 0 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .trail__group-title span { font-family: var(--serif); font-size: 22px; color: var(--ink); }
+  .trail__group-title small {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .trail__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; position: relative; }
+  /* mobile: dotted thread connecting the stops */
+  .trail__list::before {
+    content: '';
+    position: absolute;
+    left: 43px;
+    top: 30px;
+    bottom: 30px;
+    border-left: 1.5px dotted #9a7a5c;
+  }
+
+  .stop__link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 6px 0;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .stop__disc {
+    position: relative;
+    flex: none;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    padding: 4px;
+    background: var(--ring);
+    box-shadow: 0 0 0 1px #ede9e1, 0 0 0 5px color-mix(in srgb, var(--ring) 22%, transparent);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .stop__disc::after {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    border: 1px dotted color-mix(in srgb, var(--ring) 70%, transparent);
+    transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .stop__disc img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+  .stop__text { display: grid; }
+  .stop__num { font-family: var(--serif); font-size: 16px; line-height: 1.2; color: color-mix(in srgb, var(--ring) 62%, #1a1410); }
+  .stop__name { font-family: var(--serif); font-size: 23px; line-height: 1.15; }
+  .stop__theme { font-size: 14px; line-height: 1.45; color: var(--muted); }
+  .stop__meta,
+  .stop__here {
+    margin-top: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .stop__here { color: var(--ring); }
+
+  /* current planner: stronger halo so the eye lands on "you are here" */
+  .stop--here .stop__disc {
+    box-shadow: 0 0 0 1px #ede9e1, 0 0 0 7px color-mix(in srgb, var(--ring) 35%, transparent), 0 14px 30px -10px color-mix(in srgb, var(--ring) 70%, transparent);
+  }
+  .stop--here .stop__disc::after { border-style: solid; border-color: color-mix(in srgb, var(--ring) 55%, transparent); }
+
+  @media (hover: hover) {
+    a.stop__link:hover .stop__disc { transform: scale(1.05); }
+    a.stop__link:hover .stop__disc::after { transform: rotate(90deg); }
+    a.stop__link:hover .stop__name { color: var(--gold-dark); }
+  }
+  a.stop__link:focus-visible { outline: 2px solid var(--gold-dark); outline-offset: 6px; border-radius: 4px; }
+
+  /* Desktop: the map. Stops float along a dotted orbit, alternating heights. */
+  @media (min-width: 1000px) {
+    .trail { display: grid; grid-template-columns: 5fr 2fr; gap: 40px; margin-top: 56px; }
+    .trail__orbit {
+      display: block;
+      position: absolute;
+      inset: 90px 0 auto 0;
+      width: 100%;
+      height: 300px;
+      color: #9a7a5c;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+    .trail__group + .trail__group { margin-top: 0; }
+    .trail__list { grid-auto-flow: column; grid-auto-columns: 1fr; gap: 12px; }
+    .trail__list::before { display: none; }
+    .stop:nth-child(even) { margin-top: 110px; }
+    .stop__link { flex-direction: column; text-align: center; gap: 14px; }
+    .stop__disc { width: 118px; height: 118px; z-index: 1; }
+    /* the orbit runs behind the labels instead of through them */
+    .stop__text { justify-items: center; position: relative; background: #ede9e1; padding: 2px 8px; border-radius: 8px; }
+  }
+</style>
