@@ -1,0 +1,290 @@
+---
+/* Ayla IA call-out on the home: Jaya's portrait in a SAND arch, the five element
+   medallions on one orbit, and a sample chat with Ayla (her AI version). The CTA
+   opens Ayla's sales page on shaktijaya.com.br. Prototype approved by Jaya on
+   2026-09-29 (claude.ai/artifact/3VXzeF4dmDBnx1UVkBC46c, v4). */
+import { Picture } from 'astro:assets';
+import { track } from '../lib/links';
+import { art } from '../lib/art';
+
+const SALES_PAGE = 'https://www.shaktijaya.com.br/ayla-ai/como-funciona';
+const portrait = art('ayla/jaya');
+const avatar = art('ayla/ayla');
+
+// Clockwise along the orbit, in the method's order.
+const medals = [
+  { slot: 'terra', name: 'Terra' },
+  { slot: 'agua', name: 'Água' },
+  { slot: 'ar', name: 'Ar' },
+  { slot: 'fogo', name: 'Fogo' },
+  { slot: 'eter', name: 'Éter' },
+].map((m, i) => ({ ...m, n: i + 1, img: art(`arcanos/${m.slot}`) }));
+---
+
+<section class="ayla" aria-labelledby="ayla-title">
+  <div class="wrap ayla__inner">
+    <div class="ayla__copy" data-reveal>
+      <p class="ayla__kicker">Ayla IA · a Jaya em forma de chat</p>
+      <h2 id="ayla-title" class="ayla__title">A Jaya tem agenda. <em>A versão dela em IA, não.</em></h2>
+      <p class="ayla__lead">
+        A <b>Ayla</b> é um chat de inteligência artificial treinado no método e no jeito de conduzir da Jaya. Você
+        escreve o que está vivendo na relação, a qualquer hora, e ela responde no estilo da Jaya: com a leitura
+        dos <b>5 Elementos</b>, as perguntas certas e um próximo passo.
+      </p>
+
+      <div class="ayla__gets">
+        <p class="ayla__gets-label">Em cada conversa, você recebe</p>
+        <ul role="list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+            <p><strong>Uma leitura pelos 5 Elementos.</strong>Qual elemento travou na sua relação e qual ainda sustenta vocês dois.</p>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5h14v10H10l-5 4z"></path></svg>
+            <p><strong>As perguntas que a Jaya faria.</strong>Sobre o corpo, o padrão que se repete e o que ficou sem dizer. Sem julgamento.</p>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M4 10h16M9 3v4M15 3v4"></path></svg>
+            <p><strong>Uma prática para os próximos 7 dias.</strong>Concreta, para fazer sozinha ou a dois.</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="ayla__offer">
+        <a class="ayla__cta" target="_blank" rel="noopener" href={track(SALES_PAGE, 'ayla-secao')} data-link="ayla-secao">
+          Conhecer a Ayla
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </a>
+        <p class="ayla__fine">
+          <b>3 perguntas grátis</b> depois do Quiz dos 5 Elementos. Assinatura de R$ 50 no primeiro mês e R$ 100/mês
+          depois. Orientação com IA, não substitui terapia.
+        </p>
+      </div>
+    </div>
+
+    <figure class="stage" aria-label="Retrato da Jaya com um exemplo de conversa com a Ayla, a versão dela em IA">
+      <div class="portrait">
+        <svg class="orbit" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <ellipse cx="50" cy="48" rx="44" ry="40" fill="none" stroke="currentColor" stroke-width="1.1" stroke-dasharray="2 7" stroke-linecap="round" vector-effect="non-scaling-stroke"></ellipse>
+        </svg>
+        <div class="arch">
+          {portrait && (
+            <Picture
+              src={portrait}
+              width={640}
+              height={860}
+              fit="cover"
+              position="top"
+              formats={['avif', 'webp']}
+              fallbackFormat="jpg"
+              widths={[320, 480, 640]}
+              quality={62}
+              sizes="(min-width: 1000px) 310px, 62vw"
+              alt=""
+              loading="lazy"
+              decoding="async"
+            />
+          )}
+        </div>
+        {
+          medals.map((m) => (
+            <span class={`medal m-${m.n}`} style={`--el: var(--${m.slot})`}>
+              {m.img && (
+                <Picture
+                  src={m.img}
+                  width={120}
+                  height={120}
+                  fit="cover"
+                  position="top"
+                  formats={['avif', 'webp']}
+                  fallbackFormat="jpg"
+                  widths={[120]}
+                  quality={55}
+                  sizes="60px"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
+              <span>{m.name}</span>
+            </span>
+          ))
+        }
+      </div>
+
+      <div class="chat">
+        <div class="chat__head">
+          <span class="chat__avatar">
+            {avatar && (
+              <Picture
+                src={avatar}
+                width={96}
+                height={96}
+                formats={['avif', 'webp']}
+                fallbackFormat="jpg"
+                widths={[96]}
+                quality={70}
+                sizes="44px"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            )}
+            <small>IA</small>
+          </span>
+          <span class="chat__who"><b>Ayla</b><span>IA treinada pela Jaya · online</span></span>
+          <span class="chat__time">03:12</span>
+        </div>
+        <p class="msg msg--me">Ele se fecha toda vez que eu tento conversar. Já não sei se insisto ou desisto.</p>
+        <p class="msg msg--ayla">
+          <span class="fade">Isso tem cara de <span class="el-ar">Ar</span> em falta, e o fechamento dele costuma ser
+          proteção, não desinteresse. Antes de decidir, me conta: quando você tenta conversar, o que o seu corpo sente?
+          E o que você</span>
+        </p>
+        <span class="typing">Ayla está escrevendo <span class="dots" aria-hidden="true"><span></span><span></span><span></span></span></span>
+      </div>
+
+      <figcaption class="stage__caption">
+        <b>Jaya Roberta</b>, terapeuta integrativa.<br />Na tela, a Ayla, a versão dela em IA.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .ayla {
+    margin-top: clamp(56px, 9vw, 100px);
+    padding-block: clamp(56px, 9vw, 104px);
+    background:
+      radial-gradient(ellipse 55% 65% at 80% 40%, var(--sun-glow), transparent 70%),
+      linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+    overflow: hidden;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1100px;
+  }
+  .ayla__inner { display: grid; gap: clamp(48px, 6vw, 72px); align-items: center; }
+  @media (min-width: 980px) { .ayla__inner { grid-template-columns: 1fr 1fr; } }
+
+  /* ---------- Copy ---------- */
+  .ayla__copy { min-width: 0; display: grid; gap: 22px; }
+  .ayla__kicker {
+    display: flex; align-items: center; gap: 14px;
+    font-family: var(--font-display); font-size: 0.76rem; letter-spacing: 0.38em; text-transform: uppercase; color: var(--gold);
+  }
+  .ayla__kicker::after { content: ''; flex: 0 0 56px; height: 1px; background: currentColor; opacity: 0.6; }
+  .ayla__title {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(2.1rem, 5.4vw, 3.5rem); line-height: 1.06; color: var(--ink);
+    text-wrap: balance; max-width: 15ch;
+  }
+  .ayla__title em { font-style: normal; color: var(--rust); }
+  .ayla__lead { font-size: 1.07rem; max-width: 50ch; }
+  .ayla__lead b { color: var(--ink); font-weight: 600; }
+
+  .ayla__gets-label { margin-bottom: 10px; font-size: 0.72rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--muted); }
+  .ayla__gets ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; max-width: 54ch; }
+  .ayla__gets li { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; }
+  .ayla__gets svg { width: 22px; height: 22px; color: var(--rust); margin-top: 2px; }
+  .ayla__gets p { font-size: 0.97rem; }
+  .ayla__gets strong { display: block; color: var(--ink); font-weight: 600; }
+
+  .ayla__offer { display: grid; gap: 14px; margin-top: 6px; }
+  .ayla__cta {
+    justify-self: start; display: inline-flex; align-items: center; gap: 12px;
+    padding: 16px 28px; border-radius: 999px;
+    background: var(--rust); color: var(--on-rust);
+    font-weight: 600; font-size: 1rem;
+    box-shadow: 0 14px 30px -14px var(--rust);
+    transition: background var(--t-base), transform 0.45s var(--ease-out);
+  }
+  .ayla__cta svg { width: 18px; height: 18px; }
+  @media (hover: hover) { .ayla__cta:hover { background: var(--rust-hot); transform: translateY(-2px); } }
+  .ayla__cta:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+  .ayla__fine { font-size: 0.84rem; color: var(--muted); max-width: 54ch; }
+  .ayla__fine b { color: var(--text); font-weight: 600; }
+
+  /* ---------- Portrait stage ---------- */
+  /* Medallions sit on one ellipse centred on the arch (cx 50%, cy 48%, rx 44%, ry 40%)
+     at equal 45deg steps: 180, 135, 90, 45, 0. */
+  .stage { position: relative; margin: 0; justify-self: center; width: min(100%, 500px); display: grid; gap: 14px; }
+  .portrait { position: relative; width: 100%; aspect-ratio: 500 / 560; }
+  .orbit { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--sepia-3); pointer-events: none; }
+  .arch {
+    position: absolute; left: 50%; top: 12%; transform: translateX(-50%);
+    width: 62%; aspect-ratio: 640 / 860;
+    border-radius: 999px 999px 24px 24px; overflow: hidden; background: var(--sepia-2);
+    box-shadow: 0 0 0 8px var(--card), 0 0 0 9px var(--line), 0 40px 70px -34px rgba(21, 45, 56, 0.5);
+  }
+  .arch :global(picture),
+  .arch :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; display: block; }
+  .arch :global(img) { filter: var(--photo-filter); }
+  .arch::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(21, 45, 56, 0.3) 100%); }
+
+  .medal {
+    position: absolute; width: 60px; height: 60px; transform: translate(-50%, -50%);
+    border-radius: 50%; padding: 3px; background: var(--el);
+    box-shadow: 0 0 0 1px var(--paper), 0 0 0 5px color-mix(in srgb, var(--el) 22%, transparent), 0 10px 22px -12px rgba(0, 0, 0, 0.5);
+  }
+  .medal :global(picture),
+  .medal :global(img) { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+  .medal > span {
+    position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 8px;
+    font-family: var(--font-display); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); white-space: nowrap;
+  }
+  .m-1 { left: 6%; top: 48%; }
+  .m-2 { left: 18.9%; top: 19.7%; }
+  .m-3 { left: 50%; top: 8%; z-index: 2; }
+  .m-3 > span { top: auto; bottom: 100%; margin: 0 0 7px; }
+  .m-4 { left: 81.1%; top: 19.7%; }
+  .m-5 { left: 94%; top: 48%; }
+
+  .chat {
+    position: relative; z-index: 3; margin: -24% auto 0; width: 88%;
+    background: var(--card); color: var(--text);
+    border: 1px solid var(--line); border-radius: 22px;
+    padding: 16px 16px 14px;
+    box-shadow: 0 30px 60px -30px rgba(21, 45, 56, 0.55);
+    display: grid; gap: 10px;
+  }
+  .chat__head { display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  .chat__avatar { position: relative; width: 44px; height: 44px; flex: none; }
+  .chat__avatar :global(picture),
+  .chat__avatar :global(img) { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+  .chat__avatar :global(img) { box-shadow: 0 0 0 2px var(--card), 0 0 0 3px var(--rust); }
+  .chat__avatar small {
+    position: absolute; right: -6px; bottom: -3px;
+    font-size: 0.56rem; font-weight: 600; letter-spacing: 0.06em;
+    background: var(--teal); color: var(--on-teal); border-radius: 6px; padding: 1px 4px;
+  }
+  .chat__who { display: grid; line-height: 1.25; min-width: 0; }
+  .chat__who b { font-family: var(--font-display); font-weight: 400; color: var(--ink); font-size: 0.98rem; }
+  .chat__who span { font-size: 0.72rem; color: var(--muted); }
+  .chat__time { margin-left: auto; font-size: 0.7rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  .msg { max-width: 88%; padding: 9px 13px; border-radius: 16px; font-size: 0.85rem; line-height: 1.5; }
+  .msg--me { justify-self: end; background: var(--teal); color: var(--on-teal); border-bottom-right-radius: 4px; }
+  .msg--ayla { justify-self: start; background: var(--paper-2); color: var(--text); border-bottom-left-radius: 4px; }
+  .el-ar { font-weight: 600; color: var(--ar); }
+  .fade { -webkit-mask-image: linear-gradient(180deg, #000 40%, transparent 100%); mask-image: linear-gradient(180deg, #000 40%, transparent 100%); }
+  .typing { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); display: inline-flex; align-items: center; gap: 8px; }
+  .dots { display: inline-flex; gap: 4px; }
+  .dots span { width: 5px; height: 5px; border-radius: 50%; background: currentColor; animation: ayla-blink 1.4s infinite ease-in-out; }
+  .dots span:nth-child(2) { animation-delay: 0.2s; }
+  .dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes ayla-blink { 0%, 80%, 100% { opacity: 0.3; } 40% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .dots span { animation: none; opacity: 0.8; }
+    .ayla__cta { transition: none; }
+  }
+
+  .stage__caption { text-align: center; font-size: 0.74rem; color: var(--muted); letter-spacing: 0.02em; }
+  .stage__caption b { font-family: var(--font-display); font-weight: 400; color: var(--ink); font-size: 0.84rem; }
+
+  @media (max-width: 520px) {
+    .ayla__kicker::after { display: none; }
+    .medal { width: 44px; height: 44px; }
+    .medal > span { font-size: 0.58rem; letter-spacing: 0.1em; margin-top: 5px; }
+    .chat { width: 100%; margin-top: -20%; }
+    .msg { font-size: 0.8rem; }
+  }
+</style>
