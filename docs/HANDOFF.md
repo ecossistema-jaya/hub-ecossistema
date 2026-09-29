@@ -1,6 +1,6 @@
 # HANDOFF — Jaya, Entre Mundos (hub)
 
-**Atualizado em:** 29/09/2026, sessão 3 (fim). **Estado:** sete páginas de planners no ar; conteúdo de lançamento pronto, **não publicado**. **Retomar em:** "Próximos passos" abaixo.
+**Atualizado em:** 29/09/2026, sessão 4 (fim). **Estado:** sete páginas de planners no ar com a trilha dos 7; seção da Ayla IA na home; página de vendas da Ayla refeita no shaktijaya.com.br; conteúdo de lançamento pronto, **ainda não publicado**. **Retomar em:** "Próximos passos" abaixo.
 
 ## Onde está tudo
 
@@ -31,8 +31,9 @@
 3. Dois territórios: Shakti Jaya (capa `home/shakti.png`) e Jaya AI (capa `home/jay.png`) com todos os links.
 4. Faixa "Conhecimento em movimento" (`zona-genialidade/19`).
 5. Mapa dos 5 Elementos: 7 planners como medalhões com arcanos (Terra=Imperatriz, Água=Estrela, Ar=Louco, Fogo=Força, Éter=Universo, Despertar=Sol, Harmonia=Arte).
-6. Tarot da Jaya → `shaktijaya.com.br/tarot` (leque de 6 arcanos).
-7. Citação + rodapé teal com logo real e "Área restrita" (Command Center, JayaFinance).
+6. Ayla IA (`src/components/Ayla.astro`, `id="ayla"`): foto da Jaya em arco SAND, 5 Elementos em órbita, chat da Ayla, CTA para a página de vendas. O card "Ayla IA" em Shakti Jaya desce até aqui (`"url": "#ayla"`).
+7. Tarot da Jaya → `shaktijaya.com.br/tarot` (leque de 6 arcanos).
+8. Citação + rodapé teal com logo real e "Área restrita" (Command Center, JayaFinance). Redes: dois Instagram, @jayaroberta.shakti (branco) e @jayaroberta.ai (dourado, `"accent": true`).
 
 ## Como editar
 
@@ -41,7 +42,8 @@
 - **Rodar local:** `npm run build && npx astro preview --port 4321` → http://127.0.0.1:4321
 - **Testar links:** `npm run check:links` (sai com erro se algum destino falhar; LinkedIn aparece como BLOCKED, é normal).
 - **Checar:** `npx astro check`; screenshots: `node scripts/shots.cjs <pasta>` e `node scripts/scroll-shots.cjs <pasta> light 390 844`.
-- **Publicar:** commit + `git push origin main` (Jaya autorizou push/deploy para este projeto).
+- **Publicar (fluxo desde a sessão 4):** branch → commit → @devops faz push e abre PR → Jaya confere o preview da Vercel e **ela mesma faz o merge no GitHub** → conferir produção. O modo automático do Claude Code bloqueia `gh pr merge` quando a aprovação chega repassada ("Merge Without Review"); não contornar.
+- **Link interno em `links.json`:** `"url": "#secao"` vira âncora na mesma aba, sem UTM e com seta para baixo (Worlds.astro).
 
 ## Verificado no fim da sessão
 
@@ -74,9 +76,21 @@
 - **Padrões fixos:** Meta Pixel `871203640872617` carregado depois do `load` (no `head` ele empurrava o LCP mobile para 3,5 s); UTMs repassadas ao checkout; um dia em destaque por semana; sem travessão, exclamação ou promessa inventada; capa do PDF vence o PNG se divergirem (`ar_novo.png` tinha a frase de outro planner).
 - **Pendências:** CLS ~0,058 nas páginas (meta 0,05); `crm-shakti-jaya` corrigido em 29/09 (PR #62): o build do Next pegava o `middleware.ts` da raiz; `turbopack.root` e `outputFileTracingRoot` fixados em `apps/dashboard`.
 
+## Sessão 4 · 29/09/2026 — trilha dos planners e Ayla IA
+
+Tudo abaixo está em produção e foi conferido no site publicado.
+
+- **Trilha dos 7 planners** (PRs #1 e #2): nas sete páginas de vendas, a grade de 6 medalhões virou `src/components/PlannerTrail.astro`: os 7 numerados 01→07 (Terra → Harmonia é o **caminho sugerido por Jaya**), zigue-zague com órbita no desktop, fio vertical no celular, o planner da página marcado "Você está aqui". Anel da Água usa `#1f5a64` do hub. CSS antigo `.medallion*` removido.
+- **Página de vendas da Ayla** no shaktijaya.com.br (`/ayla-ai/como-funciona`, PR #63 no `Jaya_Hub_Page`): hero com chat de exemplo, 3 passos, diferenciais, planos, FAQ com limites éticos (não substitui terapia, não diagnostica, CVV 188 / SAMU 192 / 180) e fechamento, em pt/es/en. A seção da Ayla na home do shaktijaya recebeu as mesmas correções.
+- **Decisões de Jaya sobre a Ayla** (valem para qualquer copy nova): preço **R$ 50 no 1º mês, depois R$ 100/mês**; **não é ilimitado**; "confidente de bolso" no lugar de "terapeuta de bolso"; "leitura dos 5 Elementos" no lugar de "diagnóstico"; sem depoimento (Patrícia M. removido), sem "suporte direto com Jaya", garantia de 7 dias; as 3 perguntas grátis liberam com o email do resultado do Quiz. Posicionamento aprovado: "a Jaya em forma de chat", "a versão dela em IA".
+- **Seção da Ayla na home do hub** (PR #3): protótipo aprovado em https://claude.ai/artifact/3VXzeF4dmDBnx1UVkBC46c (v4). Fotos: `src/assets/art/ayla/jaya.jpg` (recorte de `capa-planners/jaya6.jpg`) e `ayla.jpg` (avatar de `Jaya_Hub_Page/public/jaya-avatar.png` sem o anel do Instagram). CTA com `utm_content=ayla-secao`.
+- **Card Ayla → âncora** (PR #4) e **Instagram @jayaroberta.ai no rodapé** (PR #5), dourado para diferenciar.
+- **Checkout da Ayla:** `https://pay.hotmart.com/C105022654V?off=25goz2ja`; a página repassa as UTMs do visitante e dispara `InitiateCheckout` no Pixel.
+- **Sem story formal:** estes trabalhos foram por pedido direto de Jaya com aprovação de protótipo; não há story no `docs/stories/`.
+
 ## Próximos passos
 
-1. **Distribuição (maior retorno):** conteúdo de lançamento dos planners pronto em [distribuicao/lancamento-planners.md](distribuicao/lancamento-planners.md) (legenda do feed, 5 stories com o quiz, 1 story por planner em 7 dias). Jaya vai postar. Também: trocar o link da bio do Instagram `@jayaroberta.shakti` para `plataforma.jayaroberta.com.br`. Ayla ofereceu escrever story/post de lançamento.
+1. **Distribuição (maior retorno, nada publicado ainda):** conteúdo de lançamento dos planners pronto em [distribuicao/lancamento-planners.md](distribuicao/lancamento-planners.md) (legenda do feed, 5 stories com o quiz, 1 story por planner em 7 dias). Jaya vai postar. Também: trocar o link da bio do Instagram `@jayaroberta.shakti` para `plataforma.jayaroberta.com.br`. Falta um post/story de lançamento da Ayla (a seção nova e a página de vendas já estão prontas para receber tráfego); acompanhar `utm_content=ayla-secao` na Hotmart.
 2. **Jaya, no painel Vercel:** ligar Web Analytics e Speed Insights (os scripts já estão no site; só registram depois de ligados).
 3. **Lighthouse em produção:** PageSpeed Insights deu cota anônima esgotada (HTTP 429) em 25/09; repetir.
 4. **Revisão de copy escrita pela Ayla** (lista na story, "Open items").
@@ -89,4 +103,7 @@
 - **GitHub App da Vercel** na org usa "repositórios selecionados": repositório novo precisa ser liberado por Jaya no navegador (a CLI recebe 403).
 - **Estilos Astro com escopo** não alcançam a raiz de componentes filhos: use `:global(.componente.classe)` (Compass, Botanical).
 - **Cache de prévia** (WhatsApp/Instagram) mantém a imagem antiga de links já compartilhados por alguns dias.
+- **`astro preview` órfão:** parar a tarefa do Claude Code não mata o node; a porta fica presa ("Another astro preview server is already running"). Use `npx astro preview stop`.
+- **Quebra de linha no Astro:** texto que quebra linha logo antes de uma tag (`dos\n<b>5`) perde o espaço ("dos5"). Deixe a palavra na mesma linha da tag.
+- **Pasta vazia `Projetos/Jaya_Hub_Page-ayla`:** sobra da cópia de trabalho da página da Ayla (já desregistrada do git); o Windows a mantém aberta. Pode apagar pelo Explorer.
 - **Não relacionado a este projeto:** `HANDOFF.md` da raiz (migração do EIXO, pausada) segue sem alteração de estado.
