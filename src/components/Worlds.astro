@@ -61,9 +61,15 @@ const covers: Record<string, string> = { shakti: 'world-shakti', 'jaya-ai': 'wor
                       <span class="round"><Icon name="arrow-right" size={18} /></span>
                     </a>
                   </li>
-                  {visible(world.links as HubLink[]).map((link) => (
+                  {visible(world.links as HubLink[]).map((link) => {
+                    // "#section" links scroll within this page; everything else is an outbound, tracked link.
+                    const inPage = link.url.startsWith('#');
+                    const linkAttrs = inPage
+                      ? { href: link.url }
+                      : { href: track(link.url, link.id), target: '_blank', rel: 'noopener' };
+                    return (
                     <li>
-                      <a target="_blank" rel="noopener" class="world__link" href={track(link.url, link.id)} data-link={link.id}>
+                      <a class="world__link" {...linkAttrs} data-link={link.id}>
                         <span class="world__link-text">
                           <span class="world__link-label">
                             {link.label}
@@ -75,10 +81,11 @@ const covers: Record<string, string> = { shakti: 'world-shakti', 'jaya-ai': 'wor
                           </span>
                           {link.note && <span class="world__link-note">{link.note}</span>}
                         </span>
-                        <span class="round round--ghost"><Icon name="arrow-right" size={16} /></span>
+                        <span class="round round--ghost"><Icon name={inPage ? 'arrow-down' : 'arrow-right'} size={16} /></span>
                       </a>
                     </li>
-                  ))}
+                    );
+                  })}
                 </ul>
               </div>
             </article>

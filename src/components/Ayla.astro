@@ -21,7 +21,7 @@ const medals = [
 ].map((m, i) => ({ ...m, n: i + 1, img: art(`arcanos/${m.slot}`) }));
 ---
 
-<section class="ayla" aria-labelledby="ayla-title">
+<section class="ayla" id="ayla" aria-labelledby="ayla-title">
   <div class="wrap ayla__inner">
     <div class="ayla__copy" data-reveal>
       <p class="ayla__kicker">Ayla IA · a Jaya em forma de chat</p>
@@ -161,6 +161,7 @@ const medals = [
     overflow: hidden;
     content-visibility: auto;
     contain-intrinsic-size: auto 1100px;
+    scroll-margin-top: var(--header-h); /* #ayla from the Worlds card lands below the fixed topbar */
   }
   .ayla__inner { display: grid; gap: clamp(48px, 6vw, 72px); align-items: center; }
   @media (min-width: 980px) { .ayla__inner { grid-template-columns: 1fr 1fr; } }
