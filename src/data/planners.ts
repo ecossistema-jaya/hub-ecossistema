@@ -223,6 +223,6 @@ export const planners: Planner[] = [
 export const plannerBySlug = (slug: string) => planners.find((p) => p.slug === slug);
 export const plannerByHubId = (id: string) => planners.find((p) => p.hubId === id);
 
-// Água, Ar, Terra, Fogo, Éter and Despertar have dedicated hand-built pages (src/pages/planners/<slug>.astro);
+// All seven planners (Água, Ar, Terra, Fogo, Éter, Despertar, Harmonia) have dedicated hand-built pages (src/pages/planners/<slug>.astro);
 // [slug].astro must not generate them.
-export const CUSTOM_PAGES = new Set(['agua', 'ar', 'terra', 'fogo', 'eter', 'despertar']);
+export const CUSTOM_PAGES = new Set(['agua', 'ar', 'terra', 'fogo', 'eter', 'despertar', 'harmonia']);

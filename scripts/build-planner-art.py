@@ -123,6 +123,22 @@ PLANNERS = {
             "parabens": (40, None),
         },
     },
+    "harmonia": {
+        # capa-planners/planner-harmonia.png (June) has the same text as the PDF's
+        # page 1 but older art, so the PDF render wins, as for the other planners.
+        "cover": ("pdf", 1),
+        # 42 pages, confirmed 2026-09-28 with pymupdf get_text; same "Novo" layout,
+        # but p6 is the Mandala dos 5 Elementos instead of a thermometer.
+        "pdf": "planners/Planner Harmonia Novo.pdf",
+        "pages": {
+            "como-usar": (3, (0.0, 0.0, 1.0, 0.75)),
+            "jornada": (5, None),
+            "mandala": (6, None),
+            "semana-1": (7, None),
+            "dia-1": (8, None),
+            "parabens": (40, None),
+        },
+    },
 }
 
 COVER_WIDTH = 1100
