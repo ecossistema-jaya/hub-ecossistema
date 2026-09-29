@@ -1,6 +1,6 @@
 # HANDOFF — Jaya, Entre Mundos (hub)
 
-**Atualizado em:** 28/09/2026, sessão 2 (fim). **Estado:** no ar e estável. **Retomar em:** "Próximos passos" abaixo.
+**Atualizado em:** 29/09/2026, sessão 3 (fim). **Estado:** sete páginas de planners no ar; conteúdo de lançamento pronto, **não publicado**. **Retomar em:** "Próximos passos" abaixo.
 
 ## Onde está tudo
 
@@ -76,7 +76,7 @@
 
 ## Próximos passos
 
-1. **Distribuição (maior retorno):** trocar o link da bio do Instagram `@jayaroberta.shakti` para `plataforma.jayaroberta.com.br`. Ayla ofereceu escrever story/post de lançamento.
+1. **Distribuição (maior retorno):** conteúdo de lançamento dos planners pronto em [distribuicao/lancamento-planners.md](distribuicao/lancamento-planners.md) (legenda do feed, 5 stories com o quiz, 1 story por planner em 7 dias). Jaya vai postar. Também: trocar o link da bio do Instagram `@jayaroberta.shakti` para `plataforma.jayaroberta.com.br`. Ayla ofereceu escrever story/post de lançamento.
 2. **Jaya, no painel Vercel:** ligar Web Analytics e Speed Insights (os scripts já estão no site; só registram depois de ligados).
 3. **Lighthouse em produção:** PageSpeed Insights deu cota anônima esgotada (HTTP 429) em 25/09; repetir.
 4. **Revisão de copy escrita pela Ayla** (lista na story, "Open items").
