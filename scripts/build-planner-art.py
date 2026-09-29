@@ -77,6 +77,21 @@ PLANNERS = {
             "parabens": (40, None),
         },
     },
+    "fogo": {
+        # capa-planners/fogo_novo.png (June) has older art than the PDF's page 1
+        # (same text, different flames), so the PDF render wins, as for Ar.
+        "cover": ("pdf", 1),
+        # 42 pages, confirmed 2026-09-28 with pymupdf get_text; same "Novo" layout
+        # ("Quando parar" on p4, Termômetro do Desejo on p6).
+        "pdf": "planners/Planner Fogo Novo.pdf",
+        "pages": {
+            "como-usar": (3, (0.0, 0.0, 1.0, 0.75)),
+            "jornada": (5, None),
+            "semana-1": (7, None),
+            "dia-1": (8, None),
+            "parabens": (40, None),
+        },
+    },
 }
 
 COVER_WIDTH = 1100
