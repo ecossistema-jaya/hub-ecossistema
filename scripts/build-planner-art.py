@@ -92,6 +92,22 @@ PLANNERS = {
             "parabens": (40, None),
         },
     },
+    "eter": {
+        # capa-planners/eter_novo.png (June) and eter-claro.png both carry the Terra
+        # tagline ("Base · Segurança · Confiança · Pertencimento"); the PDF's page 1
+        # has the right one ("Sentido · Legado · Visão · Aliança"), so it wins.
+        "cover": ("pdf", 1),
+        # 42 pages, confirmed 2026-09-28 with pymupdf get_text; same "Novo" layout
+        # ("Quando parar" on p4, Termômetro do Sentido on p6).
+        "pdf": "planners/Planner Éter Novo.pdf",
+        "pages": {
+            "como-usar": (3, (0.0, 0.0, 1.0, 0.75)),
+            "jornada": (5, None),
+            "semana-1": (7, None),
+            "dia-1": (8, None),
+            "parabens": (40, None),
+        },
+    },
 }
 
 COVER_WIDTH = 1100
