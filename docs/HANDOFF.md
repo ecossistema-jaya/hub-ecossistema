@@ -72,7 +72,7 @@
 - **Fonte de verdade:** os PDFs "Novo" finais em `Projetos/ecosistema-jaya/Jaya_Hub_Page/planners/` (Água e Ar prontos; os outros estão sendo reconstruídos por Jaya). Imagens em `.../capa-planners/` (capas escuras e claras, `<elemento>-semana 01..04.png`, fotos `jaya1..10.jpg`, pasta `Logo/`).
 - **Para um novo planner:** copiar `ar.astro` como base, reescrever a copy só com o que está no PDF, gerar assets em `public/planners/<slug>/`, adicionar o slug em `CUSTOM_PAGES` (`src/data/planners.ts`) e no `build-planner-art.py` (gera o `<slug>-og.jpg`), trocar o medalhão nas outras páginas, e acrescentar o slug ao redirect do `Jaya_Hub_Page/vercel.json` (PR pelo @devops).
 - **Padrões fixos:** Meta Pixel `871203640872617` carregado depois do `load` (no `head` ele empurrava o LCP mobile para 3,5 s); UTMs repassadas ao checkout; um dia em destaque por semana; sem travessão, exclamação ou promessa inventada; capa do PDF vence o PNG se divergirem (`ar_novo.png` tinha a frase de outro planner).
-- **Pendências:** CLS ~0,058 nas páginas (meta 0,05); `crm-shakti-jaya` (Vercel) quebrado no main do Jaya_Hub_Page desde o PR #54 (import `.js` de arquivo `.ts` no `middleware.ts`).
+- **Pendências:** CLS ~0,058 nas páginas (meta 0,05); `crm-shakti-jaya` corrigido em 29/09 (PR #62): o build do Next pegava o `middleware.ts` da raiz; `turbopack.root` e `outputFileTracingRoot` fixados em `apps/dashboard`.
 
 ## Próximos passos
 
