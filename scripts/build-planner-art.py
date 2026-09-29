@@ -108,6 +108,21 @@ PLANNERS = {
             "parabens": (40, None),
         },
     },
+    "despertar": {
+        # capa-planners/planner-despertar.png (June) has the same text as the PDF's
+        # page 1 but older art, so the PDF render wins, as for Ar, Fogo and Éter.
+        "cover": ("pdf", 1),
+        # 42 pages, confirmed 2026-09-28 with pymupdf get_text; same "Novo" layout
+        # ("Quando parar" on p4, Termômetro da Presença on p6).
+        "pdf": "planners/Planner Despertar Novo.pdf",
+        "pages": {
+            "como-usar": (3, (0.0, 0.0, 1.0, 0.75)),
+            "jornada": (5, None),
+            "semana-1": (7, None),
+            "dia-1": (8, None),
+            "parabens": (40, None),
+        },
+    },
 }
 
 COVER_WIDTH = 1100
