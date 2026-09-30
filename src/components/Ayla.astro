@@ -65,7 +65,7 @@ const medals = [
     <figure class="stage" aria-label="Retrato da Jaya com um exemplo de conversa com a Ayla, a versão dela em IA">
       <div class="portrait">
         <svg class="orbit" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <ellipse cx="50" cy="48" rx="44" ry="40" fill="none" stroke="currentColor" stroke-width="1.1" stroke-dasharray="2 7" stroke-linecap="round" vector-effect="non-scaling-stroke"></ellipse>
+          <ellipse cx="50" cy="48.33" rx="44" ry="41.67" fill="none" stroke="currentColor" stroke-width="1.1" stroke-dasharray="2 7" stroke-linecap="round" vector-effect="non-scaling-stroke"></ellipse>
         </svg>
         <div class="arch">
           {portrait && (
@@ -205,14 +205,15 @@ const medals = [
   .ayla__fine b { color: var(--text); font-weight: 600; }
 
   /* ---------- Portrait stage ---------- */
-  /* Medallions sit on one ellipse centred on the arch (cx 50%, cy 48%, rx 44%, ry 40%)
-     at equal 45deg steps: 180, 135, 90, 45, 0. */
-  .stage { position: relative; margin: 0; justify-self: center; width: min(100%, 500px); display: grid; gap: 14px; }
-  .portrait { position: relative; width: 100%; aspect-ratio: 500 / 560; }
+  /* Medallions sit on one ellipse around the arch (cx 50%, cy 48.33%, rx 44%, ry 41.67% of a
+     500x600 box) at equal 45deg steps: 180, 135, 90, 45, 0. The arch (50% wide, top 22%) keeps
+     ~55px of clear space to every medallion and label, so nothing overlaps it. */
+  .stage { position: relative; margin: 0; justify-self: center; width: min(100%, 540px); display: grid; gap: 14px; }
+  .portrait { position: relative; width: 100%; aspect-ratio: 500 / 600; }
   .orbit { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--sepia-3); pointer-events: none; }
   .arch {
-    position: absolute; left: 50%; top: 12%; transform: translateX(-50%);
-    width: 62%; aspect-ratio: 640 / 860;
+    position: absolute; left: 50%; top: 22%; transform: translateX(-50%);
+    width: 50%; aspect-ratio: 640 / 860;
     border-radius: 999px 999px 24px 24px; overflow: hidden; background: var(--sepia-2);
     box-shadow: 0 0 0 8px var(--card), 0 0 0 9px var(--line), 0 40px 70px -34px rgba(21, 45, 56, 0.5);
   }
@@ -232,15 +233,14 @@ const medals = [
     position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 8px;
     font-family: var(--font-display); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); white-space: nowrap;
   }
-  .m-1 { left: 6%; top: 48%; }
-  .m-2 { left: 18.9%; top: 19.7%; }
-  .m-3 { left: 50%; top: 8%; z-index: 2; }
-  .m-3 > span { top: auto; bottom: 100%; margin: 0 0 7px; }
-  .m-4 { left: 81.1%; top: 19.7%; }
-  .m-5 { left: 94%; top: 48%; }
+  .m-1 { left: 6%; top: 48.33%; }
+  .m-2 { left: 18.88%; top: 18.87%; }
+  .m-3 { left: 50%; top: 6.67%; }
+  .m-4 { left: 81.12%; top: 18.87%; }
+  .m-5 { left: 94%; top: 48.33%; }
 
   .chat {
-    position: relative; z-index: 3; margin: -24% auto 0; width: 88%;
+    position: relative; z-index: 3; margin: -40% auto 0; width: 88%;
     background: var(--card); color: var(--text);
     border: 1px solid var(--line); border-radius: 22px;
     padding: 16px 16px 14px;
@@ -285,7 +285,7 @@ const medals = [
     .ayla__kicker::after { display: none; }
     .medal { width: 44px; height: 44px; }
     .medal > span { font-size: 0.58rem; letter-spacing: 0.1em; margin-top: 5px; }
-    .chat { width: 100%; margin-top: -20%; }
+    .chat { width: 100%; margin-top: -38%; }
     .msg { font-size: 0.8rem; }
   }
 </style>
