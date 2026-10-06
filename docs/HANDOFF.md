@@ -1,6 +1,6 @@
 # HANDOFF — Jaya, Entre Mundos (hub)
 
-**Atualizado em:** 05/10/2026, sessão 5 (página Sobre em PR). **Estado:** sete páginas de planners no ar com a trilha dos 7; seção da Ayla IA na home; página de vendas da Ayla refeita no shaktijaya.com.br; conteúdo de lançamento pronto, **ainda não publicado**. **Retomar em:** "Próximos passos" abaixo.
+**Atualizado em:** 05/10/2026, sessão 5 (página Sobre no ar, PR #8). **Estado:** sete páginas de planners no ar com a trilha dos 7; seção da Ayla IA na home; página de vendas da Ayla refeita no shaktijaya.com.br; conteúdo de lançamento pronto, **ainda não publicado**. **Retomar em:** "Próximos passos" abaixo.
 
 ## Onde está tudo
 
@@ -92,7 +92,7 @@ Tudo abaixo está em produção e foi conferido no site publicado.
 
 - **`/sobre`** (`src/pages/sobre.astro`): página profissional dos dois mundos. Abertura com retrato em arco, "Dois repertórios" (Tecnologia e IA · Terapia e presença) separados pela costura "entre", citação, faixa teal "O que nasceu desse encontro" (5 Elementos → quiz, Ayla → `/#ayla`, Claude do Zero), galeria de 8 fotos e fechamento que leva à trajetória completa em `shaktijaya.com.br/trajetoria`. Protótipo aprovado: https://claude.ai/artifact/5z8i8RBKfYMtkhhswYcNjd.
 - **Regras de copy decididas por Jaya:** o empregador **nunca** é citado, só "diretoria de tecnologia de uma grande instituição financeira"; sem "sistemas de pagamento e mobile"; os números do shaktijaya (50.000+ mulheres etc.) ficam só lá; Atman Consciência & Tantra entra. A história pessoal (maternidade, medicinas) fica na trajetória do Shakti, não aqui. Foto com a placa "Ditec" excluída por identificar o local.
-- **Fotos:** `src/assets/art/sobre/` (versionada), curada à mão como a da Ayla. Fontes: `capa-planners/jaya2, 8, 9, 10.jpg` e `Projetos/Jaya_Hub_Page/public/trajetoria/` (lendaria-1/2, metodo, 16, repertorio, 14, 02). `tecnologia.jpg` já vem recortada em 16:10 (o `position` do `<Picture>` só aceita palavras-chave).
+- **Fotos:** `src/assets/art/sobre/` (versionada), curada à mão como a da Ayla. Fontes: `retrato.jpg` = `ecosistema-jaya/jaya/IMG_0995.jpg` (trocada por Jaya em 06/10, a `jaya10` não agradou); `capa-planners/jaya2, 8, 9.jpg` e `Projetos/Jaya_Hub_Page/public/trajetoria/` (lendaria-1/2, metodo, 16, repertorio, 14, 02). `tecnologia.jpg` já vem recortada em 16:10 (o `position` do `<Picture>` só aceita palavras-chave).
 - **Topo compartilhado:** a barra saiu do `index.astro` para `src/components/Topbar.astro`, com o link "Sobre" ao lado do logo (`aria-current` no `/sobre`). Rodapé ganhou "Sobre a Jaya".
 - **Verificado local:** `astro check` 0 erros; Lighthouse mobile do `/sobre` 99 · 100 · 100 · 100, LCP 1,8 s, CLS 0; sem rolagem lateral em 390 px e 1440 px, claro e escuro.
 
