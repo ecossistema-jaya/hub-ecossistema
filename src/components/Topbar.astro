@@ -1,5 +1,5 @@
 ---
-/* Fixed top bar shared by the home and /sobre: logo, "Sobre" link, motto and theme toggle. */
+/* Fixed top bar shared by the home and /sobre: logo, "Sobre" link (on /sobre it becomes "Voltar ao hub"), motto and theme toggle. */
 import Icon from './Icon.astro';
 
 const onAbout = Astro.url.pathname.replace(/\/$/, '') === '/sobre';
@@ -14,7 +14,16 @@ const onAbout = Astro.url.pathname.replace(/\/$/, '') === '/sobre';
         <span class="brand__sub">Entre Mundos</span>
       </span>
     </a>
-    <a class="topbar__about" href="/sobre" aria-current={onAbout ? 'page' : undefined}>Sobre</a>
+    {
+      onAbout ? (
+        <a class="topbar__about" href="/">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" /></svg>
+          Voltar ao hub
+        </a>
+      ) : (
+        <a class="topbar__about" href="/sobre">Sobre</a>
+      )
+    }
     <p class="topbar__motto" aria-hidden="true">Conhecimento em movimento</p>
     <button class="theme-toggle" type="button" data-theme-toggle aria-label="Alternar tema escuro">
       <Icon name="sun" size={18} class="theme-toggle__sun" />
@@ -85,7 +94,7 @@ const onAbout = Astro.url.pathname.replace(/\/$/, '') === '/sobre';
     color: var(--rust);
     transition: color var(--t-fast);
   }
-  .topbar__about[aria-current='page'] { color: var(--ink); }
+  .topbar__about svg { margin-right: 8px; flex: none; }
   @media (hover: hover) {
     .topbar__about:hover { color: var(--ink); }
   }
