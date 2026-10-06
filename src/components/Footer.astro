@@ -26,6 +26,7 @@ const year = new Date().getFullYear();
     <span class="footer__logo" role="img" aria-label="Jaya"></span>
     <p class="footer__wordmark" aria-hidden="true">Jaya Roberta</p>
     <p class="footer__tag">Entre Mundos · Inteligência Relacional</p>
+    <a class="footer__about" href="/sobre">Sobre a Jaya</a>
 
     <nav aria-label="Redes sociais">
       <ul class="footer__social" role="list">
@@ -150,6 +151,22 @@ const year = new Date().getFullYear();
     line-height: 1.2;
   }
   .footer__tag { max-width: 36ch; color: var(--f-muted); font-size: 0.95rem; }
+  .footer__about {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: 4px;
+    border-bottom: 1px solid rgba(244, 207, 133, 0.45);
+    color: var(--f-gold);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    transition: border-color var(--t-fast);
+  }
+  @media (hover: hover) {
+    .footer__about:hover { border-bottom-color: var(--f-gold); }
+  }
 
   .footer__social { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
   .footer__social a {

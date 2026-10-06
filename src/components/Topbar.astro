@@ -1,0 +1,143 @@
+---
+/* Fixed top bar shared by the home and /sobre: logo, "Sobre" link, motto and theme toggle. */
+import Icon from './Icon.astro';
+
+const onAbout = Astro.url.pathname.replace(/\/$/, '') === '/sobre';
+---
+
+<header class="topbar">
+  <div class="wrap topbar__inner">
+    <a class="brand" href="/">
+      <span class="brand__logo" aria-hidden="true"></span>
+      <span class="brand__text">
+        <span class="visually-hidden">Jaya Roberta — </span>
+        <span class="brand__sub">Entre Mundos</span>
+      </span>
+    </a>
+    <a class="topbar__about" href="/sobre" aria-current={onAbout ? 'page' : undefined}>Sobre</a>
+    <p class="topbar__motto" aria-hidden="true">Conhecimento em movimento</p>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Alternar tema escuro">
+      <Icon name="sun" size={18} class="theme-toggle__sun" />
+      <Icon name="moon" size={18} class="theme-toggle__moon" />
+    </button>
+  </div>
+</header>
+
+<style>
+  .topbar {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 30;
+    padding-top: env(safe-area-inset-top, 0px);
+    background: color-mix(in srgb, var(--paper) 86%, transparent);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  }
+  html[data-tier='0'] .topbar {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--paper);
+  }
+  .topbar__inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: var(--header-h);
+  }
+  .brand { display: flex; align-items: center; gap: 14px; min-height: 48px; }
+  .brand__logo {
+    width: 86px;
+    height: 42px;
+    background: var(--ink);
+    -webkit-mask: url('/brand/logo-horizontal.webp') left center / contain no-repeat;
+    mask: url('/brand/logo-horizontal.webp') left center / contain no-repeat;
+  }
+  .brand__text { display: flex; align-items: center; gap: 14px; }
+  .brand__sub {
+    display: none;
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .brand__sub::before {
+    content: '';
+    display: inline-block;
+    width: 34px;
+    height: 1px;
+    margin-right: 14px;
+    vertical-align: middle;
+    background: var(--sepia-3);
+  }
+
+  .topbar__about {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: 14px 4px;
+    border-left: 1px solid var(--line);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--rust);
+    transition: color var(--t-fast);
+  }
+  .topbar__about[aria-current='page'] { color: var(--ink); }
+  @media (hover: hover) {
+    .topbar__about:hover { color: var(--ink); }
+  }
+
+  .topbar__motto {
+    display: none;
+    margin-left: auto;
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .topbar__motto::before {
+    content: '';
+    display: inline-block;
+    width: 60px;
+    height: 1px;
+    margin-right: 16px;
+    vertical-align: middle;
+    background: var(--rust);
+  }
+
+  .theme-toggle {
+    position: relative;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    margin-left: auto;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    overflow: hidden;
+    transition: background-color var(--t-fast), color var(--t-fast);
+  }
+  @media (hover: hover) {
+    .theme-toggle:hover { background: var(--teal); color: var(--on-teal); }
+  }
+  .theme-toggle :global(svg) { grid-area: 1 / 1; transition: transform 0.6s var(--ease-out), opacity 0.4s; }
+  .theme-toggle :global(.theme-toggle__moon) { transform: translateY(140%) rotate(-40deg); opacity: 0; }
+  :global([data-theme='dark']) .theme-toggle :global(.theme-toggle__sun) { transform: translateY(-140%) rotate(40deg); opacity: 0; }
+  :global([data-theme='dark']) .theme-toggle :global(.theme-toggle__moon) { transform: none; opacity: 1; }
+
+  @media (min-width: 700px) {
+    .brand__sub { display: inline; }
+  }
+  @media (min-width: 1100px) {
+    .topbar__motto { display: block; }
+    .topbar__motto + .theme-toggle { margin-left: 0; }
+  }
+</style>
