@@ -1,0 +1,528 @@
+---
+/* /sobre: the professional page that holds both worlds (technology and therapy).
+   Prototype approved by Jaya on 2026-10-05 (claude.ai/artifact/5z8i8RBKfYMtkhhswYcNjd).
+   The personal story lives on shaktijaya.com.br/trajetoria; this page links there.
+   Copy rule: her employer is never named, only "uma grande instituição financeira". */
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Topbar from '../components/Topbar.astro';
+import Footer from '../components/Footer.astro';
+import { hub, track } from '../lib/links';
+import { art } from '../lib/art';
+
+const title = 'Sobre Jaya Roberta · Entre Mundos';
+const description =
+  'Terapeuta integrativa e 20 anos em tecnologia. Ciência da Computação, pós em Sexualidade Humana, Tantra desde 2015 e criadora da Arquitetura Relacional dos 5 Elementos™.';
+
+const portrait = art('sobre/retrato');
+
+const worlds = [
+  {
+    id: 'tecnologia',
+    kicker: 'Tecnologia e IA',
+    title: 'Vinte anos dentro de sistemas',
+    img: art('sobre/tecnologia'),
+    alt: 'Jaya ao notebook, com caneca da Academia Lendária e camiseta sobre IA',
+    position: 'centre',
+    facts: [
+      '<strong>Ciência da Computação</strong>',
+      '<strong>20 anos</strong> na diretoria de tecnologia de uma grande instituição financeira',
+      'Estudando e construindo com IA desde <strong>abril de 2025</strong>, na Academia Lendária',
+      'Vale do Silício, 2025',
+    ],
+  },
+  {
+    id: 'terapia',
+    kicker: 'Terapia e presença',
+    title: 'Uma década de caminhada tântrica',
+    img: art('sobre/roda'),
+    alt: 'Jaya conduzindo uma roda numa oca de madeira, com espiral de pétalas no chão',
+    position: 'centre',
+    facts: [
+      '<strong>Pós-graduação em Sexualidade Humana</strong>',
+      'Tantra desde <strong>2015</strong>',
+      'Mais de 8 anos como terapeuta tântrica no <strong>Atman Consciência & Tantra</strong>',
+      'Pathwork, Constelação Familiar Sistêmica e Leitura Corporal',
+      'Eneagrama e Tarot Sistêmico',
+      'Criadora da <strong>Arquitetura Relacional dos 5 Elementos™</strong>',
+    ],
+  },
+];
+
+const meet = [
+  {
+    id: 'sobre-quiz',
+    title: 'Arquitetura Relacional dos 5 Elementos™',
+    text: 'Terra, Água, Ar, Fogo e Éter. Cada elemento governa uma dimensão da vida relacional. Quando um desalinha, todos sentem.',
+    cta: 'Descobrir meu elemento',
+    href: track('https://www.shaktijaya.com.br/quiz1', 'sobre-quiz'),
+    external: true,
+    dots: ['var(--terra)', 'var(--agua)', 'var(--ar)', 'var(--fogo)', 'var(--eter)'],
+  },
+  {
+    id: 'sobre-ayla',
+    title: 'Ayla IA',
+    text: 'A Jaya em forma de chat. Uma confidente de bolso que conversa com você a partir da leitura dos 5 Elementos.',
+    cta: 'Conhecer a Ayla',
+    href: '/#ayla',
+    external: false,
+    dots: ['var(--m-gold)'],
+  },
+  {
+    id: 'sobre-claude',
+    title: 'Claude do Zero',
+    text: 'IA explicada por quem trabalha com tecnologia há 20 anos. Cinco aulas na ordem, pra fazer junto.',
+    cta: 'Começar as aulas',
+    href: track('https://jayaroberta.com/claude', 'sobre-claude'),
+    external: true,
+    dots: ['var(--m-ink)'],
+  },
+];
+
+const gallery = [
+  { slot: 'brasilia', alt: 'Jaya caminhando na Esplanada, em Brasília', caption: 'Brasília.' },
+  { slot: 'vale', alt: 'Jaya de jaqueta de couro e óculos laranja no Vale do Silício', caption: 'Vale do Silício, 2025.' },
+  { slot: 'pratica', alt: 'Jaya meditando de pernas cruzadas diante de uma estátua de Shiva Nataraja', caption: 'Prática, não teoria.' },
+  { slot: 'lendaria', alt: 'Jaya de branco e chapéu de palha ao lado de uma escultura preta', caption: 'Tribo da Academia Lendária.' },
+  { slot: 'banco', alt: 'Jaya sentada num banco, com blusa estampada de símbolos celestes', caption: 'Brasília.' },
+  { slot: 'chapada', alt: 'Jaya de vestido longo num jardim iluminado à noite', caption: 'Chapada dos Veadeiros, 2025.' },
+  { slot: 'parede', alt: 'Jaya apoiada numa parede branca curva', caption: 'Brasília.' },
+  { slot: 'entardecer', alt: 'Jaya caminhando no gramado ao entardecer', caption: 'Brasília, julho de 2026.' },
+].map((g) => ({ ...g, img: art(`sobre/${g.slot}`) }));
+
+const profile = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  name: title,
+  url: new URL('/sobre', Astro.site).toString(),
+  mainEntity: {
+    '@type': 'Person',
+    name: hub.person.name,
+    jobTitle: 'Terapeuta Integrativa',
+    knowsAbout: ['Sexualidade Humana', 'Tantra', 'Terapia de relacionamentos', 'Inteligência artificial', 'Tecnologia'],
+  },
+};
+
+const arrow = '<path d="M5 12h14M13 6l6 6-6 6"></path>';
+---
+
+<Base title={title} description={description} skipTo="sobre" skipLabel="Pular para o conteúdo" jsonLdExtra={profile}>
+  <Topbar />
+
+  <main id="sobre">
+    <section class="about intro" aria-labelledby="about-title">
+      <div class="wrap about__inner">
+        <div class="about__copy">
+          <p class="tracked fade-in" style="--i:0">Sobre · Jaya Roberta</p>
+          <h1 id="about-title" class="about__title">
+            <span class="line"><span style="--i:0">Engenheira de</span></span>
+            <span class="line"><span style="--i:1"><em>sistemas humanos</em>.</span></span>
+          </h1>
+          <p class="about__lede fade-in" style="--i:1">{hub.person.lede}</p>
+          <p class="about__body fade-in" style="--i:2">
+            Sou terapeuta integrativa e trabalho com tecnologia há 20 anos. Formada em Ciência da Computação, com
+            pós-graduação em Sexualidade Humana, criei a Arquitetura Relacional dos 5 Elementos™ e hoje uso
+            inteligência artificial para levar esse trabalho a mais gente.
+          </p>
+          <p class="about__meta fade-in" style="--i:3">
+            <span>Terapeuta Integrativa</span><span>Tecnologia e IA</span><span>{hub.person.location}</span>
+          </p>
+        </div>
+
+        <div class="about__arch">
+          {
+            portrait && (
+              <div class="about__frame arch-reveal">
+                <Picture
+                  class="photo"
+                  src={portrait}
+                  width={600}
+                  height={840}
+                  fit="cover"
+                  position="top"
+                  formats={['avif', 'webp']}
+                  fallbackFormat="jpg"
+                  widths={[360, 480, 600, 800]}
+                  sizes="(min-width: 860px) 400px, 82vw"
+                  loading="eager"
+                  fetchpriority="high"
+                  alt="Jaya Roberta sorrindo, de blusa azul e cinto de couro, num muro branco de Brasília"
+                />
+              </div>
+            )
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="rep" aria-labelledby="rep-title">
+      <div class="wrap">
+        <div class="head" data-reveal>
+          <p class="label">Dois repertórios</p>
+          <h2 id="rep-title">O que eu trago de cada mundo</h2>
+        </div>
+
+        <div class="split">
+          {
+            worlds.map((w, i) => (
+              <>
+                {i === 1 && (
+                  <div class="seam" aria-hidden="true">
+                    <span class="seam__dot">entre</span>
+                  </div>
+                )}
+                <article class="world" data-reveal>
+                  {w.img && (
+                    <div class="world__photo">
+                      <Picture
+                        class="photo"
+                        src={w.img}
+                        width={700}
+                        height={438}
+                        fit="cover"
+                        position={w.position}
+                        formats={['avif', 'webp']}
+                        fallbackFormat="jpg"
+                        widths={[360, 540, 700]}
+                        sizes="(min-width: 860px) 480px, 92vw"
+                        alt={w.alt}
+                      />
+                    </div>
+                  )}
+                  <p class="world__kicker">{w.kicker}</p>
+                  <h3>{w.title}</h3>
+                  <ul class="facts" role="list">
+                    {w.facts.map((f) => (
+                      <li><span set:html={f} /></li>
+                    ))}
+                  </ul>
+                </article>
+              </>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="maxim" aria-label="Citação">
+      <figure class="wrap" data-reveal>
+        <blockquote><p>O rigor técnico encontrando a intuição profunda.</p></blockquote>
+        <figcaption class="tracked">{hub.person.name}</figcaption>
+      </figure>
+    </section>
+
+    <section class="meet" aria-labelledby="meet-title">
+      <div class="wrap">
+        <div class="head" data-reveal>
+          <p class="label">Onde os mundos se encontram</p>
+          <h2 id="meet-title">O que nasceu desse encontro</h2>
+        </div>
+        <div class="meet__grid" data-reveal="stagger">
+          {
+            meet.map((m, i) => (
+              <article class="meet__item" style={`--i:${i}`}>
+                <div class="meet__dots" aria-hidden="true">
+                  {m.dots.map((c) => (
+                    <i style={`background:${c}`} />
+                  ))}
+                </div>
+                <h3>{m.title}</h3>
+                <p>{m.text}</p>
+                <a
+                  href={m.href}
+                  data-link={m.id}
+                  target={m.external ? '_blank' : undefined}
+                  rel={m.external ? 'noopener' : undefined}
+                >
+                  {m.cta}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={arrow} />
+                </a>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery" aria-labelledby="gallery-title">
+      <div class="wrap">
+        <div class="head" data-reveal>
+          <p class="label">Em movimento</p>
+          <h2 id="gallery-title">Por onde eu ando</h2>
+        </div>
+        <div class="masonry">
+          {
+            gallery.map(
+              (g) =>
+                g.img && (
+                  <figure>
+                    <Picture
+                      class="photo"
+                      src={g.img}
+                      formats={['avif', 'webp']}
+                      fallbackFormat="jpg"
+                      widths={[280, 420, 560]}
+                      sizes="(min-width: 860px) 270px, 46vw"
+                      quality={72}
+                      alt={g.alt}
+                    />
+                    <figcaption>{g.caption}</figcaption>
+                  </figure>
+                ),
+            )
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="story" aria-labelledby="story-title">
+      <div class="wrap story__inner" data-reveal>
+        <p class="tracked">A história por trás do método</p>
+        <h2 id="story-title">Ninguém constrói um método sem ter precisado dele</h2>
+        <p>A trajetória completa, de 1994 até hoje, está contada no site da Shakti Jaya.</p>
+        <div class="story__actions">
+          <a
+            class="btn"
+            href={track('https://www.shaktijaya.com.br/trajetoria', 'sobre-trajetoria')}
+            data-link="sobre-trajetoria"
+            target="_blank"
+            rel="noopener"
+          >
+            Ler a trajetória
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={arrow} />
+          </a>
+          <a class="btn btn--ghost" href="/#caminhos">Ver os dois mundos</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .head { display: grid; gap: 14px; max-width: 640px; margin-bottom: clamp(36px, 5vw, 56px); }
+  .head h2 { font-size: clamp(1.9rem, 4vw, 2.8rem); }
+
+  /* ---------- Opening ---------- */
+  .about { padding: calc(var(--header-h) + env(safe-area-inset-top, 0px) + clamp(36px, 6vw, 80px)) 0 clamp(56px, 8vw, 104px); }
+  .about__inner { display: grid; gap: clamp(40px, 6vw, 72px); align-items: center; }
+  @media (min-width: 860px) { .about__inner { grid-template-columns: 1.15fr 0.85fr; } }
+  .about__copy { display: grid; gap: 22px; min-width: 0; }
+  .about__title { font-size: clamp(2.5rem, 6.2vw, 4.6rem); letter-spacing: -0.01em; }
+  .about__title em { font-style: normal; color: var(--rust); }
+  .about__lede {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+    line-height: 1.45;
+    color: var(--ink);
+    max-width: 30ch;
+  }
+  .about__body { max-width: 56ch; }
+  .about__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .about__meta span::before {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin-right: 10px;
+    vertical-align: 2px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  .about__arch { position: relative; justify-self: center; width: min(100%, 400px); }
+  .about__arch::before,
+  .about__arch::after { content: ''; position: absolute; border-radius: 50%; pointer-events: none; }
+  .about__arch::before { width: 118%; aspect-ratio: 1; left: -9%; top: -12%; border: 1px solid var(--gold); opacity: 0.45; }
+  .about__arch::after { width: 22%; aspect-ratio: 1; right: -6%; bottom: 14%; z-index: 2; border: 1px solid var(--rust); background: var(--paper); }
+  .about__frame {
+    position: relative;
+    z-index: 1;
+    aspect-ratio: 5 / 7;
+    overflow: hidden;
+    border-radius: 999px 999px 0 0;
+    background: var(--paper-2);
+  }
+  .about__frame :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; }
+
+  /* ---------- Two repertoires and the "entre" seam ---------- */
+  .rep { padding-block: clamp(56px, 8vw, 104px); border-top: 1px solid var(--line); }
+  .split { display: grid; }
+  @media (min-width: 860px) { .split { grid-template-columns: 1fr 120px 1fr; } }
+  .world { display: grid; gap: 22px; align-content: start; min-width: 0; }
+  .world__photo { aspect-ratio: 16 / 10; overflow: hidden; background: var(--paper-2); }
+  .world__photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .world__kicker { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--rust); }
+  .world h3 { font-size: clamp(1.5rem, 2.6vw, 1.95rem); margin-top: -10px; }
+  .facts { list-style: none; margin: 0; padding: 0; }
+  .facts li {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid var(--line);
+  }
+  .facts li:last-child { border-bottom: 1px solid var(--line); }
+  .facts li::before { content: ''; width: 9px; height: 9px; margin-top: 0.62em; border-radius: 50%; border: 1px solid var(--gold); }
+  .facts :global(strong) { color: var(--ink); }
+
+  .seam { position: relative; display: grid; place-items: center; min-height: 112px; }
+  .seam::before {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold) 20%, var(--gold) 80%, transparent);
+  }
+  .seam__dot {
+    position: relative;
+    width: 84px;
+    height: 84px;
+    display: grid;
+    place-items: center;
+    padding-left: 0.32em;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    background: var(--paper);
+    box-shadow: 0 0 0 8px var(--paper), 0 0 0 9px color-mix(in srgb, var(--gold) 40%, transparent);
+    font-family: var(--font-display);
+    font-size: 0.66rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  @media (min-width: 860px) {
+    .seam { min-height: 0; place-items: start center; }
+    .seam::before {
+      inset: 0 auto 0 50%;
+      width: 1px;
+      height: auto;
+      background: linear-gradient(180deg, transparent, var(--gold) 12%, var(--gold) 88%, transparent);
+    }
+    .seam__dot { position: sticky; top: 42vh; margin-top: 30%; }
+  }
+
+  /* ---------- Maxim ---------- */
+  .maxim { padding-block: clamp(40px, 6vw, 72px) clamp(56px, 8vw, 96px); text-align: center; }
+  .maxim figure { margin-inline: auto; display: grid; justify-items: center; gap: 18px; }
+  .maxim blockquote { margin: 0; }
+  .maxim blockquote p {
+    max-width: 22ch;
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 4vw, 2.7rem);
+    line-height: 1.25;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  .maxim blockquote::before {
+    content: '';
+    display: block;
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 22px;
+    border-radius: 50%;
+    border: 1px solid var(--rust);
+    background: radial-gradient(circle, var(--rust) 0 4px, transparent 5px);
+  }
+
+  /* ---------- Where the worlds meet: fixed teal panel, like the footer ---------- */
+  .meet {
+    --m-bg: #0f2e3a;
+    --m-ink: #f6f5f0;
+    --m-muted: #b9c8c9;
+    --m-gold: #f4cf85;
+    --m-rule: rgba(246, 245, 240, 0.18);
+    padding-block: clamp(56px, 8vw, 104px);
+    background: var(--m-bg);
+    color: var(--m-muted);
+  }
+  :global([data-theme='dark']) .meet { --m-bg: #061519; }
+  .meet h2,
+  .meet h3,
+  .meet .label { color: var(--m-ink); }
+  .meet .label::after { background: rgba(246, 245, 240, 0.3); }
+  .meet__grid { display: grid; gap: 1px; background: var(--m-rule); border: 1px solid var(--m-rule); }
+  @media (min-width: 860px) { .meet__grid { grid-template-columns: repeat(3, 1fr); } }
+  .meet__item {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 14px;
+    min-width: 0;
+    padding: clamp(24px, 3vw, 36px);
+    background: var(--m-bg);
+  }
+  .meet__item h3 { font-size: 1.45rem; }
+  .meet__item p { font-size: 0.98rem; }
+  .meet__dots { display: flex; gap: 6px; }
+  .meet__dots i { display: block; width: 12px; height: 12px; border-radius: 50%; }
+  .meet__item a {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    margin-top: 8px;
+    border-bottom: 1px solid transparent;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--m-gold);
+    transition: border-color var(--t-fast);
+  }
+  .meet__item a :global(svg) { transition: transform var(--t-base); }
+  @media (hover: hover) {
+    .meet__item a:hover { border-bottom-color: var(--m-gold); }
+    .meet__item a:hover :global(svg) { transform: translateX(3px); }
+  }
+
+  /* ---------- Gallery ---------- */
+  .gallery { padding-block: clamp(56px, 8vw, 104px); content-visibility: auto; contain-intrinsic-size: auto 1400px; }
+  .masonry { columns: 2; column-gap: 14px; }
+  @media (min-width: 860px) { .masonry { columns: 4; column-gap: 18px; } }
+  .masonry figure { margin: 0 0 14px; break-inside: avoid; }
+  @media (min-width: 860px) { .masonry figure { margin-bottom: 18px; } }
+  .masonry :global(img) { width: 100%; height: auto; background: var(--paper-2); transition: filter var(--t-slow); }
+  @media (hover: hover) {
+    .masonry figure:hover :global(img) { filter: none; }
+  }
+  .masonry figcaption { margin-top: 8px; font-size: 0.8rem; color: var(--muted); }
+
+  /* ---------- Close ---------- */
+  .story { padding-block: clamp(56px, 8vw, 96px) clamp(72px, 10vw, 120px); border-top: 1px solid var(--line); }
+  .story__inner { display: grid; gap: 22px; justify-items: center; text-align: center; }
+  .story h2 { font-size: clamp(1.9rem, 4vw, 2.8rem); max-width: 18ch; }
+  .story p:not(.tracked) { max-width: 48ch; }
+  .story__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    padding: 12px 22px;
+    border: 1px solid var(--rust);
+    background: var(--rust);
+    color: var(--on-rust);
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    transition: background-color var(--t-fast), color var(--t-fast), border-color var(--t-fast);
+  }
+  .btn--ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn :global(svg) { transition: transform var(--t-base); }
+  @media (hover: hover) {
+    .btn:hover { background: var(--teal); color: var(--on-teal); border-color: var(--teal); }
+    .btn:hover :global(svg) { transform: translateX(3px); }
+  }
+</style>
