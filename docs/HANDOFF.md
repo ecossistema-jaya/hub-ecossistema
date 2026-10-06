@@ -1,6 +1,6 @@
 # HANDOFF — Jaya, Entre Mundos (hub)
 
-**Atualizado em:** 29/09/2026, sessão 4 (fim). **Estado:** sete páginas de planners no ar com a trilha dos 7; seção da Ayla IA na home; página de vendas da Ayla refeita no shaktijaya.com.br; conteúdo de lançamento pronto, **ainda não publicado**. **Retomar em:** "Próximos passos" abaixo.
+**Atualizado em:** 05/10/2026, sessão 5 (página Sobre em PR). **Estado:** sete páginas de planners no ar com a trilha dos 7; seção da Ayla IA na home; página de vendas da Ayla refeita no shaktijaya.com.br; conteúdo de lançamento pronto, **ainda não publicado**. **Retomar em:** "Próximos passos" abaixo.
 
 ## Onde está tudo
 
@@ -88,9 +88,17 @@ Tudo abaixo está em produção e foi conferido no site publicado.
 - **Checkout da Ayla:** `https://pay.hotmart.com/C105022654V?off=25goz2ja`; a página repassa as UTMs do visitante e dispara `InitiateCheckout` no Pixel.
 - **Sem story formal:** estes trabalhos foram por pedido direto de Jaya com aprovação de protótipo; não há story no `docs/stories/`.
 
+## Sessão 5 · 05/10/2026 — página Sobre
+
+- **`/sobre`** (`src/pages/sobre.astro`): página profissional dos dois mundos. Abertura com retrato em arco, "Dois repertórios" (Tecnologia e IA · Terapia e presença) separados pela costura "entre", citação, faixa teal "O que nasceu desse encontro" (5 Elementos → quiz, Ayla → `/#ayla`, Claude do Zero), galeria de 8 fotos e fechamento que leva à trajetória completa em `shaktijaya.com.br/trajetoria`. Protótipo aprovado: https://claude.ai/artifact/5z8i8RBKfYMtkhhswYcNjd.
+- **Regras de copy decididas por Jaya:** o empregador **nunca** é citado, só "diretoria de tecnologia de uma grande instituição financeira"; sem "sistemas de pagamento e mobile"; os números do shaktijaya (50.000+ mulheres etc.) ficam só lá; Atman Consciência & Tantra entra. A história pessoal (maternidade, medicinas) fica na trajetória do Shakti, não aqui. Foto com a placa "Ditec" excluída por identificar o local.
+- **Fotos:** `src/assets/art/sobre/` (versionada), curada à mão como a da Ayla. Fontes: `capa-planners/jaya2, 8, 9, 10.jpg` e `Projetos/Jaya_Hub_Page/public/trajetoria/` (lendaria-1/2, metodo, 16, repertorio, 14, 02). `tecnologia.jpg` já vem recortada em 16:10 (o `position` do `<Picture>` só aceita palavras-chave).
+- **Topo compartilhado:** a barra saiu do `index.astro` para `src/components/Topbar.astro`, com o link "Sobre" ao lado do logo (`aria-current` no `/sobre`). Rodapé ganhou "Sobre a Jaya".
+- **Verificado local:** `astro check` 0 erros; Lighthouse mobile do `/sobre` 99 · 100 · 100 · 100, LCP 1,8 s, CLS 0; sem rolagem lateral em 390 px e 1440 px, claro e escuro.
+
 ## Próximos passos
 
-1. **Distribuição (maior retorno, nada publicado ainda):** conteúdo de lançamento dos planners pronto em [distribuicao/lancamento-planners.md](distribuicao/lancamento-planners.md) (legenda do feed, 5 stories com o quiz, 1 story por planner em 7 dias). Jaya vai postar. Também: trocar o link da bio do Instagram `@jayaroberta.shakti` para `plataforma.jayaroberta.com.br`. Falta um post/story de lançamento da Ayla (a seção nova e a página de vendas já estão prontas para receber tráfego); acompanhar `utm_content=ayla-secao` na Hotmart.
+1. **Distribuição: feita.** Jaya confirmou em 05/10/2026 que o lançamento dos planners ([distribuicao/lancamento-planners.md](distribuicao/lancamento-planners.md)) e o conteúdo da Ayla já foram divulgados. Acompanhar `utm_content=ayla-secao` na Hotmart.
 2. **Jaya, no painel Vercel:** ligar Web Analytics e Speed Insights (os scripts já estão no site; só registram depois de ligados).
 3. **Lighthouse em produção:** PageSpeed Insights deu cota anônima esgotada (HTTP 429) em 25/09; repetir.
 4. **Revisão de copy escrita pela Ayla** (lista na story, "Open items").
