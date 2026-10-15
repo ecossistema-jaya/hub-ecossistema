@@ -23,6 +23,10 @@ async function variants(src: ImageMetadata | null, widths: number[], quality: nu
 }
 const wide = await variants(heroArt, [960, 1280, 1672], 50);
 const narrow = await variants(heroMobile, [400, 560, 720], 40);
+// Lede on three lines: "Eu conheço a tecnologia / por dentro. / E as pessoas, pela presença."
+const ledeText = hub.person.lede.replace(' por dentro. ', '\npor dentro.\n');
+// "Terapeuta Integrativa · Tecnologia e IA" -> one line per role.
+const roleLines = hub.person.role.split('·').map((s: string) => s.trim());
 const fallback = heroArt ? await getImage({ src: heroArt, width: 1280, format: 'jpeg', quality: 55 }) : null;
 ---
 
@@ -60,9 +64,11 @@ const fallback = heroArt ? await getImage({ src: heroArt, width: 1280, format: '
         <span class="line"><span style="--i:0">Jaya,</span></span>
         <span class="line"><span style="--i:1" class="accent">Entre Mundos</span></span>
       </h1>
-      <p class="hero__sub fade-in" style="--i:1">Inteligência Relacional</p>
-      <p class="hero__lede fade-in" style="--i:2">{hub.person.lede}</p>
-      <p class="hero__role fade-in" style="--i:3">{hub.person.role}</p>
+      <p class="hero__sub fade-in" style="--i:1"><span>Inteligência<br />Relacional</span></p>
+      <p class="hero__lede fade-in" style="--i:2">{ledeText}</p>
+      <p class="hero__role fade-in" style="--i:3">
+        {roleLines.map((line, i) => (<>{i > 0 && <br />}{line}</>))}
+      </p>
       <a class="hero__cue fade-in" style="--i:4" href="#caminhos">
         <span>Escolha seu caminho</span>
         <span class="round round--ghost"><Icon name="arrow-down" size={18} /></span>
@@ -134,6 +140,22 @@ const fallback = heroArt ? await getImage({ src: heroArt, width: 1280, format: '
     display: flex;
     align-items: center;
     gap: 14px;
+    font-weight: 600;
+    /* Same halo as the vertical tagline: page background colour, so it follows the theme. */
+    text-shadow:
+      0 0 3px var(--bg),
+      0 0 3px var(--bg),
+      0 0 6px var(--bg),
+      0 0 6px var(--bg),
+      0 0 10px var(--bg),
+      0 0 10px var(--bg),
+      0 0 16px var(--bg),
+      0 0 16px var(--bg),
+      0 0 26px var(--bg),
+      0 0 26px var(--bg);
+  }
+  .hero__sub span {
+    line-height: 1.6;
   }
   .hero__sub::before {
     content: '';
@@ -148,14 +170,40 @@ const fallback = heroArt ? await getImage({ src: heroArt, width: 1280, format: '
     font-size: clamp(1.1rem, 4.2vw, 1.3rem);
     line-height: 1.5;
     color: var(--text);
+    white-space: pre-line;
+    /* Same halo as the other hero texts: page background colour, follows the theme. */
+    text-shadow:
+      0 0 3px var(--bg),
+      0 0 3px var(--bg),
+      0 0 6px var(--bg),
+      0 0 6px var(--bg),
+      0 0 10px var(--bg),
+      0 0 10px var(--bg),
+      0 0 16px var(--bg),
+      0 0 16px var(--bg),
+      0 0 26px var(--bg),
+      0 0 26px var(--bg);
   }
   .hero__role {
     margin-top: 12px;
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.22em;
+    line-height: 1.7;
     text-transform: uppercase;
     color: var(--muted);
+    /* Same halo as the other hero texts: page background colour, follows the theme. */
+    text-shadow:
+      0 0 3px var(--bg),
+      0 0 3px var(--bg),
+      0 0 6px var(--bg),
+      0 0 6px var(--bg),
+      0 0 10px var(--bg),
+      0 0 10px var(--bg),
+      0 0 16px var(--bg),
+      0 0 16px var(--bg),
+      0 0 26px var(--bg),
+      0 0 26px var(--bg);
   }
   .hero__cue {
     margin-top: 24px;
@@ -181,6 +229,19 @@ const fallback = heroArt ? await getImage({ src: heroArt, width: 1280, format: '
     writing-mode: vertical-rl;
     font-size: 0.66rem;
     color: var(--ink);
+    /* Halo in the page background colour (dark in dark theme, cream in light) keeps it legible over the artwork. */
+    font-weight: 600;
+    text-shadow:
+      0 0 3px var(--bg),
+      0 0 3px var(--bg),
+      0 0 6px var(--bg),
+      0 0 6px var(--bg),
+      0 0 10px var(--bg),
+      0 0 10px var(--bg),
+      0 0 16px var(--bg),
+      0 0 16px var(--bg),
+      0 0 26px var(--bg),
+      0 0 26px var(--bg);
   }
   :global(.compass.hero__compass) {
     position: absolute;
