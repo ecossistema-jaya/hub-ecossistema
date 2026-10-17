@@ -13,7 +13,8 @@
     "assets": "node scripts/generate-assets.mjs",
     "prebuild": "node scripts/generate-assets.mjs",
     "art": "node scripts/curate-art.mjs",
-    "check:links": "node scripts/check-links.mjs"
+    "check:links": "node scripts/check-links.mjs",
+    "prepare": "git config core.hooksPath .githooks || true"
   },
   "engines": {
     "node": ">=22.12.0"
