@@ -1,0 +1,8 @@
+#!/bin/sh
+# Blocks commits that break `astro check` or `astro build`.
+# Skips when the commit only touches files that cannot affect the site (docs, etc.).
+if ! git diff --cached --name-only | grep -Eq "^(src|public|scripts)/|^(astro\.config\.mjs|package(-lock)?\.json|tsconfig\.json|vercel\.json)$"; then
+  exit 0
+fi
+echo "pre-commit: astro check + build"
+npm run check && npm run build
