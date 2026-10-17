@@ -360,8 +360,16 @@ const arrow = '<path d="M5 12h14M13 6l6 6-6 6"></path>';
   .split { display: grid; }
   @media (min-width: 860px) { .split { grid-template-columns: 1fr 120px 1fr; } }
   .world { display: grid; gap: 22px; align-content: start; min-width: 0; }
-  .world__photo { aspect-ratio: 16 / 10; overflow: hidden; background: var(--paper-2); }
+  .world__photo { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--paper-2); }
   .world__photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  /* Hover zoom, same 1.45x as the chapter photos on shaktijaya.com.br/trajetoria. */
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .world__photo {
+      overflow: visible;
+      transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    }
+    .world__photo:hover { z-index: 10; transform: scale(1.45); box-shadow: 0 24px 48px rgba(15, 46, 58, 0.35); }
+  }
   .world__kicker { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--rust); }
   .world h3 { font-size: clamp(1.5rem, 2.6vw, 1.95rem); margin-top: -10px; }
   .facts { list-style: none; margin: 0; padding: 0; }
@@ -488,15 +496,50 @@ const arrow = '<path d="M5 12h14M13 6l6 6-6 6"></path>';
 
   /* ---------- Gallery ---------- */
   .gallery { padding-block: clamp(56px, 8vw, 104px); content-visibility: auto; contain-intrinsic-size: auto 1400px; }
-  .masonry { columns: 2; column-gap: 14px; }
-  @media (min-width: 860px) { .masonry { columns: 4; column-gap: 18px; } }
-  .masonry figure { margin: 0 0 14px; break-inside: avoid; }
-  @media (min-width: 860px) { .masonry figure { margin-bottom: 18px; } }
+  /* Polaroid mural, as on shaktijaya.com.br/trajetoria: white frame, slight fixed tilt,
+     hover straightens and enlarges the photo while the neighbours fade. */
+  .masonry { columns: 2; column-gap: 16px; }
+  @media (min-width: 860px) { .masonry { columns: 4; column-gap: 24px; } }
+  .masonry figure {
+    position: relative;
+    margin: 0 0 18px;
+    padding: 8px 8px 4px;
+    break-inside: avoid;
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 8px 22px rgba(15, 46, 58, 0.2);
+    transform: rotate(var(--tilt, 0deg));
+  }
+  @media (min-width: 860px) { .masonry figure { margin-bottom: 28px; padding: 12px 12px 6px; } }
+  .masonry figure:nth-child(6n + 1) { --tilt: -2deg; }
+  .masonry figure:nth-child(6n + 2) { --tilt: 1deg; }
+  .masonry figure:nth-child(6n + 3) { --tilt: -1deg; }
+  .masonry figure:nth-child(6n + 4) { --tilt: 2deg; }
+  .masonry figure:nth-child(6n + 5) { --tilt: 1deg; }
+  .masonry figure:nth-child(6n) { --tilt: -2deg; }
   .masonry :global(img) { width: 100%; height: auto; background: var(--paper-2); transition: filter var(--t-slow); }
+  .masonry figcaption {
+    min-height: 1.5rem;
+    padding: 6px 4px;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    line-height: 1.25;
+    color: #0f2e3a;
+  }
   @media (hover: hover) {
     .masonry figure:hover :global(img) { filter: none; }
   }
-  .masonry figcaption { margin-top: 8px; font-size: 0.8rem; color: var(--muted); }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .masonry figure { transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, opacity 0.3s ease-out; }
+    .masonry:hover figure { opacity: 0.5; }
+    .masonry figure:hover {
+      z-index: 10;
+      opacity: 1;
+      transform: rotate(0deg) scale(1.45);
+      box-shadow: 0 24px 48px rgba(15, 46, 58, 0.45);
+    }
+  }
 
   /* ---------- Close ---------- */
   .story { padding-block: clamp(56px, 8vw, 96px) clamp(72px, 10vw, 120px); border-top: 1px solid var(--line); }
