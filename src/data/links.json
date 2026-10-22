@@ -66,25 +66,53 @@
           "url": "https://jayaroberta.com.br/biblioteca"
         },
         {
+          "id": "ai-area-aluno",
+          "label": "Área do aluno",
+          "note": "Entrar no Claude do Zero",
+          "url": "https://jayaroberta.com/",
+          "badge": "login",
+          "hidden": true
+        },
+        {
+          "id": "ai-50-comandos",
+          "label": "50 comandos para fotos com IA",
+          "note": "Guia para editar suas fotos com IA",
+          "url": "https://plataforma.jayaroberta.com.br/50-comandos/"
+        },
+        {
+          "id": "ai-ia-na-pratica",
+          "label": "IA na Prática",
+          "note": "Para usar a IA no trabalho, mesmo sendo iniciante",
+          "url": "https://jayaroberta.com.br/biblioteca/ia-na-pratica"
+        },
+        {
           "id": "ai-biblioteca",
           "label": "Biblioteca Claude by Jaya",
           "note": "Tudo o que eu uso no Claude, organizado",
           "url": "https://jayaroberta.com/biblioteca",
-          "badge": "login"
+          "badge": "login",
+          "hidden": true
         },
         {
           "id": "ai-atlas",
           "label": "Atlas de Forças",
           "note": "O mapa das suas forças naturais",
           "url": "https://quiz.jayaroberta.com.br/",
-          "badge": "login"
+          "badge": "login",
+          "hidden": true
         },
         {
           "id": "ai-eixo",
           "label": "EIXO",
           "note": "Plataforma · acesso com login",
           "url": "https://entrenoeixo.jayaroberta.com.br/",
-          "badge": "login"
+          "badge": "login",
+          "hidden": true
+        },
+        {
+          "id": "ai-em-breve",
+          "label": "Em breve",
+          "url": "https://jayaroberta.com.br/"
         }
       ]
     }
