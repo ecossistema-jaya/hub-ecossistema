@@ -1,0 +1,27 @@
+# Jaya, Entre Mundos
+
+> Plataforma de Jaya Roberta que reúne, num só lugar, os dois territórios do seu trabalho: Shakti Jaya (terapia de relacionamentos e sexualidade) e Jaya AI (inteligência artificial aplicada ao trabalho). Jaya é analista de tecnologia há mais de 20 anos e terapeuta integrativa.
+
+## Shakti Jaya
+
+- [Shakti Jaya](https://www.shaktijaya.com.br/): terapia de relacionamentos e sexualidade.
+- [Quiz dos 5 Elementos](https://www.shaktijaya.com.br/quiz1): quiz gratuito, direto no celular, para descobrir o seu elemento.
+- [Tarot da Jaya](https://www.shaktijaya.com.br/tarot-da-jaya): os 22 Arcanos Maiores do deck autoral de Jaya, explicados em língua de gente.
+- Planners de 30 dias, um por elemento, em /planners/{elemento}: [Terra](https://plataforma.jayaroberta.com.br/planners/terra) (reconstruir a base da relação), [Água](https://plataforma.jayaroberta.com.br/planners/agua) (cuidar da conexão emocional), [Ar](https://plataforma.jayaroberta.com.br/planners/ar) (comunicação e diálogo real), [Fogo](https://plataforma.jayaroberta.com.br/planners/fogo) (reacender o desejo), [Éter](https://plataforma.jayaroberta.com.br/planners/eter) (redescobrir o sentido da relação), [Despertar](https://plataforma.jayaroberta.com.br/planners/despertar) (acordar uma relação morna) e [Harmonia](https://plataforma.jayaroberta.com.br/planners/harmonia) (manter o equilíbrio da relação).
+
+## Jaya AI
+
+- [IA na Prática](https://jayaroberta.com.br/biblioteca/ia-na-pratica): para usar a IA no trabalho, mesmo sendo iniciante.
+- [Biblioteca Gratuita](https://jayaroberta.com.br/biblioteca): guias técnicos abertos, sem login.
+- [50 comandos para fotos com IA](https://plataforma.jayaroberta.com.br/50-comandos/): guia para editar suas fotos com IA.
+- [Do Criativo ao Conteúdo](https://plataforma.jayaroberta.com.br/criativo-ao-conteudo/): guia de imagem, vídeo e legendas com IA.
+- [Claude do Zero](https://jayaroberta.com/claude): curso de cinco aulas, na ordem, para configurar o Claude e fazê-lo escrever como você.
+
+## Sobre
+
+- [Sobre Jaya Roberta](https://plataforma.jayaroberta.com.br/sobre): a trajetória entre os dois mundos, tecnologia e terapia.
+
+## Contato e redes
+
+- WhatsApp: https://wa.me/5561992634557
+- Instagram: https://www.instagram.com/jayaroberta.ai/ (Jaya AI) e https://www.instagram.com/jayaroberta.shakti/ (Shakti Jaya)

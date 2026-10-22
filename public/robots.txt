@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://plataforma.jayaroberta.com.br/sitemap-index.xml
