@@ -76,6 +76,9 @@
 
   --gutter: clamp(16px, 5vw, 44px);
   --maxw: 1180px;
+  /* Topo da página (cabeçalho, hero, acesso rápido): ocupa a largura toda, sem a faixa vazia ao lado do conteúdo centralizado. */
+  --gutter-wide: clamp(20px, 5vw, 96px);
+  --maxw-home: 1600px;
   --header-h: 68px;
 
   /* Medallion hues (5 Elementos + jornadas) */
@@ -225,6 +228,15 @@ strong { font-weight: 600; }
   max-width: var(--maxw);
   margin-inline: auto;
   padding-inline: var(--gutter);
+}
+.wrap--wide {
+  max-width: var(--maxw-home);
+  padding-inline: var(--gutter-wide);
+}
+/* Home: todas as seções usam a mesma largura (margens de até 96 px; acima de 1600 px o conteúdo para de esticar e fica centralizado). */
+.home .wrap {
+  max-width: var(--maxw-home);
+  padding-inline: var(--gutter-wide);
 }
 
 /* SAND tracked caps: Marcellus for voice, Open Sans 600 for labels */

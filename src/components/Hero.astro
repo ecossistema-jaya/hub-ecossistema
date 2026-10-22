@@ -8,8 +8,8 @@ import Compass from './Compass.astro';
 import Icon from './Icon.astro';
 
 // Jaya between two worlds: relationship (left circle) and digital (right circle), joined by golden roots.
-const heroArt = art('hero-art');
-const heroMobile = art('hero-art-mobile') ?? heroArt;
+const heroArt = art('hero-jaya') ?? art('hero-art');
+const heroMobile = art('hero-jaya-mobile') ?? art('hero-art-mobile') ?? heroArt;
 
 // Art direction: phones get a vertical crop around Jaya; wider screens get the full panorama.
 async function variants(src: ImageMetadata | null, widths: number[], quality: number) {
@@ -43,9 +43,9 @@ const fallback = heroArt ? await getImage({ src: heroArt, width: 1280, format: '
             src={fallback.src}
             srcset={narrow.jpeg}
             sizes="100vw"
-            width="772"
-            height="941"
-            alt={`${hub.person.name} sorrindo, entre um mundo de natureza e relação e um mundo de livros, notebook e redes, ligados por raízes douradas`}
+            width="710"
+            height="887"
+            alt={`${hub.person.name} de regata verde, apoiada num muro de concreto ao sol, com folhagens e círculos dourados ao fundo`}
             loading="eager"
             fetchpriority="high"
             decoding="async"
@@ -57,7 +57,7 @@ const fallback = heroArt ? await getImage({ src: heroArt, width: 1280, format: '
 
   <Botanical class="hero__branch" />
 
-  <div class="wrap hero__inner">
+  <div class="wrap wrap--wide hero__inner">
     <div class="hero__copy">
       <p class="hero__hello fade-in" style="--i:0">Olá, que bom ver você aqui.</p>
       <h1 id="hero-title" class="hero__title">
@@ -92,9 +92,10 @@ const fallback = heroArt ? await getImage({ src: heroArt, width: 1280, format: '
   }
 
   /* Mobile: the artwork sits on top, cropped around Jaya, dissolving into the paper below. */
+  /* A arte começa abaixo do cabeçalho: senão ele cobre o rosto quando a foto tem a cabeça perto do topo. */
   .hero__art {
     position: absolute;
-    inset: 0 0 auto 0;
+    inset: var(--header-h) 0 auto 0;
     height: 58svh;
     z-index: -1;
   }
@@ -109,13 +110,13 @@ const fallback = heroArt ? await getImage({ src: heroArt, width: 1280, format: '
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 50% 28%;
+    object-position: 50% 0%;
   }
   :global([data-theme='dark']) .hero__art { opacity: 0.6; }
 
   .hero__inner {
     position: relative;
-    padding-top: 52svh;
+    padding-top: calc(52svh + 44px); /* a arte agora começa abaixo do cabeçalho */
   }
   .hero__copy { position: relative; max-width: 560px; }
   .hero__hello {
@@ -262,18 +263,19 @@ const fallback = heroArt ? await getImage({ src: heroArt, width: 1280, format: '
   @media (min-width: 900px) {
     .hero { align-items: center; }
     .hero__art {
-      inset: 0;
-      height: 100%;
+      inset: var(--header-h) 0 0 0;
+      height: auto;
     }
     /* Anchor the artwork to the right at full height so its blank paper side sits under the text. */
     .hero__art { overflow: hidden; }
     .hero__art :global(img) {
       position: absolute;
-      top: 0;
-      right: -9%;
-      width: auto;
+      inset: 0;
+      width: 100%;
       height: 100%;
       max-width: none;
+      object-fit: cover;
+      object-position: right top;
     }
     .hero__art::after {
       z-index: 1;
@@ -289,7 +291,6 @@ const fallback = heroArt ? await getImage({ src: heroArt, width: 1280, format: '
   }
   /* Tablet landscape: push the artwork further right and tighten the title. */
   @media (min-width: 900px) and (max-width: 1199px) {
-    .hero__art :global(img) { right: -26%; }
     .hero__title { font-size: 3.6rem; }
     .hero__copy { max-width: 38vw; }
   }
