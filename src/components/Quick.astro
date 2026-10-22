@@ -4,7 +4,7 @@ import Icon from './Icon.astro';
 ---
 
 <section class="quick" aria-label="Acesso rápido">
-  <div class="wrap">
+  <div class="wrap wrap--wide">
     <ul class="quick__grid" role="list" data-reveal="stagger">
       {
         hub.quick.map((q, i) => (
@@ -35,9 +35,13 @@ import Icon from './Icon.astro';
     margin: 0;
     padding: 0;
     display: grid;
+    grid-auto-rows: 1fr; /* todas as linhas com a mesma altura, também no celular */
     gap: 12px;
   }
+  /* Cada <li> estica até a linha mais alta da grade e o card ocupa o <li> inteiro: mesma altura nos três. */
+  .quick__grid > li { display: flex; }
   .qcard {
+    flex: 1;
     display: flex;
     align-items: center;
     gap: 16px;
@@ -82,7 +86,7 @@ import Icon from './Icon.astro';
 
   @media (min-width: 900px) {
     .quick { margin-top: -10px; }
-    .quick__grid { grid-template-columns: 1.15fr 1fr 1fr; gap: 16px; }
+    .quick__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
     .qcard { min-height: 110px; padding: 22px 24px; }
   }
 </style>
