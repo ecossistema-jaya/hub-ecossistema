@@ -1,0 +1,67 @@
+---
+import { hub, track, visible, type HubLink } from '../lib/links';
+
+// Mesma fonte dos cards (links.json): as ferramentas não divergem do que está na página.
+const produtos = hub.worlds.flatMap((world) =>
+  [world.primary as HubLink, ...visible(world.links as HubLink[])]
+    .filter((l) => !l.url.startsWith('#'))
+    .map((l) => ({
+      id: l.id,
+      nome: l.label,
+      descricao: l.note ?? '',
+      mundo: world.name,
+      acesso: l.badge === 'login' ? 'login' : 'aberto',
+      url: track(l.url, l.id),
+    })),
+);
+---
+
+<script type="application/json" id="webmcp-produtos" set:html={JSON.stringify(produtos)} />
+
+<script>
+  // WebMCP: expõe os produtos do hub para agentes de IA no navegador.
+  // Só registra onde o navegador oferece modelContext. Nenhuma ferramenta faz login nem compra.
+  type Produto = { id: string; nome: string; descricao: string; mundo: string; acesso: string; url: string };
+  type Contexto = { registerTool?: (tool: unknown) => void };
+
+  const mc = ((navigator as unknown as { modelContext?: Contexto }).modelContext ??
+    (document as unknown as { modelContext?: Contexto }).modelContext) as Contexto | undefined;
+
+  if (mc && typeof mc.registerTool === 'function') {
+    try {
+      const produtos: Produto[] = JSON.parse(document.getElementById('webmcp-produtos')?.textContent ?? '[]');
+      const resposta = (dados: unknown) => ({ content: [{ type: 'text', text: JSON.stringify(dados) }] });
+
+      mc.registerTool({
+        name: 'listar_produtos',
+        description:
+          'Lista os produtos e guias da Jaya Roberta que aparecem nesta página, com mundo, descrição, tipo de acesso (aberto ou login) e link.',
+        inputSchema: { type: 'object', properties: {} },
+        annotations: { readOnlyHint: true },
+        execute: () => resposta(produtos),
+      });
+
+      mc.registerTool({
+        name: 'abrir_produto',
+        description:
+          'Abre a página de um produto da lista (use o id de listar_produtos). Só navega: não faz login nem compra.',
+        inputSchema: {
+          type: 'object',
+          properties: { id: { type: 'string', description: 'O id do produto, como em listar_produtos.' } },
+          required: ['id'],
+        },
+        execute: (args: { id?: string }) => {
+          const produto = produtos.find((p) => p.id === args?.id);
+          if (!produto) return resposta({ erro: 'Produto não encontrado. Use um id de listar_produtos.' });
+          const link = document.querySelector<HTMLAnchorElement>(`a[data-link="${CSS.escape(produto.id)}"]`);
+          // Clica no card da página para a medição de cliques rodar como num clique comum.
+          if (link) link.click();
+          else window.open(produto.url, '_blank', 'noopener');
+          return resposta({ aberto: produto.url, aviso: 'Se o navegador bloquear a nova aba, abra o link manualmente.' });
+        },
+      });
+    } catch {
+      // sem modelContext utilizável: a página segue normal
+    }
+  }
+</script>
