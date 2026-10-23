@@ -369,7 +369,7 @@ footer p{padding-left:16px;padding-right:16px}
       <div class="row"><span>Conexão (cliques → visitas)</span><b class="num">68%</b></div>
       <div class="row"><span>Visita → checkout</span><b class="num">11%</b></div>
       <span class="pill ok">Dentro das faixas</span>
-      <span class="badge">Conexão de 60 a 80% e visita a checkout de 5 a 15% são normais. O AS02 teve 58%, abaixo dos 60%.</span>
+      <span class="badge">Conexão de 60 a 80% é normal. O AS02 teve 58%, abaixo dos 60%. Visita a checkout: 11%, abaixo dos 20% do Samuel.</span>
     </div>
     <div class="card">
       <span class="n">4 · Caixa</span>
@@ -379,7 +379,7 @@ footer p{padding-left:16px;padding-right:16px}
       <span class="badge">Só 7 checkouts: sinal, não prova.</span>
     </div>
   </div>
-  <div class="big-note"><b>Correção ao que eu disse antes.</b> Eu apontei a página (11% de visita a checkout) como gargalo. Pelo benchmark do squad esse número está na faixa normal. O que fica fora da faixa é o <b>CPM caro</b> e o <b>checkout</b>, com a ressalva de que são poucos checkouts.</div>
+  <div class="big-note"><b>Correção de 23/10.</b> A faixa de 5 a 15% é do benchmark do squad. Na régua do Samuel a taxa de checkout (finalizações ÷ visitas na página) abaixo de 20% indica problema na copy da página, e a nossa é de 11%. Então a página é suspeita, junto com o <b>CPM caro</b> (poucas variações de anúncio). Amostra pequena: 7 checkouts.</div>
 </section>
 
 <!-- ========== LINHA DO TEMPO DAS ALTERAÇÕES ========== -->
@@ -552,15 +552,15 @@ footer p{padding-left:16px;padding-right:16px}
   <div class="sec-head">
     <div class="eyebrow">Método do Samuel</div>
     <h2>A régua da decisão</h2>
-    <p>É o método 1:3:1 com que a campanha foi montada em 17/10: 1 campanha, 3 conjuntos, 1 anúncio em cada, com regras de corte para o dia 3. A fonte é o resumo feito numa sessão do Claude Desktop. A palestra original do Samuel ainda não foi conferida.</p>
+    <p>É o método 1:3:1 com que a campanha foi montada em 17/10: 1 campanha, 3 conjuntos, 1 anúncio em cada, com regras de corte para o dia 3. Conferido em 23/10 com o PDF da palestra e os dois vídeos do Samuel. Três regras do plano antigo não estão em nenhuma fonte dele e aparecem marcadas.</p>
   </div>
   <div class="rules">
-    <div class="card rule"><span class="lab">Custo aceitável por venda</span><span class="big num">R$ 23,94</span><p>60% do preço de R$ 39,90.</p></div>
-    <div class="card rule stop"><span class="lab">Dia 3, sem venda</span><span class="big">Parar</span><p>Revisa anúncio e página antes de gastar o resto. Não escala.</p></div>
-    <div class="card rule up"><span class="lab">Vendeu dentro da meta</span><span class="big">+20%</span><p>Mais orçamento. Quem vendeu acima de R$ 23,94 recebe −20%.</p></div>
-    <div class="card rule stop"><span class="lab">Gastou R$ 39,90 sem vender</span><span class="big">Desligar</span><p>O conjunto sai do teste. Entram 3 variações do vencedor.</p></div>
-    <div class="card rule"><span class="lab">Verba total</span><span class="big num">R$ 336</span><p>Fase 1 até R$ 120, fase 2 até R$ 216. Substituída pelo teto de R$ 700 do plano novo.</p></div>
-    <div class="card rule"><span class="lab">Criativo no meio do teste</span><span class="big">Nunca</span><p>Trocar imagem reinicia o aprendizado.</p></div>
+    <div class="card rule"><span class="lab">Custo aceitável por venda</span><span class="big num">R$ 23,94</span><p>60% do preço de R$ 39,90. Fonte: Samuel.</p></div>
+    <div class="card rule up"><span class="lab">Dentro da meta</span><span class="big">+20%</span><p>Mais orçamento e campanha nova com 3 ganchos do anúncio. Acima da meta: −20% e leitura das métricas secundárias. Fonte: Samuel.</p></div>
+    <div class="card rule stop"><span class="lab">Gastou R$ 39,90 sem vender</span><span class="big">Desligar</span><p>Também sai quem tem CPA acima do preço do produto. No vídeo ele é mais brando: CPA igual ao preço leva −20%. Fonte: Samuel.</p></div>
+    <div class="card rule"><span class="lab">Métricas secundárias</span><span class="big">CTR 1% · checkout 20% · carga 60%</span><p>Só valem com CPA acima da meta ou sem venda. Fonte: Samuel.</p></div>
+    <div class="card rule"><span class="lab">Dia 3, sem venda: parar</span><span class="big">Sem fonte</span><p>Não está no PDF nem nos vídeos. Leitura nossa do plano de 17/10.</p></div>
+    <div class="card rule"><span class="lab">Verba R$ 336 · "não trocar criativo"</span><span class="big">Sem fonte</span><p>Do plano, não do Samuel. Ele pede pelo menos 3 anúncios novos por semana, em campanha nova. Verba substituída pelo teto de R$ 700.</p></div>
   </div>
   <div class="card pad" style="margin-top:18px">
     <div class="tbl-wrap">
@@ -569,10 +569,11 @@ footer p{padding-left:16px;padding-right:16px}
       <tbody>
         <tr><td>Custo aceitável R$ 23,94</td><td>Nenhum conjunto bateu. AS01 custou R$ 39,04 por venda e AS03 R$ 43,79.</td></tr>
         <tr class="hi"><td>Vendeu acima da meta: −20%</td><td>Aplicado em AS01 e AS03, de R$ 13,30 para R$ 10,64.</td></tr>
-        <tr class="hi"><td>Gastou perto de R$ 39,90 sem vender: desligar</td><td>AS02 tinha R$ 36,14 e zero venda. Pausado antes de chegar ao gatilho.</td></tr>
+        <tr class="hi"><td>Gastou R$ 39,90 sem vender: desligar</td><td>AS02 tinha R$ 36,14 e zero venda. Pausado R$ 3,76 antes do gatilho do Samuel.</td></tr>
+        <tr><td>CPA acima do preço do produto: desligar (PDF) ou −20% (vídeo)</td><td>AS03 está em R$ 44,84 contra R$ 39,90, na fronteira. O −20% de 20/10 é defensável. Decisão pendente quando o saldo voltar.</td></tr>
         <tr><td>Vendeu dentro da meta: +20%</td><td>Ninguém. Nada foi escalado.</td></tr>
         <tr><td>Vencedor: 3 variações do mesmo tipo</td><td>Sem vencedor pela régua. Segue para o teste novo.</td></tr>
-        <tr><td>Criativo no meio do teste: nunca</td><td>Cumprido. Nenhum anúncio foi trocado.</td></tr>
+        <tr><td>Criativo no meio do teste: nunca (sem fonte no Samuel)</td><td>Nenhum anúncio foi trocado. Regra nossa, não dele.</td></tr>
         <tr><td>Fase 1 de R$ 120</td><td>Gastos R$ 118,97. Teto praticamente esgotado.</td></tr>
       </tbody>
     </table>
