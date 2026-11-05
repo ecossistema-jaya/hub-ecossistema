@@ -13,7 +13,7 @@
 
 - [IA na Prática](https://jayaroberta.com.br/biblioteca/ia-na-pratica): para usar a IA no trabalho, mesmo sendo iniciante.
 - [Biblioteca Gratuita](https://jayaroberta.com.br/biblioteca): guias técnicos abertos, sem login.
-- [50 comandos para fotos com IA](https://plataforma.jayaroberta.com.br/50-comandos/): guia para editar suas fotos com IA.
+- [55 comandos para fotos com IA](https://plataforma.jayaroberta.com.br/50-comandos/): guia para editar suas fotos com IA.
 - [Do Criativo ao Conteúdo](https://plataforma.jayaroberta.com.br/criativo-ao-conteudo/): guia de imagem, vídeo e legendas com IA.
 - [Claude do Zero](https://jayaroberta.com/claude): curso de cinco aulas, na ordem, para configurar o Claude e fazê-lo escrever como você.
 
