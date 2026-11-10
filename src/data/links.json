@@ -54,7 +54,7 @@
       "summary": "IA para o seu negócio, explicada por quem trabalha com tecnologia há 20 anos. Sem jargão, sem pose.",
       "primary": {
         "id": "ai-claude-do-zero",
-        "label": "Claude do Zero",
+        "label": "Claude, Seu Redator Pessoal",
         "note": "Cinco aulas na ordem, pra fazer junto",
         "url": "https://jayaroberta.com/claude"
       },
@@ -68,7 +68,7 @@
         {
           "id": "ai-area-aluno",
           "label": "Área do aluno",
-          "note": "Entrar no Claude do Zero",
+          "note": "Entrar no Claude, Seu Redator Pessoal",
           "url": "https://jayaroberta.com/",
           "badge": "login",
           "hidden": true
@@ -284,7 +284,7 @@
     {
       "id": "quick-claude",
       "tone": "card",
-      "label": "Claude do Zero",
+      "label": "Claude, Seu Redator Pessoal",
       "note": "Cinco aulas, sem precisar saber nada antes",
       "icon": "book",
       "url": "https://jayaroberta.com/claude"
